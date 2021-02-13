@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\thirdparty\build\glew\src\project_glew\src\glew.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\thirdparty\build\glew\src\project_glew\include\GL\wglew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\thirdparty\build\glew\src\project_glew\include\GL\glew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\thirdparty\build\glew\src\project_glew\include\GL\glxew.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\thirdparty\build\glew\src\project_glew\build\cmake\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\thirdparty\build\glew\src\project_glew\build\glew.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{46BF5784-81DF-3497-985E-1B7EE9117A78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{EA987096-68CB-36F1-A07D-D3B6D3BDE6F3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

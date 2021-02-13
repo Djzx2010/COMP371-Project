@@ -1,0 +1,43 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/project_glfw"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/060b60bc48aeac087c5b614801da9d71/project_glfw.rule"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/9c7341d4b9aa510da3f8ca0b420c7e46/project_glfw-complete.rule"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/efe54682e77bd245d216f3e49718267c/project_glfw-install.rule"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/efe54682e77bd245d216f3e49718267c/project_glfw-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/efe54682e77bd245d216f3e49718267c/project_glfw-download.rule"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/efe54682e77bd245d216f3e49718267c/project_glfw-update.rule"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/efe54682e77bd245d216f3e49718267c/project_glfw-patch.rule"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/efe54682e77bd245d216f3e49718267c/project_glfw-configure.rule"
+		},
+		{
+			"file" : "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/efe54682e77bd245d216f3e49718267c/project_glfw-build.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"project_glfw"
+		],
+		"name" : "project_glfw"
+	}
+}
