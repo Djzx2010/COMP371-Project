@@ -1,0 +1,8 @@
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/include/GLFW/glfw3.h
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/include/GLFW/glfw3native.h
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/lib/cmake/glfw3/glfw3Config.cmake
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/lib/cmake/glfw3/glfw3ConfigVersion.cmake
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/lib/cmake/glfw3/glfw3Targets.cmake
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/lib/cmake/glfw3/glfw3Targets-debug.cmake
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/lib/pkgconfig/glfw3.pc
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/lib/glfw3.lib

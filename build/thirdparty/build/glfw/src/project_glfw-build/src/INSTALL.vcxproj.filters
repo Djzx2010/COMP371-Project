@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\thirdparty\build\glfw\src\project_glfw-build\CMakeFiles\26784adcf6aa6fcb21b74449649f6a08\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{80DEB232-A97C-3F59-B65B-295D11E739CA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

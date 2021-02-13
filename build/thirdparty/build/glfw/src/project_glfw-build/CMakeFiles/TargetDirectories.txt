@@ -1,0 +1,6 @@
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glfw/src/project_glfw-build/CMakeFiles/uninstall.dir
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glfw/src/project_glfw-build/CMakeFiles/INSTALL.dir
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glfw/src/project_glfw-build/CMakeFiles/ALL_BUILD.dir
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glfw/src/project_glfw-build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glfw/src/project_glfw-build/src/CMakeFiles/glfw.dir
+C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glfw/src/project_glfw-build/src/CMakeFiles/INSTALL.dir
