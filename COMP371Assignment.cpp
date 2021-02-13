@@ -102,8 +102,8 @@ int compileAndLinkShaders()
 
 int createCubeVertexArrayObject()
 {
-     //A vertex is a point on a polygon, it contains positions and other data (eg: colors)
-    // Cube model
+    //A vertex is a point on a polygon, it contains positions and other data (eg: colors)
+   // Cube model
     vec3 vertexArray[] = {
         vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), //left - red
         vec3(-0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f),
@@ -222,7 +222,7 @@ int main(int argc, char* argv[])
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     // Create Window and rendering context using GLFW, resolution is 800x600
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Comp371 - Lab 01", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Comp371 - Project", NULL, NULL);
     if (window == NULL)
     {
         std::cerr << "Failed to create GLFW window" << std::endl;
