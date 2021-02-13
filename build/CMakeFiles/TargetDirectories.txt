@@ -1,7 +1,0 @@
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/INSTALL.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/project_glew.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/project_glfw.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/COMP371Proj.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/unzip_glm.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/CMakeFiles/ZERO_CHECK.dir
