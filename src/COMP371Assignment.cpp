@@ -1,8 +1,6 @@
 #include <iostream>
 
 
-#include <iostream>
-
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
 
@@ -283,8 +281,8 @@ int main(int argc, char* argv[])
 
     // Set projection matrix for shader
     mat4 projectionMatrix = perspective(radians(fov),            // field of view in degrees
-        800.0f / 600.0f,  // aspect ratio
-        0.01f, 100.0f);   // near and far (near > 0)
+                                               800.0f / 600.0f,  // aspect ratio
+                                               0.01f, 100.0f);   // near and far (near > 0)
 
     // Set initial view matrix
     mat4 viewMatrix = lookAt(cameraPosition,  // eye
@@ -312,13 +310,13 @@ int main(int argc, char* argv[])
     glEnable(GL_DEPTH_TEST);
 
     // Initialize Matrix
+    mat4 model = mat4(1.0f); // identity matrix
     mat4 axisWorldMatrix; // axis matrix
     mat4 gridWorldMatrix; // grid matrix
-    mat4 model = mat4(1.0f); // identity matrix
     mat4 orientationMatrix = mat4(1.0f); // initialize orientation matrix
+    mat4 scaleMatrix = mat4(1.0f); // scale matrix
 
     vec2 currentOrientation(0.0f, 0.0f); // current orientation of matrix
-    vec3 currentRotation(0.0f, 0.0f, 0.0f); // current rotation for rotation matrix
     vec3 currentScale(1.0f, 1.0f, 1.0f); // currentScale applied to scale Matrix
 
 
@@ -357,16 +355,17 @@ int main(int argc, char* argv[])
         glUniform3fv(colorLocation, 1, value_ptr(vec3(0.0, 0.0, 1.0)));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Draw Grid 128x128
-        int gridsize = 20;
-        for (int i = 0; i < gridsize; ++i)
+        // Draw Grid 128x128 - TO BE WORKED ON, currently tests the scale function with U AND J
+        int gridsize = 50;
+       for (int i = 0; i < gridsize; ++i)
         {
             for (int j = 0; j < gridsize; ++j)
             {
-                gridWorldMatrix = translate(model, vec3(-gridsize/2 + i, 0.0f, 0.0f)) * scale(model, vec3(gridsize, 1.0f, 1.0f));
+                gridWorldMatrix = translate(model, vec3(0.0f, 0.0f, -gridsize/2 + j)) * scale(model, currentScale);
                 glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &gridWorldMatrix[0][0]);
                 glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
                 glDrawArrays(GL_TRIANGLES, 0, 36);
+                
             }
         }
 
@@ -380,7 +379,8 @@ int main(int argc, char* argv[])
 
         double dx = 0;
         double dy = 0;
- 
+        
+        // Mouse Controls
         if (lastMouseRightState == GLFW_RELEASE && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
             dx = mousePosX - lastMousePosX;
         }
@@ -445,7 +445,7 @@ int main(int argc, char* argv[])
             cameraPosition += cameraLookAt  * dt;
         }
  
-        // Orientation movement
+        // Orientation controls
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             currentOrientation.x += radians(5.0f);
         }
@@ -462,6 +462,20 @@ int main(int argc, char* argv[])
         if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {
             currentOrientation.y = 0;
             currentOrientation.x = 0;
+        }
+
+        // Scale controls
+        if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) // Scale up
+        {
+            currentScale.x += 0.1f;
+            currentScale.y += 0.1f;
+            currentScale.z += 0.1f;
+        }
+        if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) // Scale down
+        {
+            currentScale.x -= 0.1f;
+            currentScale.y -= 0.1f;
+            currentScale.z -= 0.1f;
         }
 
         // Render types
