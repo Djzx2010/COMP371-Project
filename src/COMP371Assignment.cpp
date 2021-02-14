@@ -6,12 +6,14 @@
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
 
+
 #include <GLFW/glfw3.h> // cross-platform interface for creating a graphical context,
 // initializing OpenGL and binding inputs
 
 #include <glm/glm.hpp>  // GLM is an optimized math library with syntax to similar to OpenGL Shading Language
 #include <glm/gtc/matrix_transform.hpp> // include this to create transformation matrices
 #include <glm/common.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 
 using namespace glm;
@@ -26,6 +28,7 @@ const char* getVertexShaderSource()
         "layout (location = 1) in vec3 aColor;"
         ""
         "uniform mat4 worldMatrix;"
+        "uniform mat4 orientationMatrix = mat4(1.0);"
         "uniform mat4 viewMatrix = mat4(1.0);"  // default value for view matrix (identity)
         "uniform mat4 projectionMatrix = mat4(1.0);"
         ""
@@ -33,21 +36,24 @@ const char* getVertexShaderSource()
         "void main()"
         "{"
         "   vertexColor = aColor;"
-        "   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldMatrix;"
-        "   gl_Position = vec4(aPos.x, -aPos.y, aPos.z, 1.0);"
+        "   mat4 modelViewProjection = projectionMatrix * viewMatrix * orientationMatrix * worldMatrix;"
+        "   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
         "}";
 }
-
 
 const char* getFragmentShaderSource()
 {
     return
         "#version 330 core\n"
         "in vec3 vertexColor;"
+        "uniform vec3 objectColor;"
+        ""
         "out vec4 FragColor;"
+        ""
         "void main()"
         "{"
-        "   FragColor = vec4(vertexColor.r, vertexColor.g, vertexColor.b, 1.0f);"
+        "	vec4 baseColor= vec4(objectColor.r, objectColor.g, objectColor.b, 1.0f);"
+        "   FragColor = baseColor;"
         "}";
 }
 
@@ -200,17 +206,26 @@ void setProjectionMatrix(int shaderProgram, mat4 projectionMatrix)
     GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
     glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
 }
+
 void setViewMatrix(int shaderProgram, mat4 viewMatrix)
 {
     glUseProgram(shaderProgram);
     GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
     glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 }
+
 void setWorldMatrix(int shaderProgram, mat4 worldMatrix)
 {
     glUseProgram(shaderProgram);
     GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
     glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
+}
+
+void setOrientationMatrix(int shaderProgram, mat4 orientationMatrix)
+{
+    glUseProgram(shaderProgram);
+    GLuint orientationMatrixLocation = glGetUniformLocation(shaderProgram, "orientationMatrix");
+    glUniformMatrix4fv(orientationMatrixLocation, 1, GL_FALSE, &orientationMatrix[0][0]);
 }
 
 int main(int argc, char* argv[])
@@ -242,17 +257,32 @@ int main(int argc, char* argv[])
     }
 
     // Black background
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+
+    // Disabling cursor
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // Compile and link shaders here ...
     int shaderProgram = compileAndLinkShaders();
 
-    // INITIAL Camera parameters for view transform
-    vec3 cameraPosition(0.0f, 5.0f, 20.0f);
-    vec3 cameraLookAt(0.0f, 0.0f, 0.0f);
-    vec3 cameraUp(0.0f, 1.0f, 0.0f);
+    // SHADER PROGRAM LOCATIONS
+    GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
+    GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+    GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
+    GLuint colorLocation = glGetUniformLocation(shaderProgram, "objectColor");
 
-    mat4 projectionMatrix = perspective(glm::radians(70.0f),            // field of view in degrees
+    // INITIAL Camera parameters for view transform
+	vec3 cameraPosition(0.0f, 5.0f, 20.0f);
+	vec3 cameraLookAt(0.0f, 0.0f, 0.0f);
+	vec3 cameraUp(0.0f, 1.0f, 0.0f);
+	// Other camera parameters
+	float cameraSpeed = 1.0f;
+	float cameraFastSpeed = 7 * cameraSpeed;
+	float cameraHorizontalAngle = 90.0f;
+	float cameraVerticalAngle = 0.0f;
+
+    // Set projection matrix for shader
+    mat4 projectionMatrix = perspective(radians(70.0f),            // field of view in degrees
         800.0f / 600.0f,  // aspect ratio
         0.01f, 100.0f);   // near and far (near > 0)
 
@@ -261,32 +291,8 @@ int main(int argc, char* argv[])
         cameraLookAt,  // center
         cameraUp); // up
 
-    // Camera parameters for view transform
-    vec3 cameraPosition(0.6f, 1.0f, 10.0f);
-    vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
-    vec3 cameraUp(0.0f, 1.0f, 0.0f);
-
-    // Other camera parameters
-    float cameraSpeed = 1.0f;
-    float cameraFastSpeed = 2 * cameraSpeed;
-    float cameraHorizontalAngle = 90.0f;
-    float cameraVerticalAngle = 0.0f;
-
-    // Set projection matrix for shader, this won't change
-    mat4 projectionMatrix = perspective(70.0f,            // field of view in degrees
-        800.0f / 600.0f,  // aspect ratio
-        0.01f, 100.0f);   // near and far (near > 0)
-
-    GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
-    glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-    // Set initial view matrix
-    mat4 viewMatrix = lookAt(cameraPosition,  // eye
-        cameraPosition + cameraLookAt,  // center
-        cameraUp); // up
-
-    GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
-    glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+    setViewMatrix(shaderProgram, viewMatrix);
+    setProjectionMatrix(shaderProgram, projectionMatrix);
 
     // Define and upload geometry to the GPU here ...
     int vbo = createCubeVertexArrayObject();
@@ -294,25 +300,10 @@ int main(int argc, char* argv[])
     // For frame time
     float lastFrameTime = glfwGetTime();
     int lastMouseLeftState = GLFW_RELEASE;
+    int lastMouseRightState = GLFW_RELEASE;
+    int lastMouseMiddleState = GLFW_RELEASE;
     double lastMousePosX, lastMousePosY;
     glfwGetCursorPos(window, &lastMousePosX, &lastMousePosY);
-
-
-    // Set projection matrix for shader, this won't change
-    mat4 projectionMatrix = glm::perspective(70.0f,            // field of view in degrees
-        800.0f / 600.0f,  // aspect ratio
-        0.01f, 100.0f);   // near and far (near > 0)
-
-    GLuint projectionMatrixLocation = glGetUniformLocation(shaderProgram, "projectionMatrix");
-    glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]);
-
-    // Set initial view matrix
-    mat4 viewMatrix = lookAt(cameraPosition,  // eye
-        cameraPosition + cameraLookAt,  // center
-        cameraUp); // up
-
-    GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
-    glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 
     // Enable Backface culling
     glEnable(GL_CULL_FACE);
@@ -320,50 +311,80 @@ int main(int argc, char* argv[])
     // Enable Depth Test
     glEnable(GL_DEPTH_TEST);
 
+    // Initialize Matrix
+    mat4 axisWorldMatrix; // axis matrix
+    mat4 gridWorldMatrix; // grid matrix
+    mat4 model = mat4(1.0f); // identity matrix
+
+    mat4 orientationMatrix = mat4(1.0f); // initialize orientation matrix
+    vec2 currentOrientation(0.0f, 0.0f); // current orientation of matrix
+    vec3 currentRotation(0.0f, 0.0f, 0.0f); // current rotation for rotation matrix
+    vec3 currentScale(1.0f, 1.0f, 1.0f); // currentScale applied to scale Matrix
+
+
     // Entering Main Loop
     while (!glfwWindowShouldClose(window))
     {
+        // Each frame, reset color of each pixel to glClearColor
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         // Frame time calculation
         float dt = glfwGetTime() - lastFrameTime;
         lastFrameTime += dt;
 
-        // Each frame, reset color of each pixel to glClearColor
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         glUseProgram(shaderProgram);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-        // Draw ground
-        mat4 groundWorldMatrix = translate(mat4(1.0f), vec3(0.0f, -0.01f, 0.0f)) * scale(mat4(1.0f), vec3(1000.0f, 0.02f, 1000.0f));
-        GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &groundWorldMatrix[0][0]);
-
-        glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
-
         // Cube drawn here
-        glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
+        //glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
 
-        // Moving Camera
-        bool fastCam = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
-        float currentCameraSpeed = (fastCam) ? cameraFastSpeed : cameraSpeed;
+        // Coordinates 
+        // X-axis
+        axisWorldMatrix = translate(model, vec3(3.5f, 0.0f, 0.0f)) * scale(model, vec3(7.0f, 0.1f, 0.1f));
+        setWorldMatrix(shaderProgram, axisWorldMatrix);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 0.0, 0.0)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Update camera horizontal and vertical angle
+        // Y-axis
+        axisWorldMatrix = translate(model, vec3(0.0f, 3.5f, 0.0f)) * scale(model, vec3(0.1f, 7.0f, 0.1f));
+        setWorldMatrix(shaderProgram, axisWorldMatrix);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.0, 1.0, 0.0)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        // Z-axis
+        axisWorldMatrix = translate(model, vec3(0.0f, 0.0f, 3.5f)) * scale(model, vec3(0.1f, 0.1f, 7.0f));
+        setWorldMatrix(shaderProgram, axisWorldMatrix);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.0, 0.0, 1.0)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+
         double mousePosX, mousePosY;
         glfwGetCursorPos(window, &mousePosX, &mousePosY);
-
-        double dx = mousePosX - lastMousePosX;
-        double dy = mousePosY - lastMousePosY;
+  
+        // Camera tilt, pan  ZOOM MISSING
+        double dx = 0;
+        double dy = 0;
+ 
+        if (lastMouseRightState == GLFW_RELEASE && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+            dx = mousePosX - lastMousePosX;
+        }
+        if (lastMouseMiddleState == GLFW_RELEASE && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
+            dy = mousePosY - lastMousePosY;
+        }
+   
 
         lastMousePosX = mousePosX;
         lastMousePosY = mousePosY;
-
+  
+  
         // Convert to spherical coordinates
-        const float cameraAngularSpeed = 60.0f;
+        const float cameraAngularSpeed = 30.0f;
         cameraHorizontalAngle -= dx * cameraAngularSpeed * dt;
         cameraVerticalAngle -= dy * cameraAngularSpeed * dt;
 
         // Clamp vertical angle to [-85, 85] degrees
-        cameraVerticalAngle = std::max(-85.0f, std::min(85.0f, cameraVerticalAngle));
+        cameraVerticalAngle = max(-85.0f, min(85.0f, cameraVerticalAngle));
         if (cameraHorizontalAngle > 360)
         {
             cameraHorizontalAngle -= 360;
@@ -380,6 +401,20 @@ int main(int argc, char* argv[])
         vec3 cameraSideVector = glm::cross(cameraLookAt, vec3(0.0f, 1.0f, 0.0f));
 
         normalize(cameraSideVector);
+
+ 
+  
+
+        // PROJECTION MATRIX
+        projectionMatrix = perspective(radians(70.0f),            // field of view in degrees
+            800.0f / 600.0f,  // aspect ratio
+            0.01f, 100.0f);   // near and far (near > 0)
+        setProjectionMatrix(shaderProgram, projectionMatrix);
+  
+        // VIEW MATRIX
+        viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
+        setViewMatrix(shaderProgram, viewMatrix);
+
 
         // End frame
         glfwSwapBuffers(window);
