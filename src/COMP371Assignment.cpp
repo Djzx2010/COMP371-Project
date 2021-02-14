@@ -280,9 +280,10 @@ int main(int argc, char* argv[])
 	float cameraFastSpeed = 7 * cameraSpeed;
 	float cameraHorizontalAngle = 90.0f;
 	float cameraVerticalAngle = 0.0f;
+    float fov = 70.0f;
 
     // Set projection matrix for shader
-    mat4 projectionMatrix = perspective(radians(70.0f),            // field of view in degrees
+    mat4 projectionMatrix = perspective(radians(fov),            // field of view in degrees
         800.0f / 600.0f,  // aspect ratio
         0.01f, 100.0f);   // near and far (near > 0)
 
@@ -336,7 +337,7 @@ int main(int argc, char* argv[])
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
         // Cube drawn here
-        //glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
+        glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
 
         // Coordinates 
         // X-axis
@@ -358,11 +359,10 @@ int main(int argc, char* argv[])
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
-
         double mousePosX, mousePosY;
         glfwGetCursorPos(window, &mousePosX, &mousePosY);
   
-        // Camera tilt, pan  ZOOM MISSING
+        // Camera tilt, pan and zoom
         double dx = 0;
         double dy = 0;
  
@@ -372,11 +372,18 @@ int main(int argc, char* argv[])
         if (lastMouseMiddleState == GLFW_RELEASE && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
             dy = mousePosY - lastMousePosY;
         }
+        if (lastMouseLeftState == GLFW_RELEASE && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            fov += mousePosX - lastMousePosX;
+            if (fov <= 0) {
+                fov = 0.5f;
+            }
+            if (fov >= 180) {
+                fov = 180.0f;
+            }
+        }
    
-
         lastMousePosX = mousePosX;
         lastMousePosY = mousePosY;
-  
   
         // Convert to spherical coordinates
         const float cameraAngularSpeed = 30.0f;
@@ -398,7 +405,7 @@ int main(int argc, char* argv[])
         float phi = radians(cameraVerticalAngle);
 
         cameraLookAt = vec3(cosf(phi) * cosf(theta), sinf(phi), -cosf(phi) * sinf(theta));
-        vec3 cameraSideVector = glm::cross(cameraLookAt, vec3(0.0f, 1.0f, 0.0f));
+        vec3 cameraSideVector = cross(cameraLookAt, vec3(0.0f, 1.0f, 0.0f));
 
         normalize(cameraSideVector);
 
@@ -406,7 +413,7 @@ int main(int argc, char* argv[])
   
 
         // PROJECTION MATRIX
-        projectionMatrix = perspective(radians(70.0f),            // field of view in degrees
+        projectionMatrix = perspective(radians(fov),            // field of view in degrees
             800.0f / 600.0f,  // aspect ratio
             0.01f, 100.0f);   // near and far (near > 0)
         setProjectionMatrix(shaderProgram, projectionMatrix);
