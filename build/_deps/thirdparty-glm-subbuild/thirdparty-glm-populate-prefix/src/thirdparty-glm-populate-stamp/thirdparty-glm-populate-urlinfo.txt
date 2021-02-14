@@ -1,0 +1,3 @@
+repository='external project URL'
+module='C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/thirdparty/glm-0.9.9.8.zip'
+tag=''

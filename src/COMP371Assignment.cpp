@@ -166,7 +166,6 @@ int createCubeVertexArrayObject()
         vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f)
     };
 
-
     // Create a vertex array
     GLuint vertexArrayObject;
     glGenVertexArrays(1, &vertexArrayObject);
@@ -238,8 +237,8 @@ int main(int argc, char* argv[])
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    // Create Window and rendering context using GLFW, resolution is 800x600
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Comp371 - Project", NULL, NULL);
+    // Create Window and rendering context using GLFW, resolution is 1024x768
+    GLFWwindow* window = glfwCreateWindow(1024, 768, "Comp371 - Project", NULL, NULL);
     if (window == NULL)
     {
         std::cerr << "Failed to create GLFW window" << std::endl;
@@ -316,8 +315,8 @@ int main(int argc, char* argv[])
     mat4 axisWorldMatrix; // axis matrix
     mat4 gridWorldMatrix; // grid matrix
     mat4 model = mat4(1.0f); // identity matrix
-
     mat4 orientationMatrix = mat4(1.0f); // initialize orientation matrix
+
     vec2 currentOrientation(0.0f, 0.0f); // current orientation of matrix
     vec3 currentRotation(0.0f, 0.0f, 0.0f); // current rotation for rotation matrix
     vec3 currentScale(1.0f, 1.0f, 1.0f); // currentScale applied to scale Matrix
@@ -339,7 +338,7 @@ int main(int argc, char* argv[])
         // Cube drawn here
         glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
 
-        // Coordinates 
+        // Coordinates Matrix
         // X-axis
         axisWorldMatrix = translate(model, vec3(3.5f, 0.0f, 0.0f)) * scale(model, vec3(7.0f, 0.1f, 0.1f));
         setWorldMatrix(shaderProgram, axisWorldMatrix);
@@ -358,11 +357,27 @@ int main(int argc, char* argv[])
         glUniform3fv(colorLocation, 1, value_ptr(vec3(0.0, 0.0, 1.0)));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
+        // Draw Grid 128x128
+        int gridsize = 20;
+        for (int i = 0; i < gridsize; ++i)
+        {
+            for (int j = 0; j < gridsize; ++j)
+            {
+                gridWorldMatrix = translate(model, vec3(-gridsize/2 + i, 0.0f, 0.0f)) * scale(model, vec3(gridsize, 1.0f, 1.0f));
+                glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &gridWorldMatrix[0][0]);
+                glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
+                glDrawArrays(GL_TRIANGLES, 0, 36);
+            }
+        }
 
+        // Orientation Matrix
+        orientationMatrix = rotate(rotate(mat4(1.0f), currentOrientation.x, vec3(1.0f, 0.0f, 0.0f)), currentOrientation.y, vec3(0.0f, 1.0f, 0.0f));
+        setOrientationMatrix(shaderProgram, orientationMatrix);
+
+        // Camera tilt, pan and zoom
         double mousePosX, mousePosY;
         glfwGetCursorPos(window, &mousePosX, &mousePosY);
-  
-        // Camera tilt, pan and zoom
+
         double dx = 0;
         double dy = 0;
  
@@ -409,19 +424,69 @@ int main(int argc, char* argv[])
 
         normalize(cameraSideVector);
 
- 
-  
+        // WASD movement TO BE CHANGED
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) // move camera to the left
+        {
+            cameraPosition -= cameraSideVector* dt;
+        }
 
-        // PROJECTION MATRIX
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) // move camera to the right
+        {
+            cameraPosition += cameraSideVector* dt;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // move camera up
+        {
+            cameraPosition -= cameraLookAt * dt;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) // move camera down
+        {
+            cameraPosition += cameraLookAt  * dt;
+        }
+ 
+        // Orientation movement
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+            currentOrientation.x += radians(5.0f);
+        }
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+            currentOrientation.x -= radians(5.0f);
+        }
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            currentOrientation.y += radians(5.0f);
+        }
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+            currentOrientation.y -= radians(5.0f);
+        }
+        // reset orientation
+        if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
+        }
+
+        // Render types
+        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+        }
+        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
+        if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
+        }
+  
+        // Projection Matrix
         projectionMatrix = perspective(radians(fov),            // field of view in degrees
-            800.0f / 600.0f,  // aspect ratio
-            0.01f, 100.0f);   // near and far (near > 0)
+                                              800.0f / 600.0f,  // aspect ratio
+                                              0.01f, 100.0f);   // near and far (near > 0)
         setProjectionMatrix(shaderProgram, projectionMatrix);
   
-        // VIEW MATRIX
+        // View Matrix
         viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
         setViewMatrix(shaderProgram, viewMatrix);
-
 
         // End frame
         glfwSwapBuffers(window);

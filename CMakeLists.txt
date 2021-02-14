@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.11)
 
 project(COMP371Project)
 
@@ -6,8 +6,9 @@ include(ExternalProject)
 
 # Set install directory
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/dist CACHE PATH ${CMAKE_SOURCE_DIR}/dist FORCE)
+set(CMAKE_BUILD_TYPE "Debug")
 if(WIN32)
-    set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Debug;Release" FORCE)
+    set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "Debug" FORCE)
 endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -21,13 +22,11 @@ include(BuildGLM)
 # COMP371Assignment
 set(EXEC COMP371Proj)
 
-set(SRC src/COMP371Assignment.cpp)
+file(GLOB SRC src/*.cpp)
 
 add_executable(${EXEC} ${SRC})
 
-target_link_libraries(${EXEC} OpenGL::GL GLEW glfw glm)
-
-target_include_directories(${EXEC} PUBLIC include)
+target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm)
 
 list(APPEND BIN ${EXEC})
 # end COMP371Assignment

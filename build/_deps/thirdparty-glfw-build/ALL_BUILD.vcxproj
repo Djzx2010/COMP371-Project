@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{29F34E90-773C-3B92-BD4F-7B102DACC930}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-src\CMakeLists.txt">
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glfw-src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment" "-BC:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build" --check-stamp-file "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glfw-build/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.19\Modules\BasicConfigVersion-SameMajorVersion.cmake.in;C:\Program Files\CMake\share\cmake-3.19\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\CMakePackageConfigHelpers.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\CheckIncludeFile.c.in;C:\Program Files\CMake\share\cmake-3.19\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\FindDoxygen.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\GNUInstallDirs.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-3.19\Modules\WriteBasicConfigVersionFile.cmake;C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-src\src\glfw3.pc.in;C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-src\src\glfw3Config.cmake.in;C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-src\src\glfw_config.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\ZERO_CHECK.vcxproj">
+      <Project>{D66774F4-34B6-3B83-8913-93F6D30B9733}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\boing.vcxproj">
+      <Project>{96102BA7-BA90-3E83-8F94-CBD2FDA102C7}</Project>
+      <Name>boing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\clipboard.vcxproj">
+      <Project>{BE8B1A6C-5CB9-3DB0-881D-0944BF6B703F}</Project>
+      <Name>clipboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\cursor.vcxproj">
+      <Project>{F389A618-27F4-376A-B82E-E2F473FAC166}</Project>
+      <Name>cursor</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\empty.vcxproj">
+      <Project>{AF48628B-760B-3155-A1C4-4FC16A28D0D8}</Project>
+      <Name>empty</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\events.vcxproj">
+      <Project>{007D43BF-ADA7-3849-B20F-D176E6E44478}</Project>
+      <Name>events</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\gamma.vcxproj">
+      <Project>{35E1B464-E11A-3265-9BEB-1745AB3F1D06}</Project>
+      <Name>gamma</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\gears.vcxproj">
+      <Project>{815279CB-FD40-3749-A9E6-B6D82408D0D9}</Project>
+      <Name>gears</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\src\glfw.vcxproj">
+      <Project>{DE4FAE83-3968-37C8-AE78-20A26E4770BD}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\glfwinfo.vcxproj">
+      <Project>{3AC8C1F6-1DC5-3329-B0FF-D2544F832EE7}</Project>
+      <Name>glfwinfo</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\heightmap.vcxproj">
+      <Project>{262157FE-D2AA-3A97-A1CE-A61C6275BC0B}</Project>
+      <Name>heightmap</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\icon.vcxproj">
+      <Project>{46E98620-EAFF-3651-A69A-F48BEDBF2A25}</Project>
+      <Name>icon</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\iconify.vcxproj">
+      <Project>{28D318CD-1537-3D85-8221-CBDFD6BAFFF6}</Project>
+      <Name>iconify</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\inputlag.vcxproj">
+      <Project>{26B61094-E023-3E2F-AE31-543EFB46BDAA}</Project>
+      <Name>inputlag</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\joysticks.vcxproj">
+      <Project>{588E2C22-97BD-3CA7-AAC9-A82E784C1C4D}</Project>
+      <Name>joysticks</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\monitors.vcxproj">
+      <Project>{C2A08D1B-5D11-38DB-BD7B-645F6C749419}</Project>
+      <Name>monitors</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\msaa.vcxproj">
+      <Project>{25B6F2CB-C52C-3D38-824C-EA11C5581E87}</Project>
+      <Name>msaa</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\offscreen.vcxproj">
+      <Project>{671E807E-6744-37A9-AF4B-3F978CC62D9E}</Project>
+      <Name>offscreen</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\opacity.vcxproj">
+      <Project>{C6FCD2A7-D168-398B-9022-2EDB7ECEA1E1}</Project>
+      <Name>opacity</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\particles.vcxproj">
+      <Project>{84B7008F-042B-3F08-B901-CB4A5D1CA479}</Project>
+      <Name>particles</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\reopen.vcxproj">
+      <Project>{86E664C1-4548-32F0-8E75-5A18C956A2EA}</Project>
+      <Name>reopen</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\sharing.vcxproj">
+      <Project>{64E759C7-6E41-39FC-A9B0-5D3858B78433}</Project>
+      <Name>sharing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\simple.vcxproj">
+      <Project>{2A3217D5-21D0-3923-9787-FB29B23FC6C7}</Project>
+      <Name>simple</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\splitview.vcxproj">
+      <Project>{FE326A4C-9735-3EF1-A031-91BC196CDA6D}</Project>
+      <Name>splitview</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\tearing.vcxproj">
+      <Project>{6E6464EE-1C2B-3531-8138-B058ED3DADF4}</Project>
+      <Name>tearing</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\threads.vcxproj">
+      <Project>{EB5F58C6-7894-39AA-92E5-7353AF693CE5}</Project>
+      <Name>threads</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\timeout.vcxproj">
+      <Project>{8EE69AD7-81D9-3328-9541-EA7BFFD74611}</Project>
+      <Name>timeout</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\title.vcxproj">
+      <Project>{3F1515DE-CBDB-3A50-8A81-101524DD0DB9}</Project>
+      <Name>title</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\triangle-vulkan.vcxproj">
+      <Project>{35D02894-B694-3371-B36B-8C586E7694D5}</Project>
+      <Name>triangle-vulkan</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\examples\wave.vcxproj">
+      <Project>{A581D0A2-DDB1-3739-9FD8-95B905C9B8A5}</Project>
+      <Name>wave</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glfw-build\tests\windows.vcxproj">
+      <Project>{0BEE5A05-1E05-3F05-9057-76B414A36D95}</Project>
+      <Name>windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

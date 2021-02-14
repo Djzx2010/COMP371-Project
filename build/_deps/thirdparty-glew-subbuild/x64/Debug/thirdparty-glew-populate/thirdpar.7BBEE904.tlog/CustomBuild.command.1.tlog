@@ -1,0 +1,150 @@
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\5C2F880B86D296B8C1B621CB513113E0\THIRDPARTY-GLEW-POPULATE-MKDIR.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-src"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-build"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/tmp"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug/thirdparty-glew-populate-mkdir"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\5C2F880B86D296B8C1B621CB513113E0\THIRDPARTY-GLEW-POPULATE-DOWNLOAD.RULE
+setlocal
+cd "C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/verify-thirdparty-glew-populate.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/extract-thirdparty-glew-populate.cmake"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug/thirdparty-glew-populate-download"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\5C2F880B86D296B8C1B621CB513113E0\THIRDPARTY-GLEW-POPULATE-PATCH.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug/thirdparty-glew-populate-patch"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\5C2F880B86D296B8C1B621CB513113E0\THIRDPARTY-GLEW-POPULATE-CONFIGURE.RULE
+setlocal
+cd "C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glew-build"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug/thirdparty-glew-populate-configure"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\5C2F880B86D296B8C1B621CB513113E0\THIRDPARTY-GLEW-POPULATE-BUILD.RULE
+setlocal
+cd "C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glew-build"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug/thirdparty-glew-populate-build"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\5C2F880B86D296B8C1B621CB513113E0\THIRDPARTY-GLEW-POPULATE-INSTALL.RULE
+setlocal
+cd "C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glew-build"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug/thirdparty-glew-populate-install"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\5C2F880B86D296B8C1B621CB513113E0\THIRDPARTY-GLEW-POPULATE-TEST.RULE
+setlocal
+cd "C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glew-build"
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug/thirdparty-glew-populate-test"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\CE3B12106693396FAD4945C223499FAE\THIRDPARTY-GLEW-POPULATE-COMPLETE.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/CMakeFiles/Debug"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/CMakeFiles/Debug/thirdparty-glew-populate-complete"
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/thirdparty-glew-populate-prefix/src/thirdparty-glew-populate-stamp/Debug/thirdparty-glew-populate-done"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKEFILES\D80AA0148F531D053CE170BAEE05F4A8\THIRDPARTY-GLEW-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\STRIX\DESKTOP\SCHOOL\UNIVERSITY\WINTER 2021\COMP 371 - COMPUTER GRAPHICS\ASSIGNMENT\BUILD\_DEPS\THIRDPARTY-GLEW-SUBBUILD\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild" "-BC:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild" --check-stamp-file "C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-subbuild/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

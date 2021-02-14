@@ -14,11 +14,14 @@
 # EXTERNAL cache entries
 ########################
 
+//utilities
+BUILD_UTILS:BOOL=ON
+
 //Path to a program.
 CMAKE_AR:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.28.29333/bin/Hostx64/x64/lib.exe
 
-//Debug;Release
-CMAKE_CONFIGURATION_TYPES:STRING=Debug;Release
+//Debug
+CMAKE_CONFIGURATION_TYPES:STRING=Debug
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=/DWIN32 /D_WINDOWS /W3 /GR /EHsc
@@ -71,9 +74,57 @@ CMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=/INCREMENTAL:NO
 //Flags used by the linker during RELWITHDEBINFO builds.
 CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=/debug /INCREMENTAL
 
+//User executables (bin)
+CMAKE_INSTALL_BINDIR:PATH=bin
+
+//Read-only architecture-independent data (DATAROOTDIR)
+CMAKE_INSTALL_DATADIR:PATH=
+
+//Read-only architecture-independent data root (share)
+CMAKE_INSTALL_DATAROOTDIR:PATH=share
+
+//Documentation root (DATAROOTDIR/doc/PROJECT_NAME)
+CMAKE_INSTALL_DOCDIR:PATH=
+
+//C header files (include)
+CMAKE_INSTALL_INCLUDEDIR:PATH=include
+
+//Info documentation (DATAROOTDIR/info)
+CMAKE_INSTALL_INFODIR:PATH=
+
+//Object code libraries (lib)
+CMAKE_INSTALL_LIBDIR:PATH=lib
+
+//Program executables (libexec)
+CMAKE_INSTALL_LIBEXECDIR:PATH=libexec
+
+//Locale-dependent data (DATAROOTDIR/locale)
+CMAKE_INSTALL_LOCALEDIR:PATH=
+
+//Modifiable single-machine data (var)
+CMAKE_INSTALL_LOCALSTATEDIR:PATH=var
+
+//Man documentation (DATAROOTDIR/man)
+CMAKE_INSTALL_MANDIR:PATH=
+
+//C header files for non-gcc (/usr/include)
+CMAKE_INSTALL_OLDINCLUDEDIR:PATH=/usr/include
+
 //C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371
 // - Computer Graphics/Assignment/dist
 CMAKE_INSTALL_PREFIX:PATH=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/dist
+
+//Run-time variable data (LOCALSTATEDIR/run)
+CMAKE_INSTALL_RUNSTATEDIR:PATH=
+
+//System admin executables (sbin)
+CMAKE_INSTALL_SBINDIR:PATH=sbin
+
+//Modifiable architecture-independent data (com)
+CMAKE_INSTALL_SHAREDSTATEDIR:PATH=com
+
+//Read-only single-machine data (etc)
+CMAKE_INSTALL_SYSCONFDIR:PATH=etc
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.28.29333/bin/Hostx64/x64/link.exe
@@ -109,6 +160,21 @@ CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
 CMAKE_PROJECT_NAME:STATIC=COMP371Project
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION:STATIC=3.3.2
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=3
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MINOR:STATIC=3
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_PATCH:STATIC=2
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_TWEAK:STATIC=
 
 //RC compiler
 CMAKE_RC_COMPILER:FILEPATH=rc
@@ -187,17 +253,107 @@ COMP371Project_BINARY_DIR:STATIC=C:/Users/STRIX/Desktop/School/University/Winter
 //Value Computed by CMake
 COMP371Project_SOURCE_DIR:STATIC=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment
 
+//Doxygen documentation generation tool (http://www.doxygen.org)
+DOXYGEN_EXECUTABLE:FILEPATH=DOXYGEN_EXECUTABLE-NOTFOUND
+
+//Directory under which to collect all populated content
+FETCHCONTENT_BASE_DIR:PATH=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps
+
+//Disables all attempts to download or update content and assumes
+// source dirs already exist
+FETCHCONTENT_FULLY_DISCONNECTED:BOOL=OFF
+
+//Enables QUIET option for all content population
+FETCHCONTENT_QUIET:BOOL=ON
+
+//When not empty, overrides where to find pre-populated content
+// for thirdparty-glew
+FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLEW:PATH=
+
+//When not empty, overrides where to find pre-populated content
+// for thirdparty-glfw
+FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLFW:PATH=
+
+//When not empty, overrides where to find pre-populated content
+// for thirdparty-glm
+FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLM:PATH=
+
+//Enables UPDATE_DISCONNECTED behavior for all content population
+FETCHCONTENT_UPDATES_DISCONNECTED:BOOL=OFF
+
+//Enables UPDATE_DISCONNECTED behavior just for population of thirdparty-glew
+FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLEW:BOOL=OFF
+
+//Enables UPDATE_DISCONNECTED behavior just for population of thirdparty-glfw
+FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLFW:BOOL=OFF
+
+//Enables UPDATE_DISCONNECTED behavior just for population of thirdparty-glm
+FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLM:BOOL=OFF
+
+//OSMesa mode
+GLEW_OSMESA:BOOL=OFF
+
+//Regal mode
+GLEW_REGAL:BOOL=OFF
+
+//Value Computed by CMake
+GLFW_BINARY_DIR:STATIC=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glfw-build
+
+//Build the GLFW documentation
+GLFW_BUILD_DOCS:BOOL=ON
+
+//Build the GLFW example programs
+GLFW_BUILD_EXAMPLES:BOOL=ON
+
+//Build the GLFW test programs
+GLFW_BUILD_TESTS:BOOL=ON
+
+//Generate installation target
+GLFW_INSTALL:BOOL=ON
+
+//Value Computed by CMake
+GLFW_SOURCE_DIR:STATIC=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glfw-src
+
+//Force use of high-performance GPU on hybrid systems
+GLFW_USE_HYBRID_HPG:BOOL=OFF
+
+//Assume the Vulkan loader is linked with the application
+GLFW_VULKAN_STATIC:BOOL=OFF
+
 //OpenGL library for win32
 OPENGL_gl_LIBRARY:STRING=opengl32
 
 //GLU library for win32
 OPENGL_glu_LIBRARY:STRING=glu32
 
+//Use MSVC runtime library DLL
+USE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=ON
+
+//Value Computed by CMake
+glew_BINARY_DIR:STATIC=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-build
+
+//Dependencies for the target
+glew_LIB_DEPENDS:STATIC=general;-BASE:0x62AA0000;general;-nodefaultlib;general;-noentry;general;opengl32;general;glu32;
+
+//Value Computed by CMake
+glew_SOURCE_DIR:STATIC=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glew-src/build/cmake
+
+//Dependencies for the target
+glew_s_LIB_DEPENDS:STATIC=general;opengl32;general;glu32;
+
+//Value Computed by CMake
+glm_BINARY_DIR:STATIC=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glm-build
+
+//Value Computed by CMake
+glm_SOURCE_DIR:STATIC=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glm-src
+
 
 ########################
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: BUILD_UTILS
+BUILD_UTILS-ADVANCED:INTERNAL=1
 //This is the directory where this CMakeCache.txt was created
 CMAKE_CACHEFILE_DIR:INTERNAL=c:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build
 //Major version of cmake used to create the current loaded cache
@@ -258,9 +414,43 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Have include pthread.h
+CMAKE_HAVE_PTHREAD_H:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment
+//ADVANCED property for variable: CMAKE_INSTALL_BINDIR
+CMAKE_INSTALL_BINDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_DATADIR
+CMAKE_INSTALL_DATADIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_DATAROOTDIR
+CMAKE_INSTALL_DATAROOTDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_DOCDIR
+CMAKE_INSTALL_DOCDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_INCLUDEDIR
+CMAKE_INSTALL_INCLUDEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_INFODIR
+CMAKE_INSTALL_INFODIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_LIBDIR
+CMAKE_INSTALL_LIBDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_LIBEXECDIR
+CMAKE_INSTALL_LIBEXECDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_LOCALEDIR
+CMAKE_INSTALL_LOCALEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_LOCALSTATEDIR
+CMAKE_INSTALL_LOCALSTATEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_MANDIR
+CMAKE_INSTALL_MANDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_OLDINCLUDEDIR
+CMAKE_INSTALL_OLDINCLUDEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_RUNSTATEDIR
+CMAKE_INSTALL_RUNSTATEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_SBINDIR
+CMAKE_INSTALL_SBINDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_SHAREDSTATEDIR
+CMAKE_INSTALL_SHAREDSTATEDIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_INSTALL_SYSCONFDIR
+CMAKE_INSTALL_SYSCONFDIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER
 CMAKE_LINKER-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS
@@ -276,7 +466,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=8
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_RC_COMPILER
@@ -320,10 +510,54 @@ CMAKE_STATIC_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: DOXYGEN_EXECUTABLE
+DOXYGEN_EXECUTABLE-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_BASE_DIR
+FETCHCONTENT_BASE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_FULLY_DISCONNECTED
+FETCHCONTENT_FULLY_DISCONNECTED-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_QUIET
+FETCHCONTENT_QUIET-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLEW
+FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLEW-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLFW
+FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLFW-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLM
+FETCHCONTENT_SOURCE_DIR_THIRDPARTY-GLM-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_UPDATES_DISCONNECTED
+FETCHCONTENT_UPDATES_DISCONNECTED-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLEW
+FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLEW-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLFW
+FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLFW-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLM
+FETCHCONTENT_UPDATES_DISCONNECTED_THIRDPARTY-GLM-ADVANCED:INTERNAL=1
 //Details about finding OpenGL
-FIND_PACKAGE_MESSAGE_DETAILS_OpenGL:INTERNAL=[opengl32][cfound components: OpenGL ][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_OpenGL:INTERNAL=[opengl32][c ][v()]
+//Details about finding Threads
+FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
+//ADVANCED property for variable: GLEW_OSMESA
+GLEW_OSMESA-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLEW_REGAL
+GLEW_REGAL-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLFW_BUILD_DOCS
+GLFW_BUILD_DOCS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLFW_BUILD_EXAMPLES
+GLFW_BUILD_EXAMPLES-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLFW_BUILD_TESTS
+GLFW_BUILD_TESTS-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLFW_INSTALL
+GLFW_INSTALL-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLFW_USE_HYBRID_HPG
+GLFW_USE_HYBRID_HPG-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: GLFW_VULKAN_STATIC
+GLFW_VULKAN_STATIC-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_gl_LIBRARY
 OPENGL_gl_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: OPENGL_glu_LIBRARY
 OPENGL_glu_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: USE_MSVC_RUNTIME_LIBRARY_DLL
+USE_MSVC_RUNTIME_LIBRARY_DLL-ADVANCED:INTERNAL=1
+//CMAKE_INSTALL_PREFIX during last run
+_GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/dist
 

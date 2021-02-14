@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\STRIX\Desktop\School\University\Winter 2021\COMP 371 - Computer Graphics\Assignment\build\_deps\thirdparty-glm-subbuild\CMakeFiles\56fc6d8b78a8e7f98560a82f545af070\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C4D18399-F277-3F33-8542-F544B79B75D7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

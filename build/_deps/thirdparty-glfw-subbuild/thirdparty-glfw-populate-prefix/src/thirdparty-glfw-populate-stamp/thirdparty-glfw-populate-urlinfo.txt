@@ -1,0 +1,3 @@
+repository='external project URL'
+module='C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/thirdparty/glfw-3.3.2.zip'
+tag=''

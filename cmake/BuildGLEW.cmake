@@ -1,34 +1,45 @@
 # Build GLEW
-ExternalProject_Add(project_glew
-    PREFIX ${CMAKE_BINARY_DIR}/thirdparty/build/glew
+include(FetchContent)
+
+mark_as_advanced(FETCHCONTENT_QUIET)
+mark_as_advanced(FETCHCONTENT_FULLY_DISCONNECTED)
+mark_as_advanced(FETCHCONTENT_UPDATES_DISCONNECTED)
+
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON) # speed up config
+
+set(THIRDPARTY thirdparty-glew)
+
+FetchContent_Declare(${THIRDPARTY}
     URL ${CMAKE_SOURCE_DIR}/thirdparty/glew-2.1.0.zip
-    SOURCE_SUBDIR build/cmake
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/thirdparty
-    INSTALL_DIR ${CMAKE_BINARY_DIR}/thirdparty
+)
+
+mark_as_advanced(FETCHCONTENT_BASE_DIR)
+
+FetchContent_GetProperties(${THIRDPARTY})
+
+string(TOUPPER ${THIRDPARTY} UTHIRDPARTY)
+
+mark_as_advanced(FETCHCONTENT_SOURCE_DIR_${UTHIRDPARTY})
+mark_as_advanced(FETCHCONTENT_UPDATES_DISCONNECTED_${UTHIRDPARTY})
+
+if(NOT ${THIRDPARTY}_POPULATED)
+    FetchContent_Populate(${THIRDPARTY})
+
+    add_subdirectory(
+        ${${THIRDPARTY}_SOURCE_DIR}/build/cmake
+        ${${THIRDPARTY}_BINARY_DIR}
+        EXCLUDE_FROM_ALL
     )
-
-ExternalProject_Get_Property(project_glew install_dir)
-
-# Create include directory for GLFW in build directory
-file(MAKE_DIRECTORY ${install_dir}/include)
-
-# Add imported GLEW library
-add_library(GLEW STATIC IMPORTED)
-
-# Set GLEW library properties for linking
-if(WIN32)
-set_target_properties(GLEW PROPERTIES
-    IMPORTED_LOCATION ${install_dir}/lib/libglew32d.lib
-    INTERFACE_INCLUDE_DIRECTORIES ${install_dir}/include
-)
-else()
-set_target_properties(GLEW PROPERTIES
-    IMPORTED_LOCATION ${install_dir}/lib/libGLEW.a
-    INTERFACE_INCLUDE_DIRECTORIES ${install_dir}/include
-    INTERFACE_LINK_LIBRARIES "/usr/lib/libGL.so;/usr/lib/libGLU.so"
-)
+    target_include_directories(glew_s INTERFACE $<BUILD_INTERFACE:${${THIRDPARTY}_SOURCE_DIR}/include>)
 endif()
 
-# Set external GLFW project as dependency on imported target
-add_dependencies(GLEW project_glew)
+# hide GLEW options
+mark_as_advanced(BUILD_UTILS)
+mark_as_advanced(BUILD_SHARED_LIBS)
+mark_as_advanced(GLEW_REGAL)
+mark_as_advanced(GLEW_OSMESA)
+mark_as_advanced(BUILD_FRAMEWORK)
+
+set(BUILD_UTILS OFF)
+set(BUILD_SHARED_LIBS OFF)
 
