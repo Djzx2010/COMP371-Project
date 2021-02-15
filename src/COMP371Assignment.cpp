@@ -481,6 +481,49 @@ int main(int argc, char* argv[])
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
+        //ShearingMatrices
+        mat4 shearingMatrixA = { 1,0,0,0,
+                               0.3,1,0,0,
+                                 0,0,1,0,
+                                 0,0,0,1 };
+
+        mat4 shearingMatrixB = { 1,0,0,0,
+                              -0.3,1,0,0,
+                                 0,0,1,0,
+                                 0,0,0,1 };
+
+        // Draw A
+        GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
+
+        mat4 middle = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f)) * scale(mat4(1.0f), vec3(1.5f, 1.0f, 1.0f));
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &middle[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        mat4 left = translate(mat4(1.0f), vec3(-1.0f, 2.0f, 0.0f)) * shearingMatrixA * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &left[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        mat4 right = translate(mat4(1.0f), vec3(1.0f, 2.0f, 0.0f)) * shearingMatrixB * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &right[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Draw M
+        mat4 first = translate(mat4(1.0f), vec3(5.0f, 2.0f, 0.0f)) * shearingMatrixA * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &first[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        mat4 second = translate(mat4(1.0f), vec3(6.5f, 2.0f, 0.0f)) * shearingMatrixB * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &second[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        mat4 third = translate(mat4(1.0f), vec3(8.0f, 2.0f, 0.0f)) * shearingMatrixA * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &third[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        mat4 fourth = translate(mat4(1.0f), vec3(9.5f, 2.0f, 0.0f)) * shearingMatrixB * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &fourth[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
         // Orientation Matrix
         orientationMatrix = rotate(rotate(mat4(1.0f), currentOrientation.x, vec3(1.0f, 0.0f, 0.0f)), currentOrientation.y, vec3(0.0f, 1.0f, 0.0f));
         setOrientationMatrix(shaderProgram, orientationMatrix);
