@@ -361,7 +361,7 @@ int main(int argc, char* argv[])
         {
             for (int j = 0; j < gridsize; ++j)
             {
-                gridWorldMatrix = translate(model, vec3(0.0f, 0.0f, -gridsize/2 + j)) * scale(model, currentScale);
+                gridWorldMatrix = translate(model, vec3(0.0f, 0.0f, -gridsize/2 + j)) * scale(model, currentScale); // currentScale is there for testing purposes
                 glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &gridWorldMatrix[0][0]);
                 glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
                 glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -473,6 +473,11 @@ int main(int argc, char* argv[])
         }
         if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) // Scale down
         {
+            if (currentScale.x <= 0 && currentScale.y <= 0 && currentScale.z <= 0) {
+                currentScale.x = 0.0f;
+                currentScale.y = 0.0f;
+                currentScale.z = 0.0f;
+            }
             currentScale.x -= 0.1f;
             currentScale.y -= 0.1f;
             currentScale.z -= 0.1f;
@@ -487,10 +492,11 @@ int main(int argc, char* argv[])
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
-        if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
         {
-            glPolygonMode(GL_FRONT_AND_BACK, GL_TRIANGLES);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
+       
   
         // Projection Matrix
         projectionMatrix = perspective(radians(fov),            // field of view in degrees
