@@ -372,115 +372,120 @@ int main(int argc, char* argv[])
         mat4 ScaleMatrix = scale(mat4(1.0f), currentScale);
 
         // Draw letters and numbers
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 0.0, 0.0)));
 
         //Group matrix for hierachical modeling
         mat4 groupMatrix = mat4(1.0f);
        //vertical part of the "L" letter
-        mat4 LPartMatrix = translate(mat4(1.0f), vec3(-15.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 14.0f, 2.0f));
+        mat4 LPartMatrix = translate(mat4(1.0f), vec3(-3.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
         mat4 LWorldMatrix = ScaleMatrix * groupMatrix * LPartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &LWorldMatrix[0][0]);
-        glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 0.0, 0.0)));
+        
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //base of the "L" letter
-        LPartMatrix = translate(mat4(1.0f), vec3(-12.0f, -1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 7.0f, 2.0f));
+        LPartMatrix = translate(mat4(1.0f), vec3(0.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 5.0f, 2.0f));
         LWorldMatrix = ScaleMatrix * groupMatrix * LPartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &LWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //vertical part of the "T" letter
-        mat4 TPartMatrix = translate(mat4(1.0f), vec3(15.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 12.0f, 2.0f));
+        mat4 TPartMatrix = translate(mat4(1.0f), vec3(0.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
         mat4 TWorldMatrix = ScaleMatrix * groupMatrix * TPartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &TWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //horizontal part of the "T" letter
-        TPartMatrix = translate(mat4(1.0f), vec3(15.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 15.0f, 2.0f));
+        TPartMatrix = translate(mat4(1.0f), vec3(0.0f, 10.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
         TWorldMatrix = ScaleMatrix * groupMatrix * TPartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &TWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        //Draw number 2
-        //Redefine the group matrix
-        groupMatrix = rotate(mat4(1.0f), radians(180.0f), vec3(0.0f, 1.0f, 0.0f));
-        //first vertical of 2
-        mat4 FivePartMatrix = translate(mat4(1.0f), vec3(30.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.0f, 2.0f));
+        
+        //Draw numeber 5
+
+        //Redefine the scale matrix beacause number 5 is too big
+        ScaleMatrix = scale(mat4(1.0f), currentScale - vec3(0.25f, 0.25f, 0.25f));
+
+        //first vertical of 5
+        mat4 FivePartMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.0f, 2.0f));
         mat4 FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        //bottom horizontal line of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 0.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //second vertical of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(38.0f, 4.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //second horizontal line of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 8.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //third vertical line of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(30.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //last horizontal line of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
-        //This part is to draw number 5
-        groupMatrix = mat4(1.0f);
-
-        //first vertical of 5
-        FivePartMatrix = translate(mat4(1.0f), vec3(30.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
         //bottom horizontal line of 5
-        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 0.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //second vertical of 5
 
-        FivePartMatrix = translate(mat4(1.0f), vec3(38.0f, 4.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(8.0f, 4.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //second horizontal line of 5
 
-        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 8.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 8.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //third vertical line of 5
-        FivePartMatrix = translate(mat4(1.0f), vec3(30.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(0.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //last horizontal line of 5
-        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
+        //draw number 2, basically using the code to draw number 5 but rotate it to become 2
+        //redefine the group matrix
+        groupMatrix = rotate(mat4(1.0f), radians(180.0f), vec3(0.0f, 1.0f, 0.0f));
+
+        //first vertical part on the left of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //bottom horizontal line of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //second vertical part on the right of 2
+
+        FivePartMatrix = translate(mat4(1.0f), vec3(8.0f, 4.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //second horizontal line of 2
+
+        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 8.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //third vertical line  on the left of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(0.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //last horizontal line of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
         //ShearingMatrices
         mat4 shearingMatrixA = { 1,0,0,0,
                                0.3,1,0,0,
