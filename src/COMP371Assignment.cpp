@@ -537,24 +537,27 @@ int main(int argc, char* argv[])
         normalize(cameraSideVector);
 
         // WASD movement TO BE CHANGED
+        bool fastCam = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
+        float currentCameraSpeed = (fastCam) ? cameraFastSpeed : cameraSpeed;
+	    
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) // move camera to the left
         {
-            cameraPosition -= cameraSideVector* dt;
+            cameraPosition -= cameraSideVector * currentCameraSpeed * dt;
         }
 
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) // move camera to the right
         {
-            cameraPosition += cameraSideVector* dt;
+            cameraPosition += cameraSideVector * currentCameraSpeed * dt;
         }
 
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // move camera up
         {
-            cameraPosition -= cameraLookAt * dt;
+            cameraPosition -= cameraLookAt * currentCameraSpeed * dt;
         }
 
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) // move camera down
         {
-            cameraPosition += cameraLookAt  * dt;
+            cameraPosition += cameraLookAt * currentCameraSpeed * dt;
         }
  
         // Orientation controls
