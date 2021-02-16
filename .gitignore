@@ -6,6 +6,7 @@
 *.ind
 *.log
 *.out
+build/
 .DS_Store
 doc/report/project-report.pdf
 *.tps
