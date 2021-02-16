@@ -568,7 +568,73 @@ int main(int argc, char* argv[])
 
         //Drawing our digits
         //TO DO INSERT DRAWING OF GROUP 1
-      
+        //Section for digit 4 (part of group 2)--------------------
+        //Right part of 4 
+        WorldMatrix = GroupMatrix * fourRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Horizontal part of 4
+        WorldMatrix = GroupMatrix * fourHorizontalMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of 4
+        WorldMatrix = GroupMatrix * fourLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for digit 3 (part of group 2)----------------------
+        //Right part of three
+        WorldMatrix = GroupMatrix * threeRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Top part of 3
+        WorldMatrix = GroupMatrix * threeTopMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Mid part of 3
+        WorldMatrix = GroupMatrix * threeMidMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of 3
+        WorldMatrix = GroupMatrix * threeBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+        //Section for letter S (part of group 2)-------------------------
+        //Right part of S
+        WorldMatrix = GroupMatrix * sRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Top part of S
+        WorldMatrix = GroupMatrix * sTopMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Mid part of S
+        WorldMatrix = GroupMatrix * sMidMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of S
+        WorldMatrix = GroupMatrix * sBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of S
+        WorldMatrix = GroupMatrix * sLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for letter L (part of group 2)----------------------------
+        //Left part of L
+        WorldMatrix = GroupMatrix * lLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of L
+        WorldMatrix = GroupMatrix * lBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
         //Section for second group (position 2, behind left)---------------------------------------------------------------------------------------
         //Samuel Tardif ID : 40051573
