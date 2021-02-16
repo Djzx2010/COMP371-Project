@@ -536,7 +536,71 @@ int main(int argc, char* argv[])
     float fourZ = 0;
     float fourY = 0;
 
-    //TO DO -- Models for group 4 here
+    //MODELS FOR GROUP FOUR
+    // 2 model (group 4)
+    //bottom part of 2
+    mat4 bottom2TMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, 0.0f));
+    mat4 bottom2SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 bottom2Matrix = firstDigitOffsetMatrix * bottom2TMatrix * bottom2SMatrix;
+
+    //middle part of 2
+    mat4 middle2TMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f));
+    mat4 middle2SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 middle2Matrix = firstDigitOffsetMatrix * middle2TMatrix * middle2SMatrix;
+
+    //top part of 2
+    mat4 top2TMatrix = translate(mat4(1.0f), vec3(0.0f, 4.0f, 0.0f));
+    mat4 top2SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 top2Matrix = firstDigitOffsetMatrix * top2TMatrix * top2SMatrix;
+
+    //left part of 2
+    mat4 left2TMatrix = translate(mat4(1.0f), vec3(-1.0f, 1.5f, 0.0f));
+    mat4 left2SMatrix = scale(mat4(1.0f), vec3(1.0f, 2.0f, 1.0f));
+    mat4 left2Matrix = firstDigitOffsetMatrix * left2TMatrix * left2SMatrix;
+
+    //right part of 2
+    mat4 right2TMatrix = translate(mat4(1.0f), vec3(1.0f, 3.5f, 0.0f));
+    mat4 right2SMatrix = scale(mat4(1.0f), vec3(1.0f, 2.0f, 1.0f));
+    mat4 right2Matrix = firstDigitOffsetMatrix * right2TMatrix * right2SMatrix;
+
+    // 9 model (group 4)
+    //middle part of 9
+    mat4 middle9TMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f));
+    mat4 middle9SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 middle9Matrix = secondDigitOffsetMatrix * middle9TMatrix * middle9SMatrix;
+
+    //top part of 9
+    mat4 top9TMatrix = translate(mat4(1.0f), vec3(0.0f, 4.0f, 0.0f));
+    mat4 top9SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 top9Matrix = secondDigitOffsetMatrix * top9TMatrix * top9SMatrix;
+
+    //left part of 9
+    mat4 left9TMatrix = translate(mat4(1.0f), vec3(-1.0f, 3.5f, 0.0f));
+    mat4 left9SMatrix = scale(mat4(1.0f), vec3(1.0f, 2.0f, 1.0f));
+    mat4 left9Matrix = secondDigitOffsetMatrix * left9TMatrix * left9SMatrix;
+
+    //right part of 9
+    mat4 right9TMatrix = translate(mat4(1.0f), vec3(1.0f, 2.0f, 0.0f));
+    mat4 right9SMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 right9Matrix = secondDigitOffsetMatrix * right9TMatrix * right9SMatrix;
+
+    //A model (group 4)
+    //Left part of A
+    mat4 ALeftTMatrix = translate(mat4(1.0f),vec3(-0.9f, 2.0f, 0.0f));
+    mat4 ALeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 ALeftMatrix  = thirdDigitOffsetMatrix * ALeftTMatrix * shearingMatrixA * ALeftSMatrix;
+
+    //Right part of A
+    mat4 ARightTMatrix = translate(mat4(1.0f), vec3(0.9f, 2.0f, 0.0f));
+    mat4 ARightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 ARightMatrix  = thirdDigitOffsetMatrix * ARightTMatrix * shearingMatrixB * ARightSMatrix;
+
+    //Middle part of A
+    mat4 AMiddleTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f));
+    mat4 AMiddleSMatrix = scale(mat4(1.0f), vec3(2.0f, 1.0f, 1.0f));
+    mat4 AMiddleMatrix  = thirdDigitOffsetMatrix * AMiddleTMatrix * AMiddleSMatrix;
+
+    //M model shared with group 3, including digit offset matrix
 
     //Group 5 ----------------------------------------------------------------------------------------------
     //Initializing fifth group matrices (Position 5)
@@ -868,7 +932,7 @@ int main(int argc, char* argv[])
         glDrawArrays(GL_TRIANGLES, 0, 36);
         
         //Section for fourth group (position 4, front right)---------------------------------------------------------------------------------------
-        //
+        //Name: Adam Richard ID: 27059329
         //Checking if our group needs to be modified
         GroupScaleMatrix = scale(mat4(1.0f), vec3(fourScale, fourScale, fourScale));
         GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(fourRotation), vec3(0.0f, 1.0f, 0.0f));
@@ -877,7 +941,77 @@ int main(int argc, char* argv[])
         GroupMatrix = GroupTMatrix * fourthGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         //Drawing our digits
-        //TO DO PUT DIGITS GROUP 4 HERE
+        //Section for digit 2 (group 4)
+        //bottom part of 2
+        WorldMatrix = GroupMatrix * bottom2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //middle part of 2
+        WorldMatrix = GroupMatrix * middle2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //top part of 2
+        WorldMatrix = GroupMatrix * top2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //left part of 2
+        WorldMatrix = GroupMatrix * left2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //right part of 2
+        WorldMatrix = GroupMatrix * right2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for digit 9 (group 4)
+        //middle part of 9
+        WorldMatrix = GroupMatrix * middle9Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //top part of 9
+        WorldMatrix = GroupMatrix * top9Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //left part of 9
+        WorldMatrix = GroupMatrix * left9Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //right part of 9
+        WorldMatrix = GroupMatrix * right9Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for Letter A (group 4)
+        //Draw Left part of A
+        WorldMatrix = GroupMatrix * ALeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw Right part of A
+        WorldMatrix = GroupMatrix * ARightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw Middle part of A
+        WorldMatrix = GroupMatrix * AMiddleMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for Letter M (group 4)
+        //Draw left part of M
+        WorldMatrix = GroupMatrix * MLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw the middle left of M
+        WorldMatrix = GroupMatrix * MMiddleLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw middle right of M
+        WorldMatrix = GroupMatrix * MMiddleRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw right of M
+        WorldMatrix = GroupMatrix * MRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Section for fifth group (position 4, front left)---------------------------------------------------------------------------------------
         //
