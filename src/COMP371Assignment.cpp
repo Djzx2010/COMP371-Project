@@ -1,4 +1,15 @@
+/*Controls
+P,Q,E Change view mode for polygons
+WASD Camera mouvement
+Mouse-Camera Orientation
+1-5 Select preset cameras and selected model
+U,J Scale Up and down
+I,K Rotate selected object
+O,L Move selected object up and down
+*/
+
 #include <iostream>
+#include <math.h>
 
 
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
@@ -269,20 +280,20 @@ int main(int argc, char* argv[])
     GLuint colorLocation = glGetUniformLocation(shaderProgram, "objectColor");
 
     // INITIAL Camera parameters for view transform
-	vec3 cameraPosition(0.0f, 5.0f, 20.0f);
-	vec3 cameraLookAt(0.0f, 0.0f, 0.0f);
-	vec3 cameraUp(0.0f, 1.0f, 0.0f);
-	// Other camera parameters
-	float cameraSpeed = 1.0f;
-	float cameraFastSpeed = 7 * cameraSpeed;
-	float cameraHorizontalAngle = 90.0f;
-	float cameraVerticalAngle = 0.0f;
+    vec3 cameraPosition(0.0f, 5.0f, 20.0f);
+    vec3 cameraLookAt(0.0f, 0.0f, 0.0f);
+    vec3 cameraUp(0.0f, 1.0f, 0.0f);
+    // Other camera parameters
+    float cameraSpeed = 15.0f;
+    float cameraFastSpeed = 7 * cameraSpeed;
+    float cameraHorizontalAngle = 90.0f;
+    float cameraVerticalAngle = 0.0f;
     float fov = 70.0f;
 
     // Set projection matrix for shader
     mat4 projectionMatrix = perspective(radians(fov),            // field of view in degrees
-                                               800.0f / 600.0f,  // aspect ratio
-                                               0.01f, 100.0f);   // near and far (near > 0)
+        800.0f / 600.0f,  // aspect ratio
+        0.01f, 100.0f);   // near and far (near > 0)
 
     // Set initial view matrix
     mat4 viewMatrix = lookAt(cameraPosition,  // eye
@@ -309,17 +320,184 @@ int main(int argc, char* argv[])
     // Enable Depth Test
     glEnable(GL_DEPTH_TEST);
 
-    // Initialize Matrix
+    //END OF TEMPLATE HERE-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    //Initializing a vallue for current position (1-5)Setting default to 1
+    int position = 1;
+
+    // Initialize Matrices
     mat4 model = mat4(1.0f); // identity matrix
-    mat4 axisWorldMatrix; // axis matrix
-    mat4 gridWorldMatrix; // grid matrix
+    mat4 WorldMatrix; // Matrix used to create objects
     mat4 orientationMatrix = mat4(1.0f); // initialize orientation matrix
-    mat4 scaleMatrix = mat4(1.0f); // scale matrix
 
+    //Predefined matrices for model manipulation
+    mat4 pushToEdgeMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, -64.0f)); // Matrix to bring objects to edge of circle
+    mat4 pullFromEdgeMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, 64.0f)); // Matrix to bring back objects from edge of circle
+
+    //These matrices are used to create the offset between digits in a model
+    mat4 firstDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(7.5f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//First digit
+    mat4 secondDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(2.5f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Second digit
+    mat4 thirdDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(-2.5f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Third digit
+    mat4 fourthDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(-7.5f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Second digit
+
+    //Initialising all group matrices and variables
+    mat4 GroupTMatrix = model; //To modify final model position
+    mat4 GroupOriginRotationMatrix = model; //If we want to rotate whole group on itself at final position
+    mat4 GroupScaleMatrix = model; //If we want to scale the whole group of 4 digits
+    //Combination matrix to avoid unnecessary calculations and simplicity
+    mat4 GroupMatrix = model;
+
+    //Group 1--------------------------------------------------------------------------------------------------------------
+
+    //Initializing group 1 matrices and variables 
+    //These a group at the center (Camera 1)
+    //These variables are used to modify the above matrices to change the digits according to user input
+    float oneRotation = 0.0f;
+    float oneScale = 1;
+    float oneX = 0;
+    float oneZ = 0;
+    float oneY = 0;
+
+    //TO DO - PUT THE MODELS FOR GROUP 1 HERE
+
+    //Group 2 ---------------------------------------------------------------------------------------------------------------
+    //Initializing Sam,s group matrices (Position 2)
+    //Rotation Matrix to bring model to its position around the circle
+    mat4 secondGroupCircleRotationMatrix = rotate(mat4(1.0f), radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
+
+    //These variables are used to modify the above matrices to change the digits according to user input
+    float twoRotation = 0.0f;
+    float twoScale = 1;
+    float twoX = 0;
+    float twoZ = 0;
+    float twoY = 0;
+
+
+    //Transformation matrices for number 4------------------------
+    //Right side
+    mat4 fourRightTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f));
+    mat4 fourRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 fourRightMatrix = firstDigitOffsetMatrix * fourRightTMatrix * fourRightSMatrix;
+
+    //Horizontal part
+    mat4 fourHorizontalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
+    mat4 fourHorizontalSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 fourHorizontalMatrix = firstDigitOffsetMatrix * fourHorizontalTMatrix * fourHorizontalSMatrix;
+
+    //Left part
+    mat4 fourLeftTMatrix = translate(mat4(1.0f), vec3(-3.0f, 3.5f, 0.0f));
+    mat4 fourLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
+    mat4 fourLeftMatrix = firstDigitOffsetMatrix * fourLeftTMatrix * fourLeftSMatrix;
+
+
+
+    //Transformation matrices for number 3--------------------------
+    //Right side (3)
+    mat4 threeRightTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f));
+    mat4 threeRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 threeRightMatrix = secondDigitOffsetMatrix * threeRightTMatrix * threeRightSMatrix;
+    //Top part (3)
+    mat4 threeTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
+    mat4 threeTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 threeTopMatrix = secondDigitOffsetMatrix * threeTopTMatrix * threeTopSMatrix;
+    //Mid part (3)
+    mat4 threeMidTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.5f, 0.0f));
+    mat4 threeMidSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 threeMidMatrix = secondDigitOffsetMatrix * threeMidTMatrix * threeMidSMatrix;
+    //Bottom part (3)
+    mat4 threeBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.5f, 0.0f));
+    mat4 threeBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 threeBottomMatrix = secondDigitOffsetMatrix * threeBottomTMatrix * threeBottomSMatrix;
+
+    //Transformation matrices for letter S-----------------------------
+    //Right side (s)
+    mat4 sRightTMatrix = translate(mat4(1.0f), vec3(0.0f, 1.5f, 0.0f));
+    mat4 sRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
+    mat4 sRightMatrix = thirdDigitOffsetMatrix * sRightTMatrix * sRightSMatrix;
+    //Top part (s)
+    mat4 sTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
+    mat4 sTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 sTopMatrix = thirdDigitOffsetMatrix * sTopTMatrix * sTopSMatrix;
+    //Mid part (s)
+    mat4 sMidTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.5f, 0.0f));
+    mat4 sMidSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 sMidMatrix = thirdDigitOffsetMatrix * sMidTMatrix * sMidSMatrix;
+    //Bottom part (s)
+    mat4 sBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.5f, 0.0f));
+    mat4 sBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 sBottomMatrix = thirdDigitOffsetMatrix * sBottomTMatrix * sBottomSMatrix;
+    //Left part (s)
+    mat4 sLeftTMatrix = translate(mat4(1.0f), vec3(-2.0f, 3.5f, 0.0f));
+    mat4 sLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
+    mat4 sLeftMatrix = thirdDigitOffsetMatrix * sLeftTMatrix * sLeftSMatrix;
+
+    //Transformation matrices for letter L-------------------------------
+    //Left side (s)
+    mat4 lLeftTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
+    mat4 lLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 lLeftMatrix = fourthDigitOffsetMatrix * lLeftTMatrix * lLeftSMatrix;
+    //Bottom part (s)
+    mat4 lBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.0f, 0.0f));
+    mat4 lBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 lBottomMatrix = fourthDigitOffsetMatrix * lBottomTMatrix * lBottomSMatrix;
+
+    //Group 3 --------------------------------------------------------------------------------------------
+    //Initializing third group matrices (Position 3)
+    //These are the behind right group, aka position 3 with camera
+
+    //Rotation Matrix to bring model to its position around the circle
+    mat4 thirdGroupCircleRotationMatrix = rotate(mat4(1.0f), radians(-45.0f), vec3(0.0f, 1.0f, 0.0f));
+
+    //These variables are used to modify the above matrices to change the digits according to user input
+    float threeRotation = 0.0f;
+    float threeScale = 1;
+    float threeX = 0;
+    float threeZ = 0;
+    float threeY = 0;
+
+    //TO DO -- Models for group 3 here
+
+    //Group 4 ----------------------------------------------------------------------------------------------
+    //Initializing fourth group matrices (Position 4)
+    //These are the front right group, aka position 4 with camera
+
+    //Rotation Matrix to bring model to its position around the circle
+    mat4 fourthGroupCircleRotationMatrix = rotate(mat4(1.0f), radians(-135.0f), vec3(0.0f, 1.0f, 0.0f));
+
+
+    //These variables are used to modify the above matrices to change the digits according to user input
+    float fourRotation = 0.0f;
+    float fourScale = 1;
+    float fourX = 0;
+    float fourZ = 0;
+    float fourY = 0;
+
+    //TO DO -- Models for group 4 here
+
+    //Group 5 ----------------------------------------------------------------------------------------------
+    //Initializing fifth group matrices (Position 5)
+    //These are the front left group, aka position 5 with camera
+
+    //Rotation Matrix to bring model to its position around the circle
+    mat4 fifthGroupCircleRotationMatrix = rotate(mat4(1.0f), radians(135.0f), vec3(0.0f, 1.0f, 0.0f));
+
+
+    //These variables are used to modify the above matrices to change the digits according to user input
+    float fiveRotation = 0.0f;
+    float fiveScale = 1;
+    float fiveX = 0;
+    float fiveZ = 0;
+    float fiveY = 0;
+
+    //TO DO -- Models for group 5 here
+
+
+
+    //More definition (
     vec2 currentOrientation(0.0f, 0.0f); // current orientation of matrix
-    vec3 currentScale(1.0f, 1.0f, 1.0f); // currentScale applied to scale Matrix
 
 
+    //Main loop ------------------------------------------------------------------------------------------------------------------------
     // Entering Main Loop
     while (!glfwWindowShouldClose(window))
     {
@@ -333,246 +511,358 @@ int main(int argc, char* argv[])
         glUseProgram(shaderProgram);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-        // Cube drawn here
-        glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
 
-        // Coordinates Matrix
+        // Drawing coordinates -------------------------------------------------
         // X-axis
-        axisWorldMatrix = translate(model, vec3(3.5f, 0.0f, 0.0f)) * scale(model, vec3(7.0f, 0.1f, 0.1f));
-        setWorldMatrix(shaderProgram, axisWorldMatrix);
+        WorldMatrix = translate(model, vec3(3.5f, 0.0f, 0.0f)) * scale(model, vec3(7.0f, 0.1f, 0.1f));
+        setWorldMatrix(shaderProgram, WorldMatrix);
         glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 0.0, 0.0)));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Y-axis
-        axisWorldMatrix = translate(model, vec3(0.0f, 3.5f, 0.0f)) * scale(model, vec3(0.1f, 7.0f, 0.1f));
-        setWorldMatrix(shaderProgram, axisWorldMatrix);
+        WorldMatrix = translate(model, vec3(0.0f, 3.5f, 0.0f)) * scale(model, vec3(0.1f, 7.0f, 0.1f));
+        setWorldMatrix(shaderProgram, WorldMatrix);
         glUniform3fv(colorLocation, 1, value_ptr(vec3(0.0, 1.0, 0.0)));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Z-axis
-        axisWorldMatrix = translate(model, vec3(0.0f, 0.0f, 3.5f)) * scale(model, vec3(0.1f, 0.1f, 7.0f));
-        setWorldMatrix(shaderProgram, axisWorldMatrix);
+        WorldMatrix = translate(model, vec3(0.0f, 0.0f, 3.5f)) * scale(model, vec3(0.1f, 0.1f, 7.0f));
+        setWorldMatrix(shaderProgram, WorldMatrix);
         glUniform3fv(colorLocation, 1, value_ptr(vec3(0.0, 0.0, 1.0)));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        // Draw Grid 128x128 - TO BE WORKED ON, currently tests the scale function with U AND J
-        int gridsize = 50;
-       for (int i = 0; i < gridsize; ++i)
+        // Draw Grid 128x128 --------------------------------------------------------
+        int gridsize = 128;
+        for (int i = -gridsize / 2; i < gridsize / 2; ++i)
         {
-            for (int j = 0; j < gridsize; ++j)
-            {
-                gridWorldMatrix = translate(model, vec3(0.0f, 0.0f, -gridsize/2 + j)) * scale(model, currentScale); // currentScale is there for testing purposes
-                glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &gridWorldMatrix[0][0]);
-                glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
-                glDrawArrays(GL_TRIANGLES, 0, 36);
-                
-            }
-        }
-	//Define the Scale Matrix for scaling up/ down
-        mat4 ScaleMatrix = scale(mat4(1.0f), currentScale);
+            WorldMatrix = translate(model, vec3(i, 0.0f, 0.0f)) * scale(model, vec3(0.02f, 0.02f, gridsize));
+            glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+            glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
+            glDrawArrays(GL_TRIANGLES, 0, 36);
 
+            WorldMatrix = translate(model, vec3(0.0f, 0.0f, i)) * scale(model, vec3(gridsize, 0.02f, 0.02f));
+            glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+            glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+
+        //Draw reference circle (Can be removed before handing in)
+        for (int i = 0; i < 360; ++i)
+        {
+            WorldMatrix = rotate(mat4(1.0f), radians((float)i), vec3(0.0f, 1.0f, 0.0f)) * translate(mat4(1.0f), vec3(64.0f, 0.0f, 0.0f));
+            glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+            glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        }
+
+
+        //Section for first group (position 1,center)---------------------------------------------------------------------------------------
+        //Samuel Tardif ID : 40051573
+        //Checking if our group needs to be modified
+        GroupScaleMatrix = scale(mat4(1.0f), vec3(oneScale, oneScale, oneScale));
+        GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(oneRotation), vec3(0.0f, 1.0f, 0.0f));
+        GroupTMatrix = translate(mat4(1.0f), vec3(oneX, oneY, oneZ));
+        //Making our combined group matrix
+        GroupMatrix = GroupTMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+
+        //Drawing our digits
+        //TO DO INSERT DRAWING OF GROUP 1
+        //Section for digit 4 (part of group 2)--------------------
+        //Right part of 4 
+        WorldMatrix = GroupMatrix * fourRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Horizontal part of 4
+        WorldMatrix = GroupMatrix * fourHorizontalMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of 4
+        WorldMatrix = GroupMatrix * fourLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for digit 3 (part of group 2)----------------------
+        //Right part of three
+        WorldMatrix = GroupMatrix * threeRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Top part of 3
+        WorldMatrix = GroupMatrix * threeTopMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Mid part of 3
+        WorldMatrix = GroupMatrix * threeMidMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of 3
+        WorldMatrix = GroupMatrix * threeBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+        //Section for letter S (part of group 2)-------------------------
+        //Right part of S
+        WorldMatrix = GroupMatrix * sRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Top part of S
+        WorldMatrix = GroupMatrix * sTopMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Mid part of S
+        WorldMatrix = GroupMatrix * sMidMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of S
+        WorldMatrix = GroupMatrix * sBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of S
+        WorldMatrix = GroupMatrix * sLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for letter L (part of group 2)----------------------------
+        //Left part of L
+        WorldMatrix = GroupMatrix * lLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of L
+        WorldMatrix = GroupMatrix * lBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+        //Section for second group (position 2, behind left)---------------------------------------------------------------------------------------
+        //Samuel Tardif ID : 40051573
+        //Checking if our group needs to be modified
+        GroupScaleMatrix = scale(mat4(1.0f), vec3(twoScale, twoScale, twoScale));
+        GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(twoRotation), vec3(0.0f, 1.0f, 0.0f));
+        GroupTMatrix = translate(mat4(1.0f), vec3(twoX, twoY, twoZ));
+        //Making our combined group matrix
+        GroupMatrix = GroupTMatrix * secondGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+
+        //Drawing our digits
+
+        //Section for digit 4 (part of group 2)--------------------
+        //Right part of 4 
+        WorldMatrix = GroupMatrix * fourRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Horizontal part of 4
+        WorldMatrix = GroupMatrix * fourHorizontalMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of 4
+        WorldMatrix = GroupMatrix * fourLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for digit 3 (part of group 2)----------------------
+        //Right part of three
+        WorldMatrix = GroupMatrix * threeRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Top part of 3
+        WorldMatrix = GroupMatrix * threeTopMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Mid part of 3
+        WorldMatrix = GroupMatrix * threeMidMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of 3
+        WorldMatrix = GroupMatrix * threeBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+        //Section for letter S (part of group 2)-------------------------
+        //Right part of S
+        WorldMatrix = GroupMatrix * sRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Top part of S
+        WorldMatrix = GroupMatrix * sTopMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Mid part of S
+        WorldMatrix = GroupMatrix * sMidMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of S
+        WorldMatrix = GroupMatrix * sBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of S
+        WorldMatrix = GroupMatrix * sLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for letter L (part of group 2)----------------------------
+        //Left part of L
+        WorldMatrix = GroupMatrix * lLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of L
+        WorldMatrix = GroupMatrix * lBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+        //Section for third group (position 3, behind right)---------------------------------------------------------------------------------------
+        //
+        //Checking if our group needs to be modified
+        GroupScaleMatrix = scale(mat4(1.0f), vec3(threeScale, threeScale, threeScale));
+        GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(threeRotation), vec3(0.0f, 1.0f, 0.0f));
+        GroupTMatrix = translate(mat4(1.0f), vec3(threeX, threeY, threeZ));
+        //Making our combined group matrix
+        GroupMatrix = GroupTMatrix * thirdGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+
+        //Drawing our digits
+        //TO DO PUT GROUP 3 DIGITS HERE
+
+        //Section for fourth group (position 4, front right)---------------------------------------------------------------------------------------
+        //
+        //Checking if our group needs to be modified
+        GroupScaleMatrix = scale(mat4(1.0f), vec3(fourScale, fourScale, fourScale));
+        GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(fourRotation), vec3(0.0f, 1.0f, 0.0f));
+        GroupTMatrix = translate(mat4(1.0f), vec3(fourX, fourY, fourZ));
+        //Making our combined group matrix
+        GroupMatrix = GroupTMatrix * fourthGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+
+        //Drawing our digits
+        //TO DO PUT DIGITS GROUP 4 HERE
+
+        //Section for fifth group (position 4, front left)---------------------------------------------------------------------------------------
+        //
+        //Checking if our group needs to be modified
+        GroupScaleMatrix = scale(mat4(1.0f), vec3(fiveScale, fiveScale, fiveScale));
+        GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(fiveRotation), vec3(0.0f, 1.0f, 0.0f));
+        GroupTMatrix = translate(mat4(1.0f), vec3(fiveX, fiveY, fiveZ));
+        //Making our combined group matrix
+        GroupMatrix = GroupTMatrix * fifthGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+
+        //Drawing our digits
+
+
+        /*
         // Draw letters and numbers
-        glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 0.0, 0.0)));
 
         //Group matrix for hierachical modeling
         mat4 groupMatrix = mat4(1.0f);
-       //vertical part of the "L" letter
-        mat4 LPartMatrix = translate(mat4(1.0f), vec3(-3.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
+        //vertical part of the "L" letter
+        mat4 LPartMatrix = translate(mat4(1.0f), vec3(-15.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 14.0f, 2.0f));
         mat4 LWorldMatrix = ScaleMatrix * groupMatrix * LPartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &LWorldMatrix[0][0]);
-        
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 0.0, 0.0)));
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //base of the "L" letter
-        LPartMatrix = translate(mat4(1.0f), vec3(0.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 5.0f, 2.0f));
+        LPartMatrix = translate(mat4(1.0f), vec3(-12.0f, -1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 7.0f, 2.0f));
         LWorldMatrix = ScaleMatrix * groupMatrix * LPartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &LWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //vertical part of the "T" letter
-        mat4 TPartMatrix = translate(mat4(1.0f), vec3(0.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
+        mat4 TPartMatrix = translate(mat4(1.0f), vec3(15.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 12.0f, 2.0f));
         mat4 TWorldMatrix = ScaleMatrix * groupMatrix * TPartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &TWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //horizontal part of the "T" letter
-        TPartMatrix = translate(mat4(1.0f), vec3(0.0f, 10.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
+        TPartMatrix = translate(mat4(1.0f), vec3(15.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 15.0f, 2.0f));
         TWorldMatrix = ScaleMatrix * groupMatrix * TPartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &TWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        
-        //Draw numeber 5
-
-        //Redefine the scale matrix beacause number 5 is too big
-        ScaleMatrix = scale(mat4(1.0f), currentScale - vec3(0.25f, 0.25f, 0.25f));
-
-        //first vertical of 5
-        mat4 FivePartMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.0f, 2.0f));
+        //Draw number 2
+        //Redefine the group matrix
+        groupMatrix = rotate(mat4(1.0f), radians(180.0f), vec3(0.0f, 1.0f, 0.0f));
+        //first vertical of 2
+        mat4 FivePartMatrix = translate(mat4(1.0f), vec3(30.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.0f, 2.0f));
         mat4 FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
+        //bottom horizontal line of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 0.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //second vertical of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(38.0f, 4.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //second horizontal line of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 8.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //third vertical line of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(30.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //last horizontal line of 2
+        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+        //This part is to draw number 5
+        groupMatrix = mat4(1.0f);
+
+        //first vertical of 5
+        FivePartMatrix = translate(mat4(1.0f), vec3(30.0f, 1.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.0f, 2.0f));
+        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
         //bottom horizontal line of 5
-        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 0.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //second vertical of 5
 
-        FivePartMatrix = translate(mat4(1.0f), vec3(8.0f, 4.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(38.0f, 4.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //second horizontal line of 5
 
-        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 8.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 8.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //third vertical line of 5
-        FivePartMatrix = translate(mat4(1.0f), vec3(0.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(30.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //last horizontal line of 5
-        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
+        FivePartMatrix = translate(mat4(1.0f), vec3(35.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+        */
 
-        //draw number 2, basically using the code to draw number 5 but rotate it to become 2
-        //redefine the group matrix
-        groupMatrix = rotate(mat4(1.0f), radians(180.0f), vec3(0.0f, 1.0f, 0.0f));
-
-        //first vertical part on the left of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //bottom horizontal line of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //second vertical part on the right of 2
-
-        FivePartMatrix = translate(mat4(1.0f), vec3(8.0f, 4.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //second horizontal line of 2
-
-        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 8.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //third vertical line  on the left of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(0.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //last horizontal line of 2
-        FivePartMatrix = translate(mat4(1.0f), vec3(5.0f, 12.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 8.0f, 2.0f));
-        FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-	    
-	//Draw the letter "D"
-        // vertical part on the left side   
-        mat4 DPartMatrix = translate(mat4(1.0f), vec3(-1.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
-        mat4 DWorldMatrix = ScaleMatrix * groupMatrix * DPartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        
-        //The horizontal line on the top
-        DPartMatrix = translate(mat4(1.0f), vec3(2.0f, 9.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
-        DWorldMatrix = ScaleMatrix * groupMatrix * DPartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        
-        //Horizontal line at the bottom
-        DPartMatrix = translate(mat4(1.0f), vec3(2.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
-        DWorldMatrix = ScaleMatrix * groupMatrix * DPartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        
-        //Last vertical part on the right side
-        DPartMatrix = translate(mat4(1.0f), vec3(6.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
-        DWorldMatrix = ScaleMatrix * groupMatrix * DPartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-	    
-	//Draw letter K
-        //Draw the vertical part on the right
-        mat4 KPartMatrix = translate(mat4(1.0f), vec3(0.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
-        mat4 KWorldMatrix = ScaleMatrix * groupMatrix * KPartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &KWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //Draw the first slash on the bottom
-        KPartMatrix = translate(mat4(1.0f), vec3(2.5f, 3.0f, 0.0f)) * rotate(mat4(1.0f), radians(50.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 7.0f, 2.0f));
-        KWorldMatrix = ScaleMatrix * groupMatrix * KPartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &KWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //Draw the second slash on the top
-        KPartMatrix = translate(mat4(1.0f), vec3(2.5f, 7.0f, 0.0f)) * rotate(mat4(1.0f), radians(140.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.5f, 2.0f));
-        KWorldMatrix = ScaleMatrix * groupMatrix * KPartMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &KWorldMatrix[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-	    
-        //ShearingMatrices
-        mat4 shearingMatrixA = { 1,0,0,0,
-                               0.3,1,0,0,
-                                 0,0,1,0,
-                                 0,0,0,1 };
-
-        mat4 shearingMatrixB = { 1,0,0,0,
-                              -0.3,1,0,0,
-                                 0,0,1,0,
-                                 0,0,0,1 };
-
-        // Draw A
-        GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
-
-        mat4 middle = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f)) * scale(mat4(1.0f), vec3(1.5f, 1.0f, 1.0f));
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &middle[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        mat4 left = translate(mat4(1.0f), vec3(-1.0f, 2.0f, 0.0f)) * shearingMatrixA * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &left[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        mat4 right = translate(mat4(1.0f), vec3(1.0f, 2.0f, 0.0f)) * shearingMatrixB * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &right[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        //Draw M
-        mat4 first = translate(mat4(1.0f), vec3(5.0f, 2.0f, 0.0f)) * shearingMatrixA * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &first[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        mat4 second = translate(mat4(1.0f), vec3(6.5f, 2.0f, 0.0f)) * shearingMatrixB * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &second[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        mat4 third = translate(mat4(1.0f), vec3(8.0f, 2.0f, 0.0f)) * shearingMatrixA * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &third[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        mat4 fourth = translate(mat4(1.0f), vec3(9.5f, 2.0f, 0.0f)) * shearingMatrixB * scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &fourth[0][0]);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Orientation Matrix
         orientationMatrix = rotate(rotate(mat4(1.0f), currentOrientation.x, vec3(1.0f, 0.0f, 0.0f)), currentOrientation.y, vec3(0.0f, 1.0f, 0.0f));
@@ -584,7 +874,8 @@ int main(int argc, char* argv[])
 
         double dx = 0;
         double dy = 0;
-        
+
+        //SECTION FOR CONTROLS-----------------------------------------------------------------------------------------------------------------------------
         // Mouse Controls
         if (lastMouseRightState == GLFW_RELEASE && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
             dx = mousePosX - lastMousePosX;
@@ -601,10 +892,10 @@ int main(int argc, char* argv[])
                 fov = 180.0f;
             }
         }
-   
+
         lastMousePosX = mousePosX;
         lastMousePosY = mousePosY;
-  
+
         // Convert to spherical coordinates
         const float cameraAngularSpeed = 30.0f;
         cameraHorizontalAngle -= dx * cameraAngularSpeed * dt;
@@ -629,31 +920,28 @@ int main(int argc, char* argv[])
 
         normalize(cameraSideVector);
 
-        // WASD movement TO BE CHANGED
-        bool fastCam = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
-        float currentCameraSpeed = (fastCam) ? cameraFastSpeed : cameraSpeed;
-	    
+        // WASD movement TO BE CHANGED------------------------------------------------------
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) // move camera to the left
         {
-            cameraPosition -= cameraSideVector * currentCameraSpeed * dt;
+            cameraPosition -= cameraSideVector * dt * cameraSpeed;
         }
 
         if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) // move camera to the right
         {
-            cameraPosition += cameraSideVector * currentCameraSpeed * dt;
+            cameraPosition += cameraSideVector * dt * cameraSpeed;
         }
 
         if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // move camera up
         {
-            cameraPosition -= cameraLookAt * currentCameraSpeed * dt;
+            cameraPosition -= cameraLookAt * dt * cameraSpeed;
         }
 
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) // move camera down
         {
-            cameraPosition += cameraLookAt * currentCameraSpeed * dt;
+            cameraPosition += cameraLookAt * dt * cameraSpeed;
         }
- 
-        // Orientation controls
+
+        // Orientation controls--------------------------------------------------
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             currentOrientation.x += radians(5.0f);
         }
@@ -672,46 +960,332 @@ int main(int argc, char* argv[])
             currentOrientation.x = 0;
         }
 
+        //Preset Camera locations----------------------------------------------------------------------------
+        //Preset for center
+        if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+        {
+
+            //Snapping camera to center
+            cameraPosition = glm::vec3(0.0f, 5.0f, 20.0f);
+            cameraLookAt = glm::vec3(0.0f, 0.0f, -1.0f);
+
+            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 1
+            position = 1;
+        }
+
+
+        //Preset for behind left
+        if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+        {
+
+            cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, -40 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
+
+            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 2
+            position = 2;
+        }
+
+        //Preset for behind right
+        if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+        {
+
+            cameraPosition = glm::vec3(40 * sin(3.14159 / 4), 5.0f, -40 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
+
+            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 3
+            position = 3;
+        }
+
+        //Preset for front right
+        if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+        {
+
+            cameraPosition = glm::vec3(40 * sin(3.14159 / 4), 5.0f, 40 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
+
+            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 4
+            position = 4;
+        }
+
+        //Preset for front left
+        if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+        {
+
+            cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, 40 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
+
+            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 5
+            position = 5;
+        }
+
+
+        //Controls for modifying digits--------------------------------------------------------------------
         // Scale controls
         if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) // Scale up
         {
-            currentScale.x += 0.1f;
-            currentScale.y += 0.1f;
-            currentScale.z += 0.1f;
+            if (position == 1) {
+                oneScale += 0.1f;
+            }
+            if (position == 2) {
+                twoScale += 0.1f;
+            }
+            if (position == 3) {
+                threeScale += 0.1f;
+            }
+            if (position == 4) {
+                fourScale += 0.1f;
+            }
+            if (position == 5) {
+                fiveScale += 0.1f;
+            }
         }
         if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) // Scale down
         {
-            if (currentScale.x <= 0 && currentScale.y <= 0 && currentScale.z <= 0) {
-                currentScale.x = 0.0f;
-                currentScale.y = 0.0f;
-                currentScale.z = 0.0f;
+            if (position == 1) {
+                if (oneScale <= 0)
+                    oneScale = 0;
+                else {
+                    oneScale -= 0.1f;
+                }
             }
-            currentScale.x -= 0.1f;
-            currentScale.y -= 0.1f;
-            currentScale.z -= 0.1f;
+            if (position == 2) {
+                if (twoScale <= 0)
+                    twoScale = 0;
+                else {
+                    twoScale -= 0.1f;
+                }
+            }
+            if (position == 3) {
+                if (threeScale <= 0)
+                    threeScale = 0;
+                else {
+                    threeScale -= 0.1f;
+                }
+            }
+            if (position == 4) {
+                if (fourScale <= 0)
+                    fourScale = 0;
+                else {
+                    fourScale -= 0.1f;
+                }
+            }
+            if (position == 5) {
+                if (fiveScale <= 0)
+                    fiveScale = 0;
+                else {
+                    fiveScale -= 0.1f;
+                }
+            }
         }
+        //Rotation control
+        //Rotation with I and K
+        if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) // Rotate counter-clockwise
+        {
+            if (position == 1) {
+                oneRotation += 1.0f;
+            }
+            if (position == 2) {
+                twoRotation += 1.0f;
+            }
+            if (position == 3) {
+                threeRotation += 1.0f;
+            }
+            if (position == 4) {
+                fourRotation += 1.0f;
+            }
+            if (position == 5) {
+                fiveRotation += 1.0f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) // Rotate clockwise
+        {
+            if (position == 1) {
+                oneRotation -= 1.0f;
+            }
+            if (position == 2) {
+                twoRotation -= 1.0f;
+            }
+            if (position == 3) {
+                threeRotation -= 1.0f;
+            }
+            if (position == 4) {
+                fourRotation -= 1.0f;
+            }
+            if (position == 5) {
+                fiveRotation -= 1.0f;
+            }
+        }
+        //Translation control
+        //Using (T,F,G,H) Cause the whole keyboard is taken
+        //Using O,L to move the objects up and down on the Y axis
+        //It is relative to the starting position's perspective
+        if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) //T = negative Z axis (or back for default view)
+        {
+            if (position == 1) {
+                oneZ -= 0.1f;
+            }
+            if (position == 2) {
+                twoZ -= 0.1f;
+            }
+            if (position == 3) {
+                threeZ -= 0.1f;
+            }
+            if (position == 4) {
+                fourZ -= 0.1f;
+            }
+            if (position == 5) {
+                fiveZ -= 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // G - Positive Z axis
+        {
+            if (position == 1) {
+                oneZ += 0.1f;
+            }
+            if (position == 2) {
+                twoZ += 0.1f;
+            }
+            if (position == 3) {
+                threeZ += 0.1f;
+            }
+            if (position == 4) {
+                fourZ += 0.1f;
+            }
+            if (position == 5) {
+                fiveZ += 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) //F = negative X axis (or back for default view)
+        {
+            if (position == 1) {
+                oneX -= 0.1f;
+            }
+            if (position == 2) {
+                twoX -= 0.1f;
+            }
+            if (position == 3) {
+                threeX -= 0.1f;
+            }
+            if (position == 4) {
+                fourX -= 0.1f;
+            }
+            if (position == 5) {
+                fiveX -= 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) // G - Positive X axis
+        {
+            if (position == 1) {
+                oneX += 0.1f;
+            }
+            if (position == 2) {
+                twoX += 0.1f;
+            }
+            if (position == 3) {
+                threeX += 0.1f;
+            }
+            if (position == 4) {
+                fourX += 0.1f;
+            }
+            if (position == 5) {
+                fiveX += 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) //O = positive Y axis
+        {
+            if (position == 1) {
+                oneY += 0.1f;
+            }
+            if (position == 2) {
+                twoY += 0.1f;
+            }
+            if (position == 3) {
+                threeY += 0.1f;
+            }
+            if (position == 4) {
+                fourY += 0.1f;
+            }
+            if (position == 5) {
+                fiveY += 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) // L -Negative Y axis
+        {
+            if (position == 1) {
+                oneY -= 0.1f;
+            }
+            if (position == 2) {
+                twoY -= 0.1f;
+            }
+            if (position == 3) {
+                threeY -= 0.1f;
+            }
+            if (position == 4) {
+                fourY -= 0.1f;
+            }
+            if (position == 5) {
+                fiveY -= 0.1f;
+            }
+        }
+
+
 
         // Render types
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
         }
-        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
-        if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) 
+        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
-       
-  
+
+
         // Projection Matrix
         projectionMatrix = perspective(radians(fov),            // field of view in degrees
-                                              800.0f / 600.0f,  // aspect ratio
-                                              0.01f, 100.0f);   // near and far (near > 0)
+            800.0f / 600.0f,  // aspect ratio
+            0.01f, 100.0f);   // near and far (near > 0)
         setProjectionMatrix(shaderProgram, projectionMatrix);
-  
+
         // View Matrix
         viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
         setViewMatrix(shaderProgram, viewMatrix);
