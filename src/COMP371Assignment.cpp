@@ -512,6 +512,25 @@ int main(int argc, char* argv[])
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 	    
+	//Draw letter K
+        //Draw the vertical part on the right
+        mat4 KPartMatrix = translate(mat4(1.0f), vec3(0.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
+        mat4 KWorldMatrix = ScaleMatrix * groupMatrix * KPartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &KWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Draw the first slash on the bottom
+        KPartMatrix = translate(mat4(1.0f), vec3(2.5f, 3.0f, 0.0f)) * rotate(mat4(1.0f), radians(50.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 7.0f, 2.0f));
+        KWorldMatrix = ScaleMatrix * groupMatrix * KPartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &KWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Draw the second slash on the top
+        KPartMatrix = translate(mat4(1.0f), vec3(2.5f, 7.0f, 0.0f)) * rotate(mat4(1.0f), radians(140.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 4.5f, 2.0f));
+        KWorldMatrix = ScaleMatrix * groupMatrix * KPartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &KWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+	    
         //ShearingMatrices
         mat4 shearingMatrixA = { 1,0,0,0,
                                0.3,1,0,0,
