@@ -486,6 +486,32 @@ int main(int argc, char* argv[])
         FiveWorldMatrix = ScaleMatrix * groupMatrix * FivePartMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &FiveWorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+	    
+	//Draw the letter "D"
+        // vertical part on the left side   
+        mat4 DPartMatrix = translate(mat4(1.0f), vec3(-1.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 10.0f, 2.0f));
+        mat4 DWorldMatrix = ScaleMatrix * groupMatrix * DPartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        
+        //The horizontal line on the top
+        DPartMatrix = translate(mat4(1.0f), vec3(2.0f, 9.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
+        DWorldMatrix = ScaleMatrix * groupMatrix * DPartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        
+        //Horizontal line at the bottom
+        DPartMatrix = translate(mat4(1.0f), vec3(2.0f, 1.0f, 0.0f)) * rotate(mat4(1.0f), radians(90.0f), vec3(0.0f, 0.0f, 1.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
+        DWorldMatrix = ScaleMatrix * groupMatrix * DPartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        
+        //Last vertical part on the right side
+        DPartMatrix = translate(mat4(1.0f), vec3(6.0f, 5.0f, 0.0f)) * scale(mat4(1.0f), vec3(2.0f, 6.0f, 2.0f));
+        DWorldMatrix = ScaleMatrix * groupMatrix * DPartMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &DWorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+	    
         //ShearingMatrices
         mat4 shearingMatrixA = { 1,0,0,0,
                                0.3,1,0,0,
