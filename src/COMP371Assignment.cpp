@@ -456,6 +456,70 @@ int main(int argc, char* argv[])
     float threeY = 0;
 
     //TO DO -- Models for group 3 here
+    
+    //Transformation matrices for number 5-----------------------------
+    //Right side (s)
+    mat4 FiveRightTMatrix = translate(mat4(1.0f), vec3(0.0f, 1.5f, 0.0f));
+    mat4 FiveRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
+    mat4 FiveRightMatrix = secondDigitOffsetMatrix * FiveRightTMatrix * FiveRightSMatrix;
+    //Top part (s)
+    mat4 FiveTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
+    mat4 FiveTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 FiveTopMatrix = secondDigitOffsetMatrix * FiveTopTMatrix * FiveTopSMatrix;
+    //Mid part (s)
+    mat4 FiveMidTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.5f, 0.0f));
+    mat4 FiveMidSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 FiveMidMatrix = secondDigitOffsetMatrix * FiveMidTMatrix * FiveMidSMatrix;
+    //Bottom part (s)
+    mat4 FiveBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.5f, 0.0f));
+    mat4 FiveBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 FiveBottomMatrix = secondDigitOffsetMatrix * FiveBottomTMatrix * FiveBottomSMatrix;
+    //Left part (s)
+    mat4 FiveLeftTMatrix = translate(mat4(1.0f), vec3(-2.0f, 3.5f, 0.0f));
+    mat4 FiveLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
+    mat4 FiveLeftMatrix = secondDigitOffsetMatrix * FiveLeftTMatrix * FiveLeftSMatrix;
+
+    //Transformation matrices for letter L-------------------------------
+    //Left side (s)
+    mat4 LamLLeftTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
+    mat4 LamLLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 LamLLeftMatrix = thirdDigitOffsetMatrix * LamLLeftTMatrix * LamLLeftSMatrix;
+    //Bottom part (s)
+    mat4 LamLBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.0f, 0.0f));
+    mat4 LamLBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 LamLBottomMatrix = thirdDigitOffsetMatrix * LamLBottomTMatrix * LamLBottomSMatrix;
+
+
+    //ShearingMatrices
+    mat4 shearingMatrixA = { 1,0,0,0,
+                           0.3,1,0,0,
+                             0,0,1,0,
+                             0,0,0,1 };
+
+    mat4 shearingMatrixB = { 1,0,0,0,
+                          -0.3,1,0,0,
+                             0,0,1,0,
+                             0,0,0,1 };
+    //Left part of M
+    mat4 MLeftTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.0f, 0.0f));
+    mat4 MLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 MLeftMatrix = fourthDigitOffsetMatrix * MLeftTMatrix * shearingMatrixA * MLeftSMatrix;
+
+    //middle left part of M
+    mat4 MMiddleLeftTMatrix = translate(mat4(1.0f), vec3(0.5f, 2.0f, 0.0f));
+    mat4 MMiddleLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 MMiddleLeftMatrix = fourthDigitOffsetMatrix * MMiddleLeftTMatrix * shearingMatrixB * MMiddleLeftSMatrix;
+
+    //middle right part of M
+    mat4 MMiddleRightTMatrix = translate(mat4(1.0f), vec3(2.0f, 2.0f, 0.0f));
+    mat4 MMiddleRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 MMiddleRightMatrix = fourthDigitOffsetMatrix * MMiddleRightTMatrix * shearingMatrixA * MMiddleRightSMatrix;
+
+    //right part of M
+    mat4 MRightTMatrix = translate(mat4(1.0f), vec3(3.5f, 2.0f, 0.0f));
+    mat4 MRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 MRightMatrix = fourthDigitOffsetMatrix * MRightTMatrix * shearingMatrixB * MRightSMatrix;
+
 
     //Group 4 ----------------------------------------------------------------------------------------------
     //Initializing fourth group matrices (Position 4)
@@ -726,7 +790,83 @@ int main(int argc, char* argv[])
 
         //Drawing our digits
         //TO DO PUT GROUP 3 DIGITS HERE
+ //Lam Tran Student ID: 40088195
+        //Checking if our group needs to be modified
+        GroupScaleMatrix = scale(mat4(1.0f), vec3(threeScale, threeScale, threeScale));
+        GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(threeRotation), vec3(0.0f, 1.0f, 0.0f));
+        GroupTMatrix = translate(mat4(1.0f), vec3(threeX, threeY, threeZ));
+        //Making our combined group matrix
+        GroupMatrix = GroupTMatrix * thirdGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
+        //Drawing our digits
+        //TO DO PUT GROUP 3 DIGITS HERE
+
+        //Section for number 4 (Part of group 3)
+        //Right part of 4 
+        WorldMatrix = GroupMatrix * fourRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Horizontal part of 4
+        WorldMatrix = GroupMatrix * fourHorizontalMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of 4
+        WorldMatrix = GroupMatrix * fourLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for number 5 (part of group 3)-------------------------
+        //Right part of 5
+        WorldMatrix = GroupMatrix * FiveRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Top part of 5
+        WorldMatrix = GroupMatrix * FiveTopMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Mid part of 5
+        WorldMatrix = GroupMatrix * FiveMidMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of 5
+        WorldMatrix = GroupMatrix * FiveBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of 5
+        WorldMatrix = GroupMatrix * FiveLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for letter L (part of group 2)----------------------------
+        //Left part of L
+        WorldMatrix = GroupMatrix * LamLLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Bottom part of L
+        WorldMatrix = GroupMatrix * LamLBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for letter M
+        //Draw left part of M
+        WorldMatrix = GroupMatrix * MLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw the middle left of M
+        WorldMatrix = GroupMatrix * MMiddleLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw middle right of M
+        WorldMatrix = GroupMatrix * MMiddleRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw right of M
+        WorldMatrix = GroupMatrix * MRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        
         //Section for fourth group (position 4, front right)---------------------------------------------------------------------------------------
         //
         //Checking if our group needs to be modified
