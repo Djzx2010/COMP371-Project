@@ -358,20 +358,8 @@ int main(int argc, char* argv[])
     float oneZ = 0;
     float oneY = 0;
 
-    //TO DO - PUT THE MODELS FOR GROUP 1 HERE
-
-    //Group 2 ---------------------------------------------------------------------------------------------------------------
-    //Initializing Sam,s group matrices (Position 2)
-    //Rotation Matrix to bring model to its position around the circle
-    mat4 secondGroupCircleRotationMatrix = rotate(mat4(1.0f), radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
-
-    //These variables are used to modify the above matrices to change the digits according to user input
-    float twoRotation = 0.0f;
-    float twoScale = 1;
-    float twoX = 0;
-    float twoZ = 0;
-    float twoY = 0;
-
+    //Group 1 ---------------------------------------------------------------------------------------------------------------
+    //Initializing Sam's group matrices (Position 1)
 
     //Transformation matrices for number 4------------------------
     //Right side
@@ -440,6 +428,83 @@ int main(int argc, char* argv[])
     mat4 lBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.0f, 0.0f));
     mat4 lBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
     mat4 lBottomMatrix = fourthDigitOffsetMatrix * lBottomTMatrix * lBottomSMatrix;
+    //END OF GROUP 1 -------------------------------------------------------------------------------------
+
+    //GROUP TWO ------------------------------------------------------------------------------------------
+        //Rotation Matrix to bring model to its position around the circle
+    mat4 secondGroupCircleRotationMatrix = rotate(mat4(1.0f), radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
+
+    //These variables are used to modify the above matrices to change the digits according to user input
+    float twoRotation = 0.0f;
+    float twoScale = 1;
+    float twoX = 0;
+    float twoZ = 0;
+    float twoY = 0;
+
+        //draw "F"
+    //vertical part of the "F" letter
+    mat4 fVerticalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
+    mat4 fVerticalSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 fVerticalMatrix = firstDigitOffsetMatrix * fVerticalTMatrix * fVerticalSMatrix;
+    //horizontal part1(upper) of the "F" letter
+    mat4 fTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
+    mat4 fTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 fTopMatrix = firstDigitOffsetMatrix * fTopTMatrix * fTopSMatrix;
+    //horizontal part2(middle) of the "F" letter
+    mat4 fMiddleTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.25f, 0.0f));
+    mat4 fMiddleSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 fMiddleMatrix = firstDigitOffsetMatrix * fMiddleTMatrix * fMiddleSMatrix;
+
+    //draw "E"
+    //vertical part of the "E" letter
+    mat4 eVerticalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
+    mat4 eVerticalSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 eVerticalMatrix = secondDigitOffsetMatrix * eVerticalTMatrix * eVerticalSMatrix;
+    //horizontal part1(upper) of the "E" letter
+    mat4 eTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
+    mat4 eTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 eTopMatrix = secondDigitOffsetMatrix * eTopTMatrix * eTopSMatrix;
+    //horizontal part2(middle) of the "E" letter
+    mat4 eMiddleTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.25f, 0.0f));
+    mat4 eMiddleSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 eMiddleMatrix = secondDigitOffsetMatrix * eMiddleTMatrix * eMiddleSMatrix;
+    //horizontal part3(lower) of the "E" letter
+    mat4 eBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.0f, 0.0f));
+    mat4 eBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 eBottomMatrix = secondDigitOffsetMatrix * eBottomTMatrix * eBottomSMatrix;
+
+    //section for the first number 4
+    //Right side
+    mat4 four1RightTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f));
+    mat4 four1RightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 four1RightMatrix = thirdDigitOffsetMatrix * four1RightTMatrix * four1RightSMatrix;
+
+    //Horizontal parts
+    mat4 four1HorizontalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
+    mat4 four1HorizontalSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 four1HorizontalMatrix = thirdDigitOffsetMatrix * four1HorizontalTMatrix * four1HorizontalSMatrix;
+
+    //Left part
+    mat4 four1LeftTMatrix = translate(mat4(1.0f), vec3(-3.0f, 3.5f, 0.0f));
+    mat4 four1LeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
+    mat4 four1LeftMatrix = thirdDigitOffsetMatrix * four1LeftTMatrix * four1LeftSMatrix;
+
+    //section for the second number 4
+    //Right side
+    mat4 four2RightTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f));
+    mat4 four2RightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 four2RightMatrix = fourthDigitOffsetMatrix * four2RightTMatrix * four2RightSMatrix;
+
+    //Horizontal part
+    mat4 four2HorizontalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
+    mat4 four2HorizontalSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 four2HorizontalMatrix = fourthDigitOffsetMatrix * four2HorizontalTMatrix * four2HorizontalSMatrix;
+
+    //Left part
+    mat4 four2LeftTMatrix = translate(mat4(1.0f), vec3(-3.0f, 3.5f, 0.0f));
+    mat4 four2LeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
+    mat4 four2LeftMatrix = fourthDigitOffsetMatrix * four2LeftTMatrix * four2LeftSMatrix;
+    //END OF GROUP TWO -----------------------------------------------------------------------------------
 
     //Group 3 --------------------------------------------------------------------------------------------
     //Initializing third group matrices (Position 3)
@@ -454,8 +519,6 @@ int main(int argc, char* argv[])
     float threeX = 0;
     float threeZ = 0;
     float threeY = 0;
-
-    //TO DO -- Models for group 3 here
     
     //Transformation matrices for number 5-----------------------------
     //Right side (s)
@@ -618,70 +681,6 @@ int main(int argc, char* argv[])
     float fiveY = 0;
 
     //TO DO -- Models for group 5 here
-    //draw "F"
-	//vertical part of the "F" letter
-	mat4 fVerticalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
-	mat4 fVerticalSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-	mat4 fVerticalMatrix = firstDigitOffsetMatrix * fVerticalTMatrix * fVerticalSMatrix;
-	//horizontal part1(upper) of the "F" letter
-	mat4 fTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
-	mat4 fTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-	mat4 fTopMatrix = firstDigitOffsetMatrix * fTopTMatrix * fTopSMatrix;
-	//horizontal part2(middle) of the "F" letter
-	mat4 fMiddleTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.25f, 0.0f));
-	mat4 fMiddleSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-	mat4 fMiddleMatrix = firstDigitOffsetMatrix * fMiddleTMatrix * fMiddleSMatrix;
-
-	//draw "E"
-	//vertical part of the "E" letter
-	mat4 eVerticalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
-	mat4 eVerticalSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-	mat4 eVerticalMatrix = secondDigitOffsetMatrix * eVerticalTMatrix * eVerticalSMatrix;
-	//horizontal part1(upper) of the "E" letter
-	mat4 eTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
-	mat4 eTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-	mat4 eTopMatrix = secondDigitOffsetMatrix * eTopTMatrix * eTopSMatrix;
-	//horizontal part2(middle) of the "E" letter
-	mat4 eMiddleTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.25f, 0.0f));
-	mat4 eMiddleSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-	mat4 eMiddleMatrix = secondDigitOffsetMatrix * eMiddleTMatrix * eMiddleSMatrix;
-	//horizontal part3(lower) of the "E" letter
-	mat4 eBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.0f, 0.0f));
-	mat4 eBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-	mat4 eBottomMatrix = secondDigitOffsetMatrix * eBottomTMatrix * eBottomSMatrix;
-
-	//section for the first number 4
-	//Right side
-	mat4 four1RightTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f));
-	mat4 four1RightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-	mat4 four1RightMatrix = thirdDigitOffsetMatrix * four1RightTMatrix * four1RightSMatrix;
-
-	//Horizontal parts
-	mat4 four1HorizontalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
-	mat4 four1HorizontalSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-	mat4 four1HorizontalMatrix = thirdDigitOffsetMatrix * four1HorizontalTMatrix * four1HorizontalSMatrix;
-
-	//Left part
-	mat4 four1LeftTMatrix = translate(mat4(1.0f), vec3(-3.0f, 3.5f, 0.0f));
-	mat4 four1LeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
-	mat4 four1LeftMatrix = thirdDigitOffsetMatrix * four1LeftTMatrix * four1LeftSMatrix;
-
-	//section for the second number 4
-	//Right side
-	mat4 four2RightTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f));
-	mat4 four2RightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-	mat4 four2RightMatrix = fourthDigitOffsetMatrix * four2RightTMatrix * four2RightSMatrix;
-
-	//Horizontal part
-	mat4 four2HorizontalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
-	mat4 four2HorizontalSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-	mat4 four2HorizontalMatrix = fourthDigitOffsetMatrix * four2HorizontalTMatrix * four2HorizontalSMatrix;
-
-	//Left part
-	mat4 four2LeftTMatrix = translate(mat4(1.0f), vec3(-3.0f, 3.5f, 0.0f));
-	mat4 four2LeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
-	mat4 four2LeftMatrix = fourthDigitOffsetMatrix * four2LeftTMatrix * four2LeftSMatrix;
-
 
     //More definition (
     vec2 currentOrientation(0.0f, 0.0f); // current orientation of matrix
@@ -739,7 +738,7 @@ int main(int argc, char* argv[])
         //Draw reference circle (Can be removed before handing in)
         for (int i = 0; i < 360; ++i)
         {
-            WorldMatrix = rotate(mat4(1.0f), radians((float)i), vec3(0.0f, 1.0f, 0.0f)) * translate(mat4(1.0f), vec3(64.0f, 0.0f, 0.0f));
+            WorldMatrix = rotate(mat4(1.0f), radians((float)i), vec3(0.0f, 1.0f, 0.0f)) * translate(mat4(1.0f), vec3(64.0f, 0.0f, 0.0f)) * scale(mat4(1.0f), vec3(1.0f, 0.001f, 1.0f));
             glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
             glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
             glDrawArrays(GL_TRIANGLES, 0, 36);
