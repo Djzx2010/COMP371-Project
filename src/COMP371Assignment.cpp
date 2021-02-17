@@ -365,17 +365,17 @@ int main(int argc, char* argv[])
     //Right side
     mat4 fourRightTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f));
     mat4 fourRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 fourRightMatrix = firstDigitOffsetMatrix * fourRightTMatrix * fourRightSMatrix;
+    mat4 fourRightMatrix = thirdDigitOffsetMatrix * fourRightTMatrix * fourRightSMatrix;
 
     //Horizontal part
     mat4 fourHorizontalTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
     mat4 fourHorizontalSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 fourHorizontalMatrix = firstDigitOffsetMatrix * fourHorizontalTMatrix * fourHorizontalSMatrix;
+    mat4 fourHorizontalMatrix = thirdDigitOffsetMatrix * fourHorizontalTMatrix * fourHorizontalSMatrix;
 
     //Left part
     mat4 fourLeftTMatrix = translate(mat4(1.0f), vec3(-3.0f, 3.5f, 0.0f));
     mat4 fourLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
-    mat4 fourLeftMatrix = firstDigitOffsetMatrix * fourLeftTMatrix * fourLeftSMatrix;
+    mat4 fourLeftMatrix = thirdDigitOffsetMatrix * fourLeftTMatrix * fourLeftSMatrix;
 
 
 
@@ -383,51 +383,51 @@ int main(int argc, char* argv[])
     //Right side (3)
     mat4 threeRightTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.5f, 0.0f));
     mat4 threeRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 threeRightMatrix = secondDigitOffsetMatrix * threeRightTMatrix * threeRightSMatrix;
+    mat4 threeRightMatrix = fourthDigitOffsetMatrix * threeRightTMatrix * threeRightSMatrix;
     //Top part (3)
     mat4 threeTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
     mat4 threeTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 threeTopMatrix = secondDigitOffsetMatrix * threeTopTMatrix * threeTopSMatrix;
+    mat4 threeTopMatrix = fourthDigitOffsetMatrix * threeTopTMatrix * threeTopSMatrix;
     //Mid part (3)
     mat4 threeMidTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.5f, 0.0f));
     mat4 threeMidSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 threeMidMatrix = secondDigitOffsetMatrix * threeMidTMatrix * threeMidSMatrix;
+    mat4 threeMidMatrix = fourthDigitOffsetMatrix * threeMidTMatrix * threeMidSMatrix;
     //Bottom part (3)
     mat4 threeBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.5f, 0.0f));
     mat4 threeBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 threeBottomMatrix = secondDigitOffsetMatrix * threeBottomTMatrix * threeBottomSMatrix;
+    mat4 threeBottomMatrix = fourthDigitOffsetMatrix * threeBottomTMatrix * threeBottomSMatrix;
 
     //Transformation matrices for letter S-----------------------------
     //Right side (s)
     mat4 sRightTMatrix = translate(mat4(1.0f), vec3(0.0f, 1.5f, 0.0f));
     mat4 sRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
-    mat4 sRightMatrix = thirdDigitOffsetMatrix * sRightTMatrix * sRightSMatrix;
+    mat4 sRightMatrix = firstDigitOffsetMatrix * sRightTMatrix * sRightSMatrix;
     //Top part (s)
     mat4 sTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
     mat4 sTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 sTopMatrix = thirdDigitOffsetMatrix * sTopTMatrix * sTopSMatrix;
+    mat4 sTopMatrix = firstDigitOffsetMatrix * sTopTMatrix * sTopSMatrix;
     //Mid part (s)
     mat4 sMidTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.5f, 0.0f));
     mat4 sMidSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 sMidMatrix = thirdDigitOffsetMatrix * sMidTMatrix * sMidSMatrix;
+    mat4 sMidMatrix = firstDigitOffsetMatrix * sMidTMatrix * sMidSMatrix;
     //Bottom part (s)
     mat4 sBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.5f, 0.0f));
     mat4 sBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 sBottomMatrix = thirdDigitOffsetMatrix * sBottomTMatrix * sBottomSMatrix;
+    mat4 sBottomMatrix = firstDigitOffsetMatrix * sBottomTMatrix * sBottomSMatrix;
     //Left part (s)
     mat4 sLeftTMatrix = translate(mat4(1.0f), vec3(-2.0f, 3.5f, 0.0f));
     mat4 sLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
-    mat4 sLeftMatrix = thirdDigitOffsetMatrix * sLeftTMatrix * sLeftSMatrix;
+    mat4 sLeftMatrix = firstDigitOffsetMatrix * sLeftTMatrix * sLeftSMatrix;
 
     //Transformation matrices for letter L-------------------------------
     //Left side (s)
     mat4 lLeftTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
     mat4 lLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 lLeftMatrix = fourthDigitOffsetMatrix * lLeftTMatrix * lLeftSMatrix;
+    mat4 lLeftMatrix = secondDigitOffsetMatrix * lLeftTMatrix * lLeftSMatrix;
     //Bottom part (s)
     mat4 lBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.0f, 0.0f));
     mat4 lBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 lBottomMatrix = fourthDigitOffsetMatrix * lBottomTMatrix * lBottomSMatrix;
+    mat4 lBottomMatrix = secondDigitOffsetMatrix * lBottomTMatrix * lBottomSMatrix;
     //END OF GROUP 1 -------------------------------------------------------------------------------------
 
     //GROUP TWO ------------------------------------------------------------------------------------------
@@ -524,33 +524,33 @@ int main(int argc, char* argv[])
     //Right side (s)
     mat4 FiveRightTMatrix = translate(mat4(1.0f), vec3(0.0f, 1.5f, 0.0f));
     mat4 FiveRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
-    mat4 FiveRightMatrix = secondDigitOffsetMatrix * FiveRightTMatrix * FiveRightSMatrix;
+    mat4 FiveRightMatrix = fourthDigitOffsetMatrix * FiveRightTMatrix * FiveRightSMatrix;
     //Top part (s)
     mat4 FiveTopTMatrix = translate(mat4(1.0f), vec3(-1.0f, 4.5f, 0.0f));
     mat4 FiveTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 FiveTopMatrix = secondDigitOffsetMatrix * FiveTopTMatrix * FiveTopSMatrix;
+    mat4 FiveTopMatrix = fourthDigitOffsetMatrix * FiveTopTMatrix * FiveTopSMatrix;
     //Mid part (s)
     mat4 FiveMidTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.5f, 0.0f));
     mat4 FiveMidSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 FiveMidMatrix = secondDigitOffsetMatrix * FiveMidTMatrix * FiveMidSMatrix;
+    mat4 FiveMidMatrix = fourthDigitOffsetMatrix * FiveMidTMatrix * FiveMidSMatrix;
     //Bottom part (s)
     mat4 FiveBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.5f, 0.0f));
     mat4 FiveBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 FiveBottomMatrix = secondDigitOffsetMatrix * FiveBottomTMatrix * FiveBottomSMatrix;
+    mat4 FiveBottomMatrix = fourthDigitOffsetMatrix * FiveBottomTMatrix * FiveBottomSMatrix;
     //Left part (s)
     mat4 FiveLeftTMatrix = translate(mat4(1.0f), vec3(-2.0f, 3.5f, 0.0f));
     mat4 FiveLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 3.0f, 1.0f));
-    mat4 FiveLeftMatrix = secondDigitOffsetMatrix * FiveLeftTMatrix * FiveLeftSMatrix;
+    mat4 FiveLeftMatrix = fourthDigitOffsetMatrix * FiveLeftTMatrix * FiveLeftSMatrix;
 
     //Transformation matrices for letter L-------------------------------
     //Left side (s)
     mat4 LamLLeftTMatrix = translate(mat4(1.0f), vec3(-2.0f, 2.5f, 0.0f));
     mat4 LamLLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 LamLLeftMatrix = thirdDigitOffsetMatrix * LamLLeftTMatrix * LamLLeftSMatrix;
+    mat4 LamLLeftMatrix = firstDigitOffsetMatrix * LamLLeftTMatrix * LamLLeftSMatrix;
     //Bottom part (s)
     mat4 LamLBottomTMatrix = translate(mat4(1.0f), vec3(-1.0f, 0.0f, 0.0f));
     mat4 LamLBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 LamLBottomMatrix = thirdDigitOffsetMatrix * LamLBottomTMatrix * LamLBottomSMatrix;
+    mat4 LamLBottomMatrix = firstDigitOffsetMatrix * LamLBottomTMatrix * LamLBottomSMatrix;
 
 
     //ShearingMatrices
@@ -566,22 +566,22 @@ int main(int argc, char* argv[])
     //Left part of M
     mat4 MLeftTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.0f, 0.0f));
     mat4 MLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 MLeftMatrix = fourthDigitOffsetMatrix * MLeftTMatrix * shearingMatrixA * MLeftSMatrix;
+    mat4 MLeftMatrix = secondDigitOffsetMatrix * MLeftTMatrix * shearingMatrixA * MLeftSMatrix;
 
     //middle left part of M
     mat4 MMiddleLeftTMatrix = translate(mat4(1.0f), vec3(0.5f, 2.0f, 0.0f));
     mat4 MMiddleLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 MMiddleLeftMatrix = fourthDigitOffsetMatrix * MMiddleLeftTMatrix * shearingMatrixB * MMiddleLeftSMatrix;
+    mat4 MMiddleLeftMatrix = secondDigitOffsetMatrix * MMiddleLeftTMatrix * shearingMatrixB * MMiddleLeftSMatrix;
 
     //middle right part of M
     mat4 MMiddleRightTMatrix = translate(mat4(1.0f), vec3(2.0f, 2.0f, 0.0f));
     mat4 MMiddleRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 MMiddleRightMatrix = fourthDigitOffsetMatrix * MMiddleRightTMatrix * shearingMatrixA * MMiddleRightSMatrix;
+    mat4 MMiddleRightMatrix = secondDigitOffsetMatrix * MMiddleRightTMatrix * shearingMatrixA * MMiddleRightSMatrix;
 
     //right part of M
     mat4 MRightTMatrix = translate(mat4(1.0f), vec3(3.5f, 2.0f, 0.0f));
     mat4 MRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 MRightMatrix = fourthDigitOffsetMatrix * MRightTMatrix * shearingMatrixB * MRightSMatrix;
+    mat4 MRightMatrix = secondDigitOffsetMatrix * MRightTMatrix * shearingMatrixB * MRightSMatrix;
 
 
     //Group 4 ----------------------------------------------------------------------------------------------
@@ -604,64 +604,64 @@ int main(int argc, char* argv[])
     //bottom part of 2
     mat4 bottom2TMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, 0.0f));
     mat4 bottom2SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 bottom2Matrix = firstDigitOffsetMatrix * bottom2TMatrix * bottom2SMatrix;
+    mat4 bottom2Matrix = thirdDigitOffsetMatrix * bottom2TMatrix * bottom2SMatrix;
 
     //middle part of 2
     mat4 middle2TMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f));
     mat4 middle2SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 middle2Matrix = firstDigitOffsetMatrix * middle2TMatrix * middle2SMatrix;
+    mat4 middle2Matrix = thirdDigitOffsetMatrix * middle2TMatrix * middle2SMatrix;
 
     //top part of 2
     mat4 top2TMatrix = translate(mat4(1.0f), vec3(0.0f, 4.0f, 0.0f));
     mat4 top2SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 top2Matrix = firstDigitOffsetMatrix * top2TMatrix * top2SMatrix;
+    mat4 top2Matrix = thirdDigitOffsetMatrix * top2TMatrix * top2SMatrix;
 
     //left part of 2
     mat4 left2TMatrix = translate(mat4(1.0f), vec3(-1.0f, 1.5f, 0.0f));
     mat4 left2SMatrix = scale(mat4(1.0f), vec3(1.0f, 2.0f, 1.0f));
-    mat4 left2Matrix = firstDigitOffsetMatrix * left2TMatrix * left2SMatrix;
+    mat4 left2Matrix = thirdDigitOffsetMatrix * left2TMatrix * left2SMatrix;
 
     //right part of 2
     mat4 right2TMatrix = translate(mat4(1.0f), vec3(1.0f, 3.5f, 0.0f));
     mat4 right2SMatrix = scale(mat4(1.0f), vec3(1.0f, 2.0f, 1.0f));
-    mat4 right2Matrix = firstDigitOffsetMatrix * right2TMatrix * right2SMatrix;
+    mat4 right2Matrix = thirdDigitOffsetMatrix * right2TMatrix * right2SMatrix;
 
     // 9 model (group 4)
     //middle part of 9
     mat4 middle9TMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f));
     mat4 middle9SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 middle9Matrix = secondDigitOffsetMatrix * middle9TMatrix * middle9SMatrix;
+    mat4 middle9Matrix = fourthDigitOffsetMatrix * middle9TMatrix * middle9SMatrix;
 
     //top part of 9
     mat4 top9TMatrix = translate(mat4(1.0f), vec3(0.0f, 4.0f, 0.0f));
     mat4 top9SMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
-    mat4 top9Matrix = secondDigitOffsetMatrix * top9TMatrix * top9SMatrix;
+    mat4 top9Matrix = fourthDigitOffsetMatrix * top9TMatrix * top9SMatrix;
 
     //left part of 9
     mat4 left9TMatrix = translate(mat4(1.0f), vec3(-1.0f, 3.5f, 0.0f));
     mat4 left9SMatrix = scale(mat4(1.0f), vec3(1.0f, 2.0f, 1.0f));
-    mat4 left9Matrix = secondDigitOffsetMatrix * left9TMatrix * left9SMatrix;
+    mat4 left9Matrix = fourthDigitOffsetMatrix * left9TMatrix * left9SMatrix;
 
     //right part of 9
     mat4 right9TMatrix = translate(mat4(1.0f), vec3(1.0f, 2.0f, 0.0f));
     mat4 right9SMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 right9Matrix = secondDigitOffsetMatrix * right9TMatrix * right9SMatrix;
+    mat4 right9Matrix = fourthDigitOffsetMatrix * right9TMatrix * right9SMatrix;
 
     //A model (group 4)
     //Left part of A
     mat4 ALeftTMatrix = translate(mat4(1.0f),vec3(-0.9f, 2.0f, 0.0f));
     mat4 ALeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 ALeftMatrix  = thirdDigitOffsetMatrix * ALeftTMatrix * shearingMatrixA * ALeftSMatrix;
+    mat4 ALeftMatrix  = firstDigitOffsetMatrix * ALeftTMatrix * shearingMatrixA * ALeftSMatrix;
 
     //Right part of A
     mat4 ARightTMatrix = translate(mat4(1.0f), vec3(0.9f, 2.0f, 0.0f));
     mat4 ARightSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
-    mat4 ARightMatrix  = thirdDigitOffsetMatrix * ARightTMatrix * shearingMatrixB * ARightSMatrix;
+    mat4 ARightMatrix  = firstDigitOffsetMatrix * ARightTMatrix * shearingMatrixB * ARightSMatrix;
 
     //Middle part of A
     mat4 AMiddleTMatrix = translate(mat4(1.0f), vec3(0.0f, 2.0f, 0.0f));
     mat4 AMiddleSMatrix = scale(mat4(1.0f), vec3(2.0f, 1.0f, 1.0f));
-    mat4 AMiddleMatrix  = thirdDigitOffsetMatrix * AMiddleTMatrix * AMiddleSMatrix;
+    mat4 AMiddleMatrix  = firstDigitOffsetMatrix * AMiddleTMatrix * AMiddleSMatrix;
 
     //M model shared with group 3, including digit offset matrix
 
