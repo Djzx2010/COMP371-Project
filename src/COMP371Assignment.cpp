@@ -691,12 +691,6 @@ int main(int argc, char* argv[])
     mat4 DTopTMatrix = translate(mat4(1.0f), vec3(0.0f, 5.0f, 0.0f));
     mat4 DTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
     mat4 DTopMatrix = firstDigitOffsetMatrix * DTopTMatrix *  DTopSMatrix;
-    //These variables are used to modify the above matrices to change the digits according to user input
-    float fiveRotation = 0.0f;
-    float fiveScale = 1;
-    float fiveX = 0;
-    float fiveZ = 0;
-    float fiveY = 0;
 
     //The bottom stick of D
     mat4 DBottomTMatrix = translate(mat4(1.0f), vec3(0.0f, 0.5f, 0.0f));
@@ -715,10 +709,14 @@ int main(int argc, char* argv[])
     mat4 KLeftMatrix = secondDigitOffsetMatrix * DLeftTMatrix * DLeftSMatrix;
 
     //Bottom slash of K
-    mat4 KBottomTMatrix = translate(mat4(1.0f), vec3(2.5f, 3.0f, 0.0f));
-    mat4 KBottomRMatrix = rotate(mat4(1.0f), radians(50.0f), vec3(0.0f, 0.0f, 1.0f));
-    mat4 KBottomSMatrix = scale(mat4(1.0f), vec3(2.0f, 3.0f, 2.0f));
-    mat4 KBottomMatrix = KBottomTMatrix * KBottomRMatrix * KBottomSMatrix;
+    mat4 KBottomTMatrix = translate(mat4(1.0f), vec3(0.5f, 1.25f, 0.0f));
+    mat4 KBottomSMatrix = scale(mat4(1.0f), vec3(1.0f, 2.5f, 1.0f));
+    mat4 KBottomMatrix = secondDigitOffsetMatrix * KBottomTMatrix * shearingMatrixB * KBottomSMatrix;
+
+    //Top slash of K
+    mat4 KTopTMatrix = translate(mat4(1.0f), vec3(0.5f, 3.75f, 0.0f));
+    mat4 KTopSMatrix = scale(mat4(1.0f), vec3(1.0f, 2.5f, 1.0f));
+    mat4 KTopMatrix = secondDigitOffsetMatrix * KTopTMatrix * shearingMatrixA * KTopSMatrix;
 
     //Number 4 matrices already defined
 
@@ -1142,6 +1140,19 @@ int main(int argc, char* argv[])
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw right stick of D
         WorldMatrix = GroupMatrix * DRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Draw left stick of K
+        WorldMatrix = GroupMatrix * KLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw bottom slash of K
+        WorldMatrix = GroupMatrix * KBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw top slash of K
+        WorldMatrix = GroupMatrix * KTopMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
