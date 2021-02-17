@@ -1308,6 +1308,8 @@ int main(int argc, char* argv[])
         //Preset for behind left
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
         {
+            cameraHorizontalAngle = 121.0f;
+            cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
             cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, -10 * cos(3.14159 / 4));
@@ -1327,6 +1329,8 @@ int main(int argc, char* argv[])
         //Preset for behind right
         if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
         {
+            cameraHorizontalAngle = 35.5f;
+            cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
             cameraPosition = glm::vec3(10 * sin(3.14159 / 4), 5.0f, -30 * cos(3.14159 / 4));
