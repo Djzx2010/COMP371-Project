@@ -681,6 +681,64 @@ int main(int argc, char* argv[])
     float fiveY = 0;
 
     //TO DO -- Models for group 5 here
+	//Matrices for letter D
+    //The left stick of D
+    mat4 DLeftTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.5f, 0.0f));
+    mat4 DLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 DLeftMatrix = firstDigitOffsetMatrix * DLeftTMatrix * DLeftSMatrix;
+
+    //The top stick of D
+    mat4 DTopTMatrix = translate(mat4(1.0f), vec3(0.0f, 5.0f, 0.0f));
+    mat4 DTopSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 DTopMatrix = firstDigitOffsetMatrix * DTopTMatrix *  DTopSMatrix;
+    //These variables are used to modify the above matrices to change the digits according to user input
+    float fiveRotation = 0.0f;
+    float fiveScale = 1;
+    float fiveX = 0;
+    float fiveZ = 0;
+    float fiveY = 0;
+
+    //The bottom stick of D
+    mat4 DBottomTMatrix = translate(mat4(1.0f), vec3(0.0f, 0.5f, 0.0f));
+    mat4 DBottomSMatrix = scale(mat4(1.0f), vec3(3.0f, 1.0f, 1.0f));
+    mat4 DBottomMatrix = firstDigitOffsetMatrix * DBottomTMatrix *  DBottomSMatrix;
+    
+    //The right stick of D
+    mat4 DRightTMatrix = translate(mat4(1.0f), vec3(2.0f, 2.75f, 0.0f));
+    mat4 DRightSMatrix = scale(mat4(1.0f), vec3(1.0f, 4.0f, 1.0f));
+    mat4 DRightMatrix = firstDigitOffsetMatrix * DRightTMatrix * DRightSMatrix;
+
+    //Matrices for K
+    //The left stick of K
+    mat4 KLeftTMatrix = translate(mat4(1.0f), vec3(-1.0f, 2.5f, 0.0f));
+    mat4 KLeftSMatrix = scale(mat4(1.0f), vec3(1.0f, 5.0f, 1.0f));
+    mat4 KLeftMatrix = secondDigitOffsetMatrix * DLeftTMatrix * DLeftSMatrix;
+
+    //Bottom slash of K
+    mat4 KBottomTMatrix = translate(mat4(1.0f), vec3(2.5f, 3.0f, 0.0f));
+    mat4 KBottomRMatrix = rotate(mat4(1.0f), radians(50.0f), vec3(0.0f, 0.0f, 1.0f));
+    mat4 KBottomSMatrix = scale(mat4(1.0f), vec3(2.0f, 3.0f, 2.0f));
+    mat4 KBottomMatrix = KBottomTMatrix * KBottomRMatrix * KBottomSMatrix;
+
+    //Number 4 matrices already defined
+
+    //Matrices for number 2
+     // 2 model (group 4)
+    //bottom part of 2
+    mat4 GroupFivebottom2Matrix = fourthDigitOffsetMatrix * bottom2TMatrix * bottom2SMatrix;
+
+    //middle part of 2
+    mat4 GroupFivemiddle2Matrix = fourthDigitOffsetMatrix * middle2TMatrix * middle2SMatrix;
+
+    //top part of 2
+    mat4 GroupFivetop2Matrix = fourthDigitOffsetMatrix * top2TMatrix * top2SMatrix;
+
+    //left part of 2
+    mat4 GroupFiveleft2Matrix = fourthDigitOffsetMatrix * left2TMatrix * left2SMatrix;
+
+    //right part of 2
+    mat4 GroupFiveright2Matrix = fourthDigitOffsetMatrix * right2TMatrix * right2SMatrix;
+
 
     //More definition (
     vec2 currentOrientation(0.0f, 0.0f); // current orientation of matrix
@@ -1070,6 +1128,59 @@ int main(int argc, char* argv[])
         GroupMatrix = GroupTMatrix * fifthGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         //Drawing our digits
+	    //Draw left stick of D
+        WorldMatrix = GroupMatrix * DLeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw top stick of D
+        WorldMatrix = GroupMatrix * DTopMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw bottom stick of D
+        WorldMatrix = GroupMatrix * DBottomMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Draw right stick of D
+        WorldMatrix = GroupMatrix * DRightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for number 4
+        //Right part of 4 
+        WorldMatrix = GroupMatrix * four1RightMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glUniform3fv(colorLocation, 1, value_ptr(vec3(0.5, 0.5, 0.5)));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Horizontal part of 4
+        WorldMatrix = GroupMatrix * four1HorizontalMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //Left part of 4
+        WorldMatrix = GroupMatrix * four1LeftMatrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
+        //Section for digit 2 (group 5)
+       //bottom part of 2
+        WorldMatrix = GroupMatrix * GroupFivebottom2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //middle part of 2
+        WorldMatrix = GroupMatrix * GroupFivemiddle2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //top part of 2
+        WorldMatrix = GroupMatrix * GroupFivetop2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //left part of 2
+        WorldMatrix = GroupMatrix * GroupFiveleft2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //right part of 2
+        WorldMatrix = GroupMatrix * GroupFiveright2Matrix;
+        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
         /*
