@@ -1285,6 +1285,8 @@ int main(int argc, char* argv[])
         //Preset for center
         if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
         {
+            cameraHorizontalAngle = 90.0f;
+            cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
             //Snapping camera to center
