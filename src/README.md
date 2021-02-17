@@ -2,8 +2,8 @@ Adam Richard (27059329) Derek Lam (40132682), Feike Qi (40079084), Lam Tran (400
 
 Functionality/Controls:
 - WASD to freely move around
-    - Press 1, 2, 3, 4 or 5 to get control over a model
-    - WASD will then move the model around instead
+- Press 1, 2, 3, 4 or 5 to get control over a model
+
 
 - Arrow keys moves the world's orientation
     - Press Home to reset the orientation
