@@ -1,8 +1,0 @@
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glew/src/project_glew-build/CMakeFiles/glewinfo.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glew/src/project_glew-build/CMakeFiles/glew.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glew/src/project_glew-build/CMakeFiles/glew_s.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glew/src/project_glew-build/CMakeFiles/uninstall.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glew/src/project_glew-build/CMakeFiles/visualinfo.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glew/src/project_glew-build/CMakeFiles/INSTALL.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glew/src/project_glew-build/CMakeFiles/ALL_BUILD.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/thirdparty/build/glew/src/project_glew-build/CMakeFiles/ZERO_CHECK.dir

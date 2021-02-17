@@ -1,3 +1,0 @@
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glm-subbuild/CMakeFiles/thirdparty-glm-populate.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glm-subbuild/CMakeFiles/ALL_BUILD.dir
-C:/Users/STRIX/Desktop/School/University/Winter 2021/COMP 371 - Computer Graphics/Assignment/build/_deps/thirdparty-glm-subbuild/CMakeFiles/ZERO_CHECK.dir
