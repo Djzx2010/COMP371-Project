@@ -735,16 +735,6 @@ int main(int argc, char* argv[])
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
-        //Draw reference circle (Can be removed before handing in)
-        for (int i = 0; i < 360; ++i)
-        {
-            WorldMatrix = rotate(mat4(1.0f), radians((float)i), vec3(0.0f, 1.0f, 0.0f)) * translate(mat4(1.0f), vec3(64.0f, 0.0f, 0.0f)) * scale(mat4(1.0f), vec3(1.0f, 0.001f, 1.0f));
-            glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
-            glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 1.0, 1.0)));
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-
-        }
-
 
         //Section for first group (position 1,center)---------------------------------------------------------------------------------------
         //Samuel Tardif ID : 40051573
@@ -1252,22 +1242,22 @@ int main(int argc, char* argv[])
         normalize(cameraSideVector);
 
         // WASD movement TO BE CHANGED------------------------------------------------------
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) // move camera to the left
+        if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) // move camera to the left
         {
             cameraPosition -= cameraSideVector * dt * cameraSpeed;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) // move camera to the right
+        if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) // move camera to the right
         {
             cameraPosition += cameraSideVector * dt * cameraSpeed;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // move camera up
+        if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move camera up
         {
             cameraPosition -= cameraLookAt * dt * cameraSpeed;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) // move camera down
+        if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move camera down
         {
             cameraPosition += cameraLookAt * dt * cameraSpeed;
         }
@@ -1367,7 +1357,7 @@ int main(int argc, char* argv[])
         }
 
         //Preset for front left
-        if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
         {
 
             cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, 40 * cos(3.14159 / 4));
@@ -1445,7 +1435,7 @@ int main(int argc, char* argv[])
         }
         //Rotation control
         //Rotation with I and K
-        if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) // Rotate counter-clockwise
+        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) // Rotate counter-clockwise
         {
             if (position == 1) {
                 oneRotation += 1.0f;
@@ -1463,7 +1453,7 @@ int main(int argc, char* argv[])
                 fiveRotation += 1.0f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) // Rotate clockwise
+        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) // Rotate clockwise
         {
             if (position == 1) {
                 oneRotation -= 1.0f;
@@ -1485,7 +1475,7 @@ int main(int argc, char* argv[])
         //Using (T,F,G,H) Cause the whole keyboard is taken
         //Using O,L to move the objects up and down on the Y axis
         //It is relative to the starting position's perspective
-        if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) //T = negative Z axis (or back for default view)
+        if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) //T = negative Z axis (or back for default view)
         {
             if (position == 1) {
                 oneZ -= 0.1f;
@@ -1503,7 +1493,7 @@ int main(int argc, char* argv[])
                 fiveZ -= 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // G - Positive Z axis
+        if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) // G - Positive Z axis
         {
             if (position == 1) {
                 oneZ += 0.1f;
@@ -1521,7 +1511,7 @@ int main(int argc, char* argv[])
                 fiveZ += 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) //F = negative X axis (or back for default view)
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) //F = negative X axis (or back for default view)
         {
             if (position == 1) {
                 oneX -= 0.1f;
@@ -1539,7 +1529,7 @@ int main(int argc, char* argv[])
                 fiveX -= 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) // G - Positive X axis
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) // G - Positive X axis
         {
             if (position == 1) {
                 oneX += 0.1f;
@@ -1557,7 +1547,7 @@ int main(int argc, char* argv[])
                 fiveX += 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) //O = positive Y axis
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) //O = positive Y axis
         {
             if (position == 1) {
                 oneY += 0.1f;
@@ -1575,7 +1565,7 @@ int main(int argc, char* argv[])
                 fiveY += 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) // L -Negative Y axis
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // L -Negative Y axis
         {
             if (position == 1) {
                 oneY -= 0.1f;
@@ -1601,11 +1591,11 @@ int main(int argc, char* argv[])
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
         }
-        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         }
-        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
         {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
