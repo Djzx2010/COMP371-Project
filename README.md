@@ -1,5 +1,7 @@
 # README #
 
+Adam Richard (27059329) Derek Lam (40132682), Feike Qi (40079084), Lam Tran (40088195), Samuel Tardif (40051573)
+
 ## Controls:
 
 Camera:  
