@@ -1285,8 +1285,16 @@ int main(int argc, char* argv[])
         }
         // reset orientation
         if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {
+            cameraHorizontalAngle = 90.0f;
+            cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
+            cameraPosition = vec3(0.0f, 5.0f, 20.0f);
+            cameraLookAt = vec3(0.0f, 0.0f, 0.0f);
+            fov = 70.0f;
+            viewMatrix = lookAt(cameraPosition,  // eye
+                                cameraLookAt,  // center
+                                cameraUp); // up
         }
 
         //Preset Camera locations----------------------------------------------------------------------------
