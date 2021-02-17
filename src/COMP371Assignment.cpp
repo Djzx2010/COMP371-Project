@@ -1,12 +1,4 @@
-/*Controls
-P,Q,E Change view mode for polygons
-WASD Camera mouvement
-Mouse-Camera Orientation
-1-5 Select preset cameras and selected model
-U,J Scale Up and down
-I,K Rotate selected object
-O,L Move selected object up and down
-*/
+
 
 #include <iostream>
 #include <math.h>
