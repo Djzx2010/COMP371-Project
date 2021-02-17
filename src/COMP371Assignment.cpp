@@ -1383,8 +1383,8 @@ int main(int argc, char* argv[])
             cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
-            cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, 40 * cos(3.14159 / 4));
-            cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
+            cameraPosition = glm::vec3(-20 * sin(3.14159 / 4), 5.0f, 20 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(-1.02f, 0.0f, 1.0f);
 
             viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
