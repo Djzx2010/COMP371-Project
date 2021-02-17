@@ -1241,7 +1241,7 @@ int main(int argc, char* argv[])
 
         normalize(cameraSideVector);
 
-        // WASD movement TO BE CHANGED------------------------------------------------------
+        // GVBN movement ------------------------------------------------------
         if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) // move camera to the left
         {
             cameraPosition -= cameraSideVector * dt * cameraSpeed;
@@ -1285,16 +1285,17 @@ int main(int argc, char* argv[])
         //Preset for center
         if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
         {
-
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
             //Snapping camera to center
             cameraPosition = glm::vec3(0.0f, 5.0f, 45.0f);
             cameraLookAt = glm::vec3(0.0f, 0.0f, -1.0f);
 
-            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
                 glm::vec3(0.0f, 1.0f, 0.0f));// up
 
-            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
             glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 
             //Setting current position to 1
@@ -1305,15 +1306,16 @@ int main(int argc, char* argv[])
         //Preset for behind left
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
         {
-
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
             cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, -10 * cos(3.14159 / 4));
             cameraLookAt = glm::vec3(-0.6f, 0.0f, -1.0f);
 
-            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
                 glm::vec3(0.0f, 1.0f, 0.0f));// up
 
-            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
             glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 
             //Setting current position to 2
@@ -1323,15 +1325,16 @@ int main(int argc, char* argv[])
         //Preset for behind right
         if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
         {
-
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
             cameraPosition = glm::vec3(10 * sin(3.14159 / 4), 5.0f, -30 * cos(3.14159 / 4));
             cameraLookAt = glm::vec3(1.4f, 0.0f, -1.0f);
 
-            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
                 glm::vec3(0.0f, 1.0f, 0.0f));// up
 
-            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
             glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 
             //Setting current position to 3
@@ -1341,15 +1344,16 @@ int main(int argc, char* argv[])
         //Preset for front right
         if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
         {
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
+            cameraPosition = glm::vec3(20 * sin(3.14159 / 4), 5.0f, 20 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(0.95f, 0.0f, 1.0f);
 
-            cameraPosition = glm::vec3(40 * sin(3.14159 / 4), 5.0f, 40 * cos(3.14159 / 4));
-            cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
-
-            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
                 glm::vec3(0.0f, 1.0f, 0.0f));// up
 
-            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
             glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 
             //Setting current position to 4
@@ -1359,15 +1363,16 @@ int main(int argc, char* argv[])
         //Preset for front left
         if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
         {
-
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
             cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, 40 * cos(3.14159 / 4));
             cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
 
-            glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
                 glm::vec3(0.0f, 1.0f, 0.0f));// up
 
-            GLuint viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
+            viewMatrixLocation = glGetUniformLocation(shaderProgram, "viewMatrix");
             glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
 
             //Setting current position to 5
