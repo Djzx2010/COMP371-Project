@@ -335,10 +335,10 @@ int main(int argc, char* argv[])
     mat4 pullFromEdgeMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, 64.0f)); // Matrix to bring back objects from edge of circle
 
     //These matrices are used to create the offset between digits in a model
-    mat4 firstDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(7.5f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//First digit
-    mat4 secondDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(2.5f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Second digit
-    mat4 thirdDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(-2.5f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Third digit
-    mat4 fourthDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(-7.5f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Fourth digit
+    mat4 firstDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(27.0f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//First digit
+    mat4 secondDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(9.0f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Second digit
+    mat4 thirdDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(-9.0f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Third digit
+    mat4 fourthDigitOffsetMatrix = pullFromEdgeMatrix * rotate(mat4(1.0f), radians(-27.0f), vec3(0.0f, 1.0f, 0.0f)) * pushToEdgeMatrix;//Fourth digit
 
     //Initialising all group matrices and variables
     mat4 GroupTMatrix = model; //To modify final model position
