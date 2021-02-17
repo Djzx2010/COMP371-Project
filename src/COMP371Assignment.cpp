@@ -1264,16 +1264,16 @@ int main(int argc, char* argv[])
 
         // Orientation controls--------------------------------------------------
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            currentOrientation.x += radians(5.0f);
+            currentOrientation.x += radians(1.0f);
         }
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            currentOrientation.x -= radians(5.0f);
+            currentOrientation.x -= radians(1.0f);
         }
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            currentOrientation.y += radians(5.0f);
+            currentOrientation.y += radians(1.0f);
         }
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            currentOrientation.y -= radians(5.0f);
+            currentOrientation.y -= radians(1.0f);
         }
         // reset orientation
         if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {
@@ -1287,7 +1287,7 @@ int main(int argc, char* argv[])
         {
 
             //Snapping camera to center
-            cameraPosition = glm::vec3(0.0f, 5.0f, 20.0f);
+            cameraPosition = glm::vec3(0.0f, 5.0f, 45.0f);
             cameraLookAt = glm::vec3(0.0f, 0.0f, -1.0f);
 
             glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
@@ -1306,8 +1306,8 @@ int main(int argc, char* argv[])
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
         {
 
-            cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, -40 * cos(3.14159 / 4));
-            cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
+            cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, -10 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(-0.6f, 0.0f, -1.0f);
 
             glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
@@ -1324,8 +1324,8 @@ int main(int argc, char* argv[])
         if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
         {
 
-            cameraPosition = glm::vec3(40 * sin(3.14159 / 4), 5.0f, -40 * cos(3.14159 / 4));
-            cameraLookAt = glm::vec3(-1.0f, 0.0f, -1.0f);
+            cameraPosition = glm::vec3(10 * sin(3.14159 / 4), 5.0f, -30 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(1.4f, 0.0f, -1.0f);
 
             glm::mat4 viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
@@ -1472,8 +1472,6 @@ int main(int argc, char* argv[])
             }
         }
         //Translation control
-        //Using (T,F,G,H) Cause the whole keyboard is taken
-        //Using O,L to move the objects up and down on the Y axis
         //It is relative to the starting position's perspective
         if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) //T = negative Z axis (or back for default view)
         {
