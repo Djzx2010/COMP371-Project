@@ -948,7 +948,6 @@ int main(int argc, char* argv[])
         GroupMatrix = GroupTMatrix * thirdGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         //Drawing our digits
-        //TO DO PUT GROUP 3 DIGITS HERE
         //Lam Tran Student ID: 40088195
         //Checking if our group needs to be modified
         GroupScaleMatrix = scale(mat4(1.0f), vec3(threeScale, threeScale, threeScale));
@@ -958,8 +957,6 @@ int main(int argc, char* argv[])
         GroupMatrix = GroupTMatrix * thirdGroupCircleRotationMatrix * pushToEdgeMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         //Drawing our digits
-        //TO DO PUT GROUP 3 DIGITS HERE
-
         //Section for number 4 (Part of group 3)
         //Lam Tran Student ID: 40088195
         //Right part of 4 
