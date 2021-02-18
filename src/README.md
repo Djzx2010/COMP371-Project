@@ -1,18 +1,34 @@
-Adam Richard (27059329) Derek Lam (40132682), Feike Qi (40079084), Lam Tran (40088195), Samuel Tardif (40051573)
+## Controls:
 
-Functionality/Controls:
-- WASD to freely move around
-- Press 1, 2, 3, 4 or 5 to get control over a model
+Camera:  
+Right Mouse Button + move : pan  
+Middle Mouse Button + move : tilt  
+Left Mouse Button + move : zoom in/out  
+  
+Arrow keys : orient camera  
+  
+G : move forward  
+B : move backward  
+V : move left  
+N : move right  
+  
+Home Button : Return camera to starting position and orientation  
+  
+Models:  
+  
+1 : select model 1  
+2 : select model 2  
+3 : select model 3  
+4 : select model 4  
+5 : select model 5  
+  
+W : move model up  
+S : move model down  
+A : move model left  
+D : move model right  
+Z : move camera backward  
+X : move camera forward  
+Q : rotate model left  
+E : rotate model right  
 
 
-- Arrow keys moves the world's orientation
-    - Press Home to reset the orientation
-
-- Press P to change the render type to points
-- Press L to change the render type to lines
-- Press T to change the render type to triangles
-
-- Click right mouse button and drag to pan 
-- Click middle mouse button and drag to tilt
-- Click left mouse button and drag to zoom in and out
-    
