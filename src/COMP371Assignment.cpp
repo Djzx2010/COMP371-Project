@@ -961,6 +961,7 @@ int main(int argc, char* argv[])
         //TO DO PUT GROUP 3 DIGITS HERE
 
         //Section for number 4 (Part of group 3)
+        //Lam Tran Student ID: 40088195
         //Right part of 4 
         WorldMatrix = GroupMatrix * fourRightMatrix;
         glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
