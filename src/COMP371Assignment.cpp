@@ -1309,7 +1309,7 @@ int main(int argc, char* argv[])
             cameraPosition = glm::vec3(0.0f, 5.0f, 45.0f);
             cameraLookAt = glm::vec3(0.0f, 0.0f, -1.0f);
 
-            viewMatrix = glm::lookAt(cameraPosition,  // eye
+            viewMatrix = glm::lookAt(cameraPosition,  // eye,
                 cameraLookAt,  // center
                 glm::vec3(0.0f, 1.0f, 0.0f));// up
 
