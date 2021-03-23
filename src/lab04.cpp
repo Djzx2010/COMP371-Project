@@ -27,7 +27,7 @@ using namespace std;
 
 
 
-GLuint loadTexture(const char *filename);
+GLuint loadTexture(const char* filename);
 
 const char* getVertexShaderSource();
 
@@ -42,7 +42,7 @@ int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentSh
 struct TexturedColoredVertex
 {
     TexturedColoredVertex(vec3 _position, vec3 _color, vec2 _uv)
-    : position(_position), color(_color), uv(_uv) {}
+        : position(_position), color(_color), uv(_uv) {}
 
     vec3 position;
     vec3 color;
@@ -59,43 +59,43 @@ const TexturedColoredVertex texturedCubeVertexArray[] = {  // position,         
     TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f)),
     TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)), // far - blue
+    TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)), // far - blue
     TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
     TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)),
-    TexturedColoredVertex(vec3( 0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)),
+    TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)),
+    TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)),
     TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 1.0f)), // bottom - turquoise
+    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 1.0f)), // bottom - turquoise
     TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 0.0f)),
-    TexturedColoredVertex(vec3( 0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 0.0f)),
+    TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 1.0f)),
+    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 1.0f)),
     TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 1.0f)),
     TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 0.0f)),
 
     TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)), // near - green
     TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f)),
-    TexturedColoredVertex(vec3( 0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)),
+    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)),
+    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)),
     TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f)),
-    TexturedColoredVertex(vec3( 0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)),
+    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)), // right - purple
-    TexturedColoredVertex(vec3( 0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
-    TexturedColoredVertex(vec3( 0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)),
+    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)), // right - purple
+    TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
+    TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
-    TexturedColoredVertex(vec3( 0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)),
-    TexturedColoredVertex(vec3( 0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)),
+    TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
+    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f)),
+    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)), // top - yellow
-    TexturedColoredVertex(vec3( 0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)),
+    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)), // top - yellow
+    TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f)),
     TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3( 0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)),
+    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f)),
     TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f)),
     TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f))
 };
@@ -123,8 +123,15 @@ void setWorldMatrix(int shaderProgram, mat4 worldMatrix)
     glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
 }
 
+void setOrientationMatrix(int shaderProgram, mat4 orientationMatrix)
+{
+    glUseProgram(shaderProgram);
+    GLuint orientationMatrixLocation = glGetUniformLocation(shaderProgram, "orientationMatrix");
+    glUniformMatrix4fv(orientationMatrixLocation, 1, GL_FALSE, &orientationMatrix[0][0]);
+}
 
-int main(int argc, char*argv[])
+
+int main(int argc, char* argv[])
 {
     // Initialize GLFW and OpenGL version
     glfwInit();
@@ -177,37 +184,38 @@ int main(int argc, char*argv[])
     GLuint colorLocation = glGetUniformLocation(colorShaderProgram, "vertexColor");
 
     // Camera parameters for view transform
-    vec3 cameraPosition(0.6f,1.0f,10.0f);
+    vec3 cameraPosition(0.6f, 1.0f, 10.0f);
     vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
     vec3 cameraUp(0.0f, 1.0f, 0.0f);
 
     // Other camera parameters
-    float cameraSpeed = 1.0f;
+    float cameraSpeed = 5.0f;
     float cameraFastSpeed = 2 * cameraSpeed;
     float cameraHorizontalAngle = 90.0f;
     float cameraVerticalAngle = 0.0f;
     bool  cameraFirstPerson = true; // press 1 or 2 to toggle this variable
+    float fov = 70.0f;
 
     // Spinning cube at camera position
     float spinningCubeAngle = 0.0f;
 
     // Set projection matrix for shader, this won't change
     mat4 projectionMatrix = glm::perspective(70.0f,            // field of view in degrees
-                                             800.0f / 600.0f,  // aspect ratio
-                                             0.01f, 100.0f);   // near and far (near > 0)
+        800.0f / 600.0f,  // aspect ratio
+        0.01f, 100.0f);   // near and far (near > 0)
 
-    // Set initial view matrix
+// Set initial view matrix
     mat4 viewMatrix = lookAt(cameraPosition,  // eye
-                             cameraPosition + cameraLookAt,  // center
-                             cameraUp ); // up
+        cameraPosition + cameraLookAt,  // center
+        cameraUp); // up
 
-    // Set View and Projection matrices on both shaders
+// Set View and Projection matrices on both shaders
     setViewMatrix(colorShaderProgram, viewMatrix);
     setViewMatrix(texturedShaderProgram, viewMatrix);
 
     setProjectionMatrix(colorShaderProgram, projectionMatrix);
     setProjectionMatrix(texturedShaderProgram, projectionMatrix);
- 
+
 
     // Define and upload geometry to the GPU here ...
     int texturedCubeVAO = createTexturedCubeVertexArrayObject();
@@ -719,7 +727,7 @@ int main(int argc, char*argv[])
     int currentTexture = 1;
 
     // Entering Main Loop
-    while(!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window))
     {
         // Each frame, reset color of each pixel to glClearColor
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -746,24 +754,24 @@ int main(int argc, char*argv[])
         }
 
         switch (currentTexture) {
-            case 1:
-                glBindTexture(GL_TEXTURE_2D, tilesTextureID);
-                break;
-            case 2:
-                glBindTexture(GL_TEXTURE_2D, cardboardTextureID);
-                break;
-            case 3:
-                glBindTexture(GL_TEXTURE_2D, fabricTextureID);
-                break;
-            case 4:
-                glBindTexture(GL_TEXTURE_2D, steelTextureID);
-                break;
-            case 5:
-                glBindTexture(GL_TEXTURE_2D, cementTextureID);
-                break;
+        case 1:
+            glBindTexture(GL_TEXTURE_2D, tilesTextureID);
+            break;
+        case 2:
+            glBindTexture(GL_TEXTURE_2D, cardboardTextureID);
+            break;
+        case 3:
+            glBindTexture(GL_TEXTURE_2D, fabricTextureID);
+            break;
+        case 4:
+            glBindTexture(GL_TEXTURE_2D, steelTextureID);
+            break;
+        case 5:
+            glBindTexture(GL_TEXTURE_2D, cementTextureID);
+            break;
         }
 
-        
+
 
         //TO DO -- Save for last
         //Draw screen
@@ -788,7 +796,7 @@ int main(int argc, char*argv[])
         groundWorldMatrix = translate(mat4(1.0f), vec3(-32.0f, -0.01f, -32.0f)) * scale(mat4(1.0f), vec3(64.0f, 0.02f, 64.0f));
         setWorldMatrix(texturedShaderProgram, groundWorldMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
-        
+
 
         //Draw stage
         glBindTexture(GL_TEXTURE_2D, fabricTextureID);
@@ -803,7 +811,7 @@ int main(int argc, char*argv[])
         setWorldMatrix(texturedShaderProgram, rightStageMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-       
+
 
 
         //Drawing the pillars 
@@ -859,16 +867,16 @@ int main(int argc, char*argv[])
 
         //Section for digit 3 ----------------------
         //Right part of three
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* threeRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * threeRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Top part of 3
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* threeTopMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * threeTopMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Mid part of 3
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* threeMidMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * threeMidMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Bottom part of 3
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* threeBottomMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * threeBottomMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Drawing our digits
@@ -876,31 +884,31 @@ int main(int argc, char*argv[])
 
         //Section for letter S -------------------------
         //Right part of S
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* sRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * sRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Top part of S
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* sTopMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * sTopMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Mid part of S
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* sMidMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * sMidMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Bottom part of S
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* sBottomMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * sBottomMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Left part of S
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* sLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * sLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Section for letter L ----------------------------
         //Left part of L
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* lLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * lLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Bottom part of L
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* lBottomMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * lBottomMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
-       
-        
+
+
         //Section for second group (position 2, behind left)---------------------------------------------------------------------------------------
         //Feike Qi ID : 40079084
         //Checking if our group needs to be modified
@@ -910,58 +918,58 @@ int main(int argc, char*argv[])
         //Making our combined group matrix
         GroupMatrix = GroupTMatrix * twoPostitionMatrix * twoBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
-         //Drawing our digits
+        //Drawing our digits
         glBindTexture(GL_TEXTURE_2D, steelTextureID);
 
-         //Section for first digit 4 (part of group 2)--------------------
-         //Right part of 4 
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four1RightMatrix);
+        //Section for first digit 4 (part of group 2)--------------------
+        //Right part of 4 
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four1RightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part of 4
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four1HorizontalMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four1HorizontalMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Left part of 4
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four1LeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four1LeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
         //Section for second digit 4 (part of group 2)--------------------
         //Right part of 4 
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four2RightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four2RightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part of 4
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four2HorizontalMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four2HorizontalMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Left part of 4
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four2LeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four2LeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Drawing our letters
         glBindTexture(GL_TEXTURE_2D, cardboardTextureID);
 
         //Section for F (part of group 2)--------------------
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* fVerticalMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * fVerticalMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part of F
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* fTopMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * fTopMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part2 of F
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* fMiddleMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * fMiddleMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Section for E (part of group 2)--------------------
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* eVerticalMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * eVerticalMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part of E
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* eTopMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * eTopMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part2 of E
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* eMiddleMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * eMiddleMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part3 of E
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* eBottomMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * eBottomMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        
+
 
         //Section for third group (position 3, behind right)---------------------------------------------------------------------------------------
         //
@@ -981,30 +989,30 @@ int main(int argc, char*argv[])
         //Section for number 4 (Part of group 3)
         //Lam Tran Student ID: 40088195
         //Right part of 4 
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* fourRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * fourRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part of 4
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* fourHorizontalMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * fourHorizontalMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Left part of 4
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* fourLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * fourLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Section for number 5 (part of group 3)-------------------------
         //Right part of 5
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* FiveRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * FiveRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Top part of 5
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* FiveTopMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * FiveTopMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Mid part of 5
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* FiveMidMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * FiveMidMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Bottom part of 5
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* FiveBottomMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * FiveBottomMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Left part of 5
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* FiveLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * FiveLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Drawing our letters
@@ -1012,24 +1020,24 @@ int main(int argc, char*argv[])
 
         //Section for letter L (part of group 2)----------------------------
         //Left part of L
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* LamLLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * LamLLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Bottom part of L
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* LamLBottomMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * LamLBottomMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Section for letter M
         //Draw left part of M
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* MLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * MLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw the middle left of M
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* MMiddleLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * MMiddleLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw middle right of M
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* MMiddleRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * MMiddleRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw right of M
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* MRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * MRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
@@ -1047,33 +1055,33 @@ int main(int argc, char*argv[])
         //Drawing our digits
         //Section for digit 2 (group 4)
         //bottom part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* bottom2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * bottom2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //middle part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* middle2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * middle2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //top part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* top2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * top2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //left part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* left2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * left2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //right part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* right2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * right2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Section for digit 9 (group 4)
         //middle part of 9
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* middle9Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * middle9Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //top part of 9
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* top9Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * top9Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //left part of 9
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* left9Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * left9Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //right part of 9
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* right9Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * right9Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Drawing our letters
@@ -1081,27 +1089,27 @@ int main(int argc, char*argv[])
 
         //Section for Letter A (group 4)
         //Draw Left part of A
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* ALeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * ALeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw Right part of A
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* ARightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * ARightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw Middle part of A
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* AMiddleMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * AMiddleMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Section for Letter M (group 4)
         //Draw left part of M
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* MLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * MLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw the middle left of M
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* MMiddleLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * MMiddleLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw middle right of M
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* MMiddleRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * MMiddleRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw right of M
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* MRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * MRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
@@ -1116,62 +1124,62 @@ int main(int argc, char*argv[])
 
         //Drawing our digits
         //Draw left stick of D
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* DLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * DLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw top stick of D
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* DTopMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * DTopMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw bottom stick of D
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* DBottomMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * DBottomMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw right stick of D
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* DRightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * DRightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Draw left stick of K
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* KLeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * KLeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw bottom slash of K
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* KBottomMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * KBottomMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Draw top slash of K
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* KTopMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * KTopMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glBindTexture(GL_TEXTURE_2D, steelTextureID);
 
         //Section for number 4
         //Right part of 4 
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four1RightMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four1RightMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Horizontal part of 4
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four1HorizontalMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four1HorizontalMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //Left part of 4
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* four1LeftMatrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * four1LeftMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //Section for digit 2 (group 5)
        //bottom part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* GroupFivebottom2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * GroupFivebottom2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //middle part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* GroupFivemiddle2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * GroupFivemiddle2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //top part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* GroupFivetop2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * GroupFivetop2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //left part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* GroupFiveleft2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * GroupFiveleft2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         //right part of 2
-        setWorldMatrix(texturedShaderProgram, GroupMatrix* GroupFiveright2Matrix);
+        setWorldMatrix(texturedShaderProgram, GroupMatrix * GroupFiveright2Matrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Draw colored geometry------------------------------------------------------------------------------------------------------
         glUseProgram(colorShaderProgram);
         glUniform3fv(colorLocation, 0, value_ptr(vec3(1.0, 0.0, 0.0)));
-        
+
         //TO DO -- Save for last
         //Draw screen
         WorldMatrix = screenMatrix;
@@ -1186,12 +1194,13 @@ int main(int argc, char*argv[])
         glfwSwapBuffers(window);
         glfwPollEvents();
 
+        
         // Handle inputs
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
 
 
-        
+
         bool fastCam = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
         float currentCameraSpeed = (fastCam) ? cameraFastSpeed : cameraSpeed;
 
@@ -1210,7 +1219,7 @@ int main(int argc, char*argv[])
         // Convert to spherical coordinates
         const float cameraAngularSpeed = 60.0f;
         cameraHorizontalAngle -= dx * cameraAngularSpeed * dt;
-        cameraVerticalAngle   -= dy * cameraAngularSpeed * dt;
+        cameraVerticalAngle -= dy * cameraAngularSpeed * dt;
 
         // Clamp vertical angle to [-85, 85] degrees
         cameraVerticalAngle = std::max(-85.0f, std::min(85.0f, cameraVerticalAngle));
@@ -1218,39 +1227,387 @@ int main(int argc, char*argv[])
         float theta = radians(cameraHorizontalAngle);
         float phi = radians(cameraVerticalAngle);
 
-        cameraLookAt = vec3(cosf(phi)*cosf(theta), sinf(phi), -cosf(phi)*sinf(theta));
+        cameraLookAt = vec3(cosf(phi) * cosf(theta), sinf(phi), -cosf(phi) * sinf(theta));
         vec3 cameraSideVector = glm::cross(cameraLookAt, vec3(0.0f, 1.0f, 0.0f));
 
         glm::normalize(cameraSideVector);
 
 
-        // Use camera lookat and side vectors to update positions with ASDW
-        if (glfwGetKey(window, GLFW_KEY_W ) == GLFW_PRESS)
+        // GVBN movement ------------------------------------------------------
+        if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) // move camera to the left
         {
-            cameraPosition += cameraLookAt * dt * currentCameraSpeed;
+            cameraPosition -= cameraSideVector * dt * cameraSpeed;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_S ) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) // move camera to the right
         {
-            cameraPosition -= cameraLookAt * dt * currentCameraSpeed;
+            cameraPosition += cameraSideVector * dt * cameraSpeed;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_D ) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move camera up
         {
-            cameraPosition += cameraSideVector * dt * currentCameraSpeed;
+            cameraPosition -= cameraLookAt * dt * cameraSpeed;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_A ) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move camera down
         {
-            cameraPosition -= cameraSideVector * dt * currentCameraSpeed;
+            cameraPosition += cameraLookAt * dt * cameraSpeed;
+        }
+
+        // Orientation controls--------------------------------------------------
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+            currentOrientation.x += radians(1.0f);
+        }
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+            currentOrientation.x -= radians(1.0f);
+        }
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            currentOrientation.y += radians(1.0f);
+        }
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+            currentOrientation.y -= radians(1.0f);
+        }
+        // reset orientation
+        if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS) {
+            cameraHorizontalAngle = 90.0f;
+            cameraVerticalAngle = 0.0f;
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
+            cameraPosition = vec3(0.0f, 5.0f, 20.0f);
+            cameraLookAt = vec3(0.0f, 0.0f, 0.0f);
+            fov = 70.0f;
+            viewMatrix = lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                cameraUp); // up
+        }
+
+
+        //Preset Camera locations----------------------------------------------------------------------------
+        //Preset for center
+        if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+        {
+            cameraHorizontalAngle = 90.0f;
+            cameraVerticalAngle = 0.0f;
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
+            //Snapping camera to center
+            cameraPosition = glm::vec3(0.0f, 5.0f, 45.0f);
+            cameraLookAt = glm::vec3(0.0f, 0.0f, -1.0f);
+
+            viewMatrix = glm::lookAt(cameraPosition,  // eye,
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 1
+            position = 1;
+        }
+        //Preset for behind left
+        if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+        {
+            cameraHorizontalAngle = 121.0f;
+            cameraVerticalAngle = 0.0f;
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
+            cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, -10 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(-0.6f, 0.0f, -1.0f);
+
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 2
+            position = 2;
+        }
+
+        //Preset for behind right
+        if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
+        {
+            cameraHorizontalAngle = 35.5f;
+            cameraVerticalAngle = 0.0f;
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
+            cameraPosition = glm::vec3(10 * sin(3.14159 / 4), 5.0f, -30 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(1.4f, 0.0f, -1.0f);
+
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 3
+            position = 3;
+        }
+
+        //Preset for front right
+        if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
+        {
+            cameraHorizontalAngle = -46.5f;
+            cameraVerticalAngle = 0.0f;
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
+            cameraPosition = glm::vec3(20 * sin(3.14159 / 4), 5.0f, 20 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(0.95f, 0.0f, 1.0f);
+
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 4
+            position = 4;
+        }
+
+        //Preset for front left
+        if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+        {
+            cameraHorizontalAngle = -135.5f;
+            cameraVerticalAngle = 0.0f;
+            currentOrientation.y = 0;
+            currentOrientation.x = 0;
+            cameraPosition = glm::vec3(-20 * sin(3.14159 / 4), 5.0f, 20 * cos(3.14159 / 4));
+            cameraLookAt = glm::vec3(-1.02f, 0.0f, 1.0f);
+
+            viewMatrix = glm::lookAt(cameraPosition,  // eye
+                cameraLookAt,  // center
+                glm::vec3(0.0f, 1.0f, 0.0f));// up
+
+            viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
+            glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
+
+            //Setting current position to 5
+            position = 5;
+        }
+
+
+        //Controls for modifying digits--------------------------------------------------------------------
+        // Scale controls
+        if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) // Scale up
+        {
+            if (position == 1) {
+                oneScale += 0.1f;
+            }
+            if (position == 2) {
+                twoScale += 0.1f;
+            }
+            if (position == 3) {
+                threeScale += 0.1f;
+            }
+            if (position == 4) {
+                fourScale += 0.1f;
+            }
+            if (position == 5) {
+                fiveScale += 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) // Scale down
+        {
+            if (position == 1) {
+                if (oneScale <= 0)
+                    oneScale = 0;
+                else {
+                    oneScale -= 0.1f;
+                }
+            }
+            if (position == 2) {
+                if (twoScale <= 0)
+                    twoScale = 0;
+                else {
+                    twoScale -= 0.1f;
+                }
+            }
+            if (position == 3) {
+                if (threeScale <= 0)
+                    threeScale = 0;
+                else {
+                    threeScale -= 0.1f;
+                }
+            }
+            if (position == 4) {
+                if (fourScale <= 0)
+                    fourScale = 0;
+                else {
+                    fourScale -= 0.1f;
+                }
+            }
+            if (position == 5) {
+                if (fiveScale <= 0)
+                    fiveScale = 0;
+                else {
+                    fiveScale -= 0.1f;
+                }
+            }
+        }
+        //Rotation control
+        //Rotation with I and K
+        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) // Rotate counter-clockwise
+        {
+            if (position == 1) {
+                oneRotation += 1.0f;
+            }
+            if (position == 2) {
+                twoRotation += 1.0f;
+            }
+            if (position == 3) {
+                threeRotation += 1.0f;
+            }
+            if (position == 4) {
+                fourRotation += 1.0f;
+            }
+            if (position == 5) {
+                fiveRotation += 1.0f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) // Rotate clockwise
+        {
+            if (position == 1) {
+                oneRotation -= 1.0f;
+            }
+            if (position == 2) {
+                twoRotation -= 1.0f;
+            }
+            if (position == 3) {
+                threeRotation -= 1.0f;
+            }
+            if (position == 4) {
+                fourRotation -= 1.0f;
+            }
+            if (position == 5) {
+                fiveRotation -= 1.0f;
+            }
+        }
+        //Translation control
+        //It is relative to the starting position's perspective
+        if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) //T = negative Z axis (or back for default view)
+        {
+            if (position == 1) {
+                oneZ -= 0.1f;
+            }
+            if (position == 2) {
+                twoZ -= 0.1f;
+            }
+            if (position == 3) {
+                threeZ -= 0.1f;
+            }
+            if (position == 4) {
+                fourZ -= 0.1f;
+            }
+            if (position == 5) {
+                fiveZ -= 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) // G - Positive Z axis
+        {
+            if (position == 1) {
+                oneZ += 0.1f;
+            }
+            if (position == 2) {
+                twoZ += 0.1f;
+            }
+            if (position == 3) {
+                threeZ += 0.1f;
+            }
+            if (position == 4) {
+                fourZ += 0.1f;
+            }
+            if (position == 5) {
+                fiveZ += 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) //F = negative X axis (or back for default view)
+        {
+            if (position == 1) {
+                oneX -= 0.1f;
+            }
+            if (position == 2) {
+                twoX -= 0.1f;
+            }
+            if (position == 3) {
+                threeX -= 0.1f;
+            }
+            if (position == 4) {
+                fourX -= 0.1f;
+            }
+            if (position == 5) {
+                fiveX -= 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) // G - Positive X axis
+        {
+            if (position == 1) {
+                oneX += 0.1f;
+            }
+            if (position == 2) {
+                twoX += 0.1f;
+            }
+            if (position == 3) {
+                threeX += 0.1f;
+            }
+            if (position == 4) {
+                fourX += 0.1f;
+            }
+            if (position == 5) {
+                fiveX += 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) //O = positive Y axis
+        {
+            if (position == 1) {
+                oneY += 0.1f;
+            }
+            if (position == 2) {
+                twoY += 0.1f;
+            }
+            if (position == 3) {
+                threeY += 0.1f;
+            }
+            if (position == 4) {
+                fourY += 0.1f;
+            }
+            if (position == 5) {
+                fiveY += 0.1f;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // L -Negative Y axis
+        {
+            if (position == 1) {
+                oneY -= 0.1f;
+            }
+            if (position == 2) {
+                twoY -= 0.1f;
+            }
+            if (position == 3) {
+                threeY -= 0.1f;
+            }
+            if (position == 4) {
+                fourY -= 0.1f;
+            }
+            if (position == 5) {
+                fiveY -= 0.1f;
+            }
         }
 
         mat4 viewMatrix(1.0f);
 
-       viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp );
-       
+        viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
+
         setViewMatrix(colorShaderProgram, viewMatrix);
         setViewMatrix(texturedShaderProgram, viewMatrix);
+
+        // Orientation Matrix
+        orientationMatrix = rotate(rotate(mat4(1.0f), currentOrientation.x, vec3(1.0f, 0.0f, 0.0f)), currentOrientation.y, vec3(0.0f, 1.0f, 0.0f));
+        setOrientationMatrix(colorShaderProgram, orientationMatrix);
+        setOrientationMatrix(texturedShaderProgram, orientationMatrix);
+
     }
 
     glfwTerminate();
@@ -1262,74 +1619,74 @@ const char* getVertexShaderSource()
 {
     // For now, you use a string for your shader code, in the assignment, shaders will be stored in .glsl files
     return
-                "#version 330 core\n"
-                "layout (location = 0) in vec3 aPos;"
-                "layout (location = 1) in vec3 aColor;"
-                ""
-                "uniform mat4 worldMatrix;"
-                "uniform mat4 viewMatrix = mat4(1.0);"  // default value for view matrix (identity)
-                "uniform mat4 projectionMatrix = mat4(1.0);"
-                ""
-                "out vec3 vertexColor;"
-                "void main()"
-                "{"
-                "   vertexColor = aColor;"
-                "   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldMatrix;"
-                "   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
-                "}";
+        "#version 330 core\n"
+        "layout (location = 0) in vec3 aPos;"
+        "layout (location = 1) in vec3 aColor;"
+        ""
+        "uniform mat4 worldMatrix;"
+        "uniform mat4 viewMatrix = mat4(1.0);"  // default value for view matrix (identity)
+        "uniform mat4 projectionMatrix = mat4(1.0);"
+        ""
+        "out vec3 vertexColor;"
+        "void main()"
+        "{"
+        "   vertexColor = aColor;"
+        "   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldMatrix;"
+        "   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
+        "}";
 }
 
 const char* getFragmentShaderSource()
 {
     return
-    "#version 330 core\n"
-    "in vec3 vertexColor;"
-    "out vec4 FragColor;"
-    "void main()"
-    "{"
-    "   FragColor = vec4(vertexColor.r, vertexColor.g, vertexColor.b, 1.0f);"
-    "}";
+        "#version 330 core\n"
+        "in vec3 vertexColor;"
+        "out vec4 FragColor;"
+        "void main()"
+        "{"
+        "   FragColor = vec4(vertexColor.r, vertexColor.g, vertexColor.b, 1.0f);"
+        "}";
 }
 
 const char* getTexturedVertexShaderSource()
 {
     // For now, you use a string for your shader code, in the assignment, shaders will be stored in .glsl files
     return
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;"
-    "layout (location = 1) in vec3 aColor;"
-    "layout (location = 2) in vec2 aUV;"
-    ""
-    "uniform mat4 worldMatrix;"
-    "uniform mat4 viewMatrix = mat4(1.0);"  // default value for view matrix (identity)
-    "uniform mat4 projectionMatrix = mat4(1.0);"
-    ""
-    "out vec3 vertexColor;"
-    "out vec2 vertexUV;"
-    ""
-    "void main()"
-    "{"
-    "   vertexColor = aColor;"
-    "   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldMatrix;"
-    "   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
-    "   vertexUV = aUV;"
-    "}";
+        "#version 330 core\n"
+        "layout (location = 0) in vec3 aPos;"
+        "layout (location = 1) in vec3 aColor;"
+        "layout (location = 2) in vec2 aUV;"
+        ""
+        "uniform mat4 worldMatrix;"
+        "uniform mat4 viewMatrix = mat4(1.0);"  // default value for view matrix (identity)
+        "uniform mat4 projectionMatrix = mat4(1.0);"
+        ""
+        "out vec3 vertexColor;"
+        "out vec2 vertexUV;"
+        ""
+        "void main()"
+        "{"
+        "   vertexColor = aColor;"
+        "   mat4 modelViewProjection = projectionMatrix * viewMatrix * worldMatrix;"
+        "   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
+        "   vertexUV = aUV;"
+        "}";
 }
 
 const char* getTexturedFragmentShaderSource()
 {
     return
-    "#version 330 core\n"
-    "in vec3 vertexColor;"
-    "in vec2 vertexUV;"
-    "uniform sampler2D textureSampler;"
-    ""
-    "out vec4 FragColor;"
-    "void main()"
-    "{"
-    "   vec4 textureColor = texture( textureSampler, vertexUV );"
-    "   FragColor = textureColor;"
-    "}";
+        "#version 330 core\n"
+        "in vec3 vertexColor;"
+        "in vec2 vertexUV;"
+        "uniform sampler2D textureSampler;"
+        ""
+        "out vec4 FragColor;"
+        "void main()"
+        "{"
+        "   vec4 textureColor = texture( textureSampler, vertexUV );"
+        "   FragColor = textureColor;"
+        "}";
 }
 
 int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource)
@@ -1385,44 +1742,44 @@ int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentSh
     return shaderProgram;
 }
 
-GLuint loadTexture(const char *filename)
+GLuint loadTexture(const char* filename)
 {
-  // Step1 Create and bind textures
-  GLuint textureId = 0;
-  glGenTextures(1, &textureId);
-  assert(textureId != 0);
+    // Step1 Create and bind textures
+    GLuint textureId = 0;
+    glGenTextures(1, &textureId);
+    assert(textureId != 0);
 
 
-  glBindTexture(GL_TEXTURE_2D, textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
-  // Step2 Set filter parameters
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // Step2 Set filter parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-  // Step3 Load Textures with dimension data
-  int width, height, nrChannels;
-  unsigned char *data = stbi_load(filename, &width, &height, &nrChannels, 0);
-  if (!data)
-  {
-    std::cerr << "Error::Texture could not load texture file:" << filename << std::endl;
-    return 0;
-  }
+    // Step3 Load Textures with dimension data
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load(filename, &width, &height, &nrChannels, 0);
+    if (!data)
+    {
+        std::cerr << "Error::Texture could not load texture file:" << filename << std::endl;
+        return 0;
+    }
 
-  // Step4 Upload the texture to the PU
-  GLenum format = 0;
-  if (nrChannels == 1)
-      format = GL_RED;
-  else if (nrChannels == 3)
-      format = GL_RGB;
-  else if (nrChannels == 4)
-      format = GL_RGBA;
-  glTexImage2D(GL_TEXTURE_2D, 0, format, width, height,
-               0, format, GL_UNSIGNED_BYTE, data);
+    // Step4 Upload the texture to the PU
+    GLenum format = 0;
+    if (nrChannels == 1)
+        format = GL_RED;
+    else if (nrChannels == 3)
+        format = GL_RGB;
+    else if (nrChannels == 4)
+        format = GL_RGBA;
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height,
+        0, format, GL_UNSIGNED_BYTE, data);
 
-  // Step5 Free resources
-  stbi_image_free(data);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  return textureId;
+    // Step5 Free resources
+    stbi_image_free(data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return textureId;
 }
 
 int createTexturedCubeVertexArrayObject()
@@ -1439,31 +1796,31 @@ int createTexturedCubeVertexArrayObject()
     glBufferData(GL_ARRAY_BUFFER, sizeof(texturedCubeVertexArray), texturedCubeVertexArray, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
-                          3,                   // size
-                          GL_FLOAT,            // type
-                          GL_FALSE,            // normalized?
-                          sizeof(TexturedColoredVertex), // stride - each vertex contain 2 vec3 (position, color)
-                          (void*)0             // array buffer offset
-                          );
+        3,                   // size
+        GL_FLOAT,            // type
+        GL_FALSE,            // normalized?
+        sizeof(TexturedColoredVertex), // stride - each vertex contain 2 vec3 (position, color)
+        (void*)0             // array buffer offset
+    );
     glEnableVertexAttribArray(0);
 
 
     glVertexAttribPointer(1,                            // attribute 1 matches aColor in Vertex Shader
-                          3,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(TexturedColoredVertex),
-                          (void*)sizeof(vec3)      // color is offseted a vec3 (comes after position)
-                          );
+        3,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(TexturedColoredVertex),
+        (void*)sizeof(vec3)      // color is offseted a vec3 (comes after position)
+    );
     glEnableVertexAttribArray(1);
 
     glVertexAttribPointer(2,                            // attribute 2 matches aUV in Vertex Shader
-                          2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(TexturedColoredVertex),
-                          (void*)(2*sizeof(vec3))      // uv is offseted by 2 vec3 (comes after position and color)
-                          );
+        2,
+        GL_FLOAT,
+        GL_FALSE,
+        sizeof(TexturedColoredVertex),
+        (void*)(2 * sizeof(vec3))      // uv is offseted by 2 vec3 (comes after position and color)
+    );
     glEnableVertexAttribArray(2);
 
     return vertexArrayObject;
