@@ -33,6 +33,10 @@ const char* getVertexShaderSource();
 
 const char* getFragmentShaderSource();
 
+const char* getLightVertexShaderSource();
+
+const char* getLightFragmentShaderSource();
+
 const char* getTexturedVertexShaderSource();
 
 const char* getTexturedFragmentShaderSource();
@@ -101,6 +105,8 @@ const TexturedColoredVertex texturedCubeVertexArray[] = {  // position,         
 };
 
 int createTexturedCubeVertexArrayObject();
+
+int createLightVertexArrayObject();
 
 void setProjectionMatrix(int shaderProgram, mat4 projectionMatrix)
 {
@@ -176,6 +182,8 @@ int main(int argc, char* argv[])
     // Compile and link shaders here ...
     int colorShaderProgram = compileAndLinkShaders(getVertexShaderSource(), getFragmentShaderSource());
     int texturedShaderProgram = compileAndLinkShaders(getTexturedVertexShaderSource(), getTexturedFragmentShaderSource());
+    int lightProgram = compileAndLinkShaders(getLightVertexShaderSource(), getLightFragmentShaderSource());
+
 
     // SHADER PROGRAM LOCATIONS
     GLuint worldMatrixLocation = glGetUniformLocation(colorShaderProgram, "worldMatrix");
@@ -212,13 +220,15 @@ int main(int argc, char* argv[])
 // Set View and Projection matrices on both shaders
     setViewMatrix(colorShaderProgram, viewMatrix);
     setViewMatrix(texturedShaderProgram, viewMatrix);
+    setViewMatrix(lightProgram, viewMatrix);
 
     setProjectionMatrix(colorShaderProgram, projectionMatrix);
     setProjectionMatrix(texturedShaderProgram, projectionMatrix);
-
+    setProjectionMatrix(lightProgram, projectionMatrix);
 
     // Define and upload geometry to the GPU here ...
     int texturedCubeVAO = createTexturedCubeVertexArrayObject();
+    int lightVAO = createLightVertexArrayObject();
 
     // For frame time
     float lastFrameTime = glfwGetTime();
@@ -798,6 +808,12 @@ int main(int argc, char* argv[])
         glDrawArrays(GL_TRIANGLES, 0, 36); // 36 vertices, starting at index 0
 
 
+        // Light Source
+        glBindVertexArray(lightVAO);
+        groundWorldMatrix = translate(model, vec3(0.0f, 30.0f, 0.0f)) * scale(model, vec3(2.0f, 2.0f, 2.0f));
+        setWorldMatrix(lightProgram, groundWorldMatrix);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
         //Draw stage
         glBindTexture(GL_TEXTURE_2D, fabricTextureID);
 
@@ -1304,6 +1320,7 @@ int main(int argc, char* argv[])
             //Setting current position to 1
             position = 1;
         }
+
         //Preset for behind left
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
         {
@@ -1602,11 +1619,13 @@ int main(int argc, char* argv[])
 
         setViewMatrix(colorShaderProgram, viewMatrix);
         setViewMatrix(texturedShaderProgram, viewMatrix);
+        setViewMatrix(lightProgram, viewMatrix);
 
         // Orientation Matrix
         orientationMatrix = rotate(rotate(mat4(1.0f), currentOrientation.x, vec3(1.0f, 0.0f, 0.0f)), currentOrientation.y, vec3(0.0f, 1.0f, 0.0f));
         setOrientationMatrix(colorShaderProgram, orientationMatrix);
         setOrientationMatrix(texturedShaderProgram, orientationMatrix);
+        setOrientationMatrix(lightProgram, orientationMatrix);
 
     }
 
@@ -1645,6 +1664,36 @@ const char* getFragmentShaderSource()
         "void main()"
         "{"
         "   FragColor = vec4(vertexColor.r, vertexColor.g, vertexColor.b, 1.0f);"
+        "}";
+}
+
+const char* getLightVertexShaderSource()
+{
+    return
+        "#version 330 core\n"
+        "layout (location = 0) in vec3 aPos;"
+        ""
+        "uniform mat4 worldMatrix;"
+        "uniform mat4 orientationMatrix = mat4(1.0);"
+        "uniform mat4 viewMatrix = mat4(1.0);"  // default value for view matrix (identity)
+        "uniform mat4 projectionMatrix = mat4(1.0);"
+        ""
+        "void main()"
+        "{"
+        "   mat4 modelViewProjection = projectionMatrix * viewMatrix * orientationMatrix * worldMatrix;"
+        "   gl_Position = modelViewProjection * vec4(aPos, 1.0);"
+        "}";
+}
+
+const char* getLightFragmentShaderSource() // SUBJECT TO CHANGE.
+{
+    return
+        "#version 330 core"
+        "out vec4 FragColor;"
+        ""
+        "void main()"
+        "{"
+        "	FragColor = vec4(1.0); // set all 4 vector values to 1.0"
         "}";
 }
 
@@ -1824,4 +1873,77 @@ int createTexturedCubeVertexArrayObject()
     glEnableVertexAttribArray(2);
 
     return vertexArrayObject;
+}
+
+int createLightVertexArrayObject() {
+    //cube model
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+
+        -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f, -0.5f,
+
+        -0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+    };
+
+    unsigned int VBO, cubeVAO;
+    glGenVertexArrays(1, &cubeVAO);
+    glGenBuffers(1, &VBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindVertexArray(cubeVAO);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+    unsigned int lightVAO;
+    glGenVertexArrays(1, &lightVAO);
+    glBindVertexArray(lightVAO);
+
+    // we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    return lightVAO;
 }
