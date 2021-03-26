@@ -4,6 +4,7 @@
 // Created by Nicolas Bergeron on 20/06/2019.
 //
 
+
 #include <iostream>
 #include <list>
 #include <algorithm>
@@ -42,7 +43,7 @@ int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentSh
 struct TexturedColoredVertex
 {
     TexturedColoredVertex(vec3 _position, vec3 _color, vec2 _uv, vec3 _normal)
-        : position(_position), color(_color), uv(_uv), normal(_normal)  {}
+        : position(_position), color(_color), uv(_uv), normal(_normal) {}
 
     vec3 position;
     vec3 color;
@@ -52,55 +53,55 @@ struct TexturedColoredVertex
 };
 
 // Textured Cube model
-const TexturedColoredVertex texturedCubeVertexArray[] = {                              
-                       // position,                color                      UV                      normal
-    TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f)),      //left - red
-    TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f), vec3(-1.0f, 0.0f, 0.0f)),
-    TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f), vec3(-1.0f, 0.0f, 0.0f)),
+const TexturedColoredVertex texturedCubeVertexArray[] = {
+    // position,                color                      UV                      normal
+TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f)),      //left - red
+TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f), vec3(-1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f), vec3(-1.0f, 0.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f)),
-    TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f), vec3(-1.0f, 0.0f, 0.0f)),
-    TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 1.0f), vec3(-1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(1.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f), vec3(0.0f, 0.0f, -1.0f)),       // far - blue
-    TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), vec3(0.0f, 0.0f, -1.0f)),
-    TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f), vec3(0.0f, 0.0f, -1.0f)),
+TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f), vec3(0.0f, 0.0f, -1.0f)),       // far - blue
+TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), vec3(0.0f, 0.0f, -1.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f), vec3(0.0f, 0.0f, -1.0f)),
 
-    TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f), vec3(0.0f, 0.0f, -1.0f)),
-    TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f), vec3(0.0f, 0.0f, -1.0f)),
-    TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), vec3(0.0f, 0.0f, -1.0f)),
+TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f), vec3(0.0f, 0.0f, -1.0f)),
+TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f), vec3(0.0f, 0.0f, -1.0f)),
+TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), vec3(0.0f, 0.0f, -1.0f)),
 
-    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 1.0f), vec3(0.0f,-1.0f, 0.0f)),        // bottom - turquoise
-    TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 0.0f), vec3(0.0f,-1.0f, 0.0f)),
-    TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 0.0f), vec3(0.0f,-1.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 1.0f), vec3(0.0f,-1.0f, 0.0f)),        // bottom - turquoise
+TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 0.0f), vec3(0.0f,-1.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 0.0f), vec3(0.0f,-1.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 1.0f), vec3(0.0f,-1.0f, 0.0f)),
-    TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 1.0f), vec3(0.0f,-1.0f, 0.0f)),
-    TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 0.0f), vec3(0.0f,-1.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(1.0f, 1.0f), vec3(0.0f,-1.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 1.0f), vec3(0.0f,-1.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f), vec2(0.0f, 0.0f), vec3(0.0f,-1.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f),  vec3(0.0f, 0.0f, 1.0f)),    // near - green
-    TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f)),
-    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f),  vec3(0.0f, 0.0f, 1.0f)),    // near - green
+TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f)),
+TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f)),
 
-    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f), vec3(0.0f, 0.0f, 1.0f)),
-    TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f), vec3(0.0f, 0.0f, 1.0f)),
-    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f)),
+TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f), vec3(0.0f, 0.0f, 1.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f), vec3(0.0f, 0.0f, 1.0f)),
+TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f), vec3(0.0f, 0.0f, 1.0f)),
 
-    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)),      // right - purple
-    TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f)),
-    TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)),      // right - purple
+TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f)),
-    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)),
-    TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f), vec3(1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f), vec3(1.0f, 0.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f)),    // top - yellow
-    TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
-    TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
+TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f)),    // top - yellow
+TexturedColoredVertex(vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
 
-    TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f)),
-    TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
-    TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f))
+TexturedColoredVertex(vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(1.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f)),
+TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f))
 };
 
 int createTexturedCubeVertexArrayObject();
@@ -208,10 +209,10 @@ int main(int argc, char* argv[])
         0.01f, 100.0f);   // near and far (near > 0)
 
     //LIGHTS
-    vec3 lightPos0(0.0f, 30.0f, 0.0f);   
-   glUniform3fv(glGetUniformLocation(texturedShaderProgram, "lightPos0"), 1, value_ptr(lightPos0));
+    vec3 lightPos0(0.0f, 30.0f, 0.0f);
 
-// Set initial view matrix
+
+    // Set initial view matrix
     mat4 viewMatrix = lookAt(cameraPosition,  // eye
         cameraPosition + cameraLookAt,  // center
         cameraUp); // up
@@ -265,6 +266,7 @@ int main(int argc, char* argv[])
     mat4 GroupTMatrix = model; //To modify final model position
     mat4 GroupOriginRotationMatrix = model; //If we want to rotate whole group on itself at final position
     mat4 GroupScaleMatrix = model; //If we want to scale the whole group of 4 digits
+    mat4 GroupShearMatrix = model;
     //Combination matrix to avoid unnecessary calculations and simplicity
     mat4 GroupMatrix = model;
 
@@ -326,6 +328,8 @@ int main(int argc, char* argv[])
     //These variables are used to modify the above matrices to change the digits according to user input
     float oneRotation = 0.0f;
     float oneScale = 1;
+    float oneShearX = 0;
+    float oneShearZ = 0;
     float oneX = 0;
     float oneZ = 0;
     float oneY = 0;
@@ -415,6 +419,8 @@ int main(int argc, char* argv[])
     //These variables are used to modify the above matrices to change the digits according to user input
     float twoRotation = 0.0f;
     float twoScale = 1;
+    float twoShearX = 0;
+    float twoShearZ = 0;
     float twoX = 0;
     float twoZ = 0;
     float twoY = 0;
@@ -498,6 +504,8 @@ int main(int argc, char* argv[])
     //These variables are used to modify the above matrices to change the digits according to user input
     float threeRotation = 0.0f;
     float threeScale = 1;
+    float threeShearX = 0;
+    float threeShearZ = 0;
     float threeX = 0;
     float threeZ = 0;
     float threeY = 0;
@@ -581,6 +589,8 @@ int main(int argc, char* argv[])
     //These variables are used to modify the above matrices to change the digits according to user input
     float fourRotation = 0.0f;
     float fourScale = 1;
+    float fourShearX = 0;
+    float fourShearZ = 0;
     float fourX = 0;
     float fourZ = 0;
     float fourY = 0;
@@ -666,6 +676,8 @@ int main(int argc, char* argv[])
     //These variables are used to modify the above matrices to change the digits according to user input
     float fiveRotation = 0.0f;
     float fiveScale = 1;
+    float fiveShearX = 0;
+    float fiveShearZ = 0;
     float fiveX = 0;
     float fiveZ = 0;
     float fiveY = 0;
@@ -745,6 +757,14 @@ int main(int argc, char* argv[])
         glActiveTexture(GL_TEXTURE0);
         GLuint textureLocation = glGetUniformLocation(texturedShaderProgram, "textureSampler");
         glUniform1i(textureLocation, 0);                // Set our Texture sampler to user Texture Unit 0
+
+        //Set the light position to uniform variable lightPos0
+        glUniform3fv(glGetUniformLocation(texturedShaderProgram, "lightPos0"), 1, &lightPos0[0]);
+
+        //Set the camera position to uniform variable viewPos
+        glUniform3fv(glGetUniformLocation(texturedShaderProgram, "viewPos"), 1, &cameraPosition[0]);
+
+
 
         // Frame time calculation
         float dt = glfwGetTime() - lastFrameTime;
@@ -852,10 +872,14 @@ int main(int argc, char* argv[])
         //Samuel Tardif ID : 40051573
         //Checking if our group needs to be modified
         GroupScaleMatrix = scale(mat4(1.0f), vec3(oneScale, oneScale, oneScale));
+        GroupShearMatrix = { 1.0,0.0,0.0,0.0,
+                            oneShearX,1.0,oneShearZ,0.0,
+                            0.0,0.0,1.0,0.0,
+                            0.0,0.0,0.0,1.0 };
         GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(oneRotation), vec3(0.0f, 1.0f, 0.0f));
         GroupTMatrix = translate(mat4(1.0f), vec3(oneX, oneY, oneZ));
         //Making our combined group matrix
-        GroupMatrix = GroupTMatrix * onePostitionMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+        GroupMatrix = GroupTMatrix * onePostitionMatrix * GroupShearMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         //Drawing our digits
         glBindTexture(GL_TEXTURE_2D, steelTextureID);
@@ -920,10 +944,14 @@ int main(int argc, char* argv[])
         //Feike Qi ID : 40079084
         //Checking if our group needs to be modified
         GroupScaleMatrix = scale(mat4(1.0f), vec3(twoScale, twoScale, twoScale));
+        GroupShearMatrix = { 1.0,0.0,0.0,0.0,
+                            twoShearX,1.0,twoShearZ,0.0,
+                            0.0,0.0,1.0,0.0,
+                            0.0,0.0,0.0,1.0 };
         GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(twoRotation), vec3(0.0f, 1.0f, 0.0f));
         GroupTMatrix = translate(mat4(1.0f), vec3(twoX, twoY, twoZ));
         //Making our combined group matrix
-        GroupMatrix = GroupTMatrix * twoPostitionMatrix * twoBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+        GroupMatrix = GroupTMatrix * twoPostitionMatrix * GroupShearMatrix * twoBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         //Drawing our digits
         glBindTexture(GL_TEXTURE_2D, steelTextureID);
@@ -982,10 +1010,14 @@ int main(int argc, char* argv[])
         //
         //Checking if our group needs to be modified
         GroupScaleMatrix = scale(mat4(1.0f), vec3(threeScale, threeScale, threeScale));
+        GroupShearMatrix = { 1.0,0.0,0.0,0.0,
+                            threeShearX,1.0,threeShearZ,0.0,
+                            0.0,0.0,1.0,0.0,
+                            0.0,0.0,0.0,1.0 };
         GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(threeRotation), vec3(0.0f, 1.0f, 0.0f));
         GroupTMatrix = translate(mat4(1.0f), vec3(threeX, threeY, threeZ));
         //Making our combined group matrix
-        GroupMatrix = GroupTMatrix * threePostitionMatrix * threeBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+        GroupMatrix = GroupTMatrix * threePostitionMatrix * GroupShearMatrix * threeBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         //Drawing our digits
         //Lam Tran Student ID: 40088195
@@ -1052,10 +1084,14 @@ int main(int argc, char* argv[])
         //Name: Adam Richard ID: 27059329
         //Checking if our group needs to be modified
         GroupScaleMatrix = scale(mat4(1.0f), vec3(fourScale, fourScale, fourScale));
+        GroupShearMatrix = { 1.0,0.0,0.0,0.0,
+                            fourShearX,1.0,fourShearZ,0.0,
+                            0.0,0.0,1.0,0.0,
+                            0.0,0.0,0.0,1.0 };
         GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(fourRotation), vec3(0.0f, 1.0f, 0.0f));
         GroupTMatrix = translate(mat4(1.0f), vec3(fourX, fourY, fourZ));
         //Making our combined group matrix
-        GroupMatrix = GroupTMatrix * fourPostitionMatrix * fourBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+        GroupMatrix = GroupTMatrix * fourPostitionMatrix * GroupShearMatrix * fourBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         glBindTexture(GL_TEXTURE_2D, steelTextureID);
 
@@ -1124,10 +1160,14 @@ int main(int argc, char* argv[])
         //
         //Checking if our group needs to be modified
         GroupScaleMatrix = scale(mat4(1.0f), vec3(fiveScale, fiveScale, fiveScale));
+        GroupShearMatrix = { 1.0,0.0,0.0,0.0,
+                            fiveShearX,1.0,fiveShearZ,0.0,
+                            0.0,0.0,1.0,0.0,
+                            0.0,0.0,0.0,1.0 };
         GroupOriginRotationMatrix = rotate(mat4(1.0f), radians(fiveRotation), vec3(0.0f, 1.0f, 0.0f));
         GroupTMatrix = translate(mat4(1.0f), vec3(fiveX, fiveY, fiveZ));
         //Making our combined group matrix
-        GroupMatrix = GroupTMatrix * fivePostitionMatrix * fiveBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
+        GroupMatrix = GroupTMatrix * fivePostitionMatrix * GroupShearMatrix * fiveBaseRotationMatrix * GroupOriginRotationMatrix * GroupScaleMatrix;
 
         //Drawing our digits
         //Draw left stick of D
@@ -1293,13 +1333,13 @@ int main(int argc, char* argv[])
         //Preset for center
         if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
         {
-            cameraHorizontalAngle = 90.0f;
+            cameraHorizontalAngle = -90.0f;
             cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
             //Snapping camera to center
-            cameraPosition = glm::vec3(0.0f, 5.0f, 45.0f);
-            cameraLookAt = glm::vec3(0.0f, 0.0f, -1.0f);
+            cameraPosition = glm::vec3(0.0f, 5.0f, -32.0f);
+            cameraLookAt = glm::vec3(0.0f, 0.0f, 1.0f);
 
             viewMatrix = glm::lookAt(cameraPosition,  // eye,
                 cameraLookAt,  // center
@@ -1314,12 +1354,12 @@ int main(int argc, char* argv[])
         //Preset for behind left
         if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
         {
-            cameraHorizontalAngle = 121.0f;
+            cameraHorizontalAngle = 149.0f;
             cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
-            cameraPosition = glm::vec3(-40 * sin(3.14159 / 4), 5.0f, -10 * cos(3.14159 / 4));
-            cameraLookAt = glm::vec3(-0.6f, 0.0f, -1.0f);
+            cameraPosition = glm::vec3(-20.0f, 5.0f, -32.0f);
+            cameraLookAt = glm::vec3(-1.0f, 0.0f, -0.6f);
 
             viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
@@ -1335,12 +1375,12 @@ int main(int argc, char* argv[])
         //Preset for behind right
         if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
         {
-            cameraHorizontalAngle = 35.5f;
+            cameraHorizontalAngle = 222.0f;
             cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
-            cameraPosition = glm::vec3(10 * sin(3.14159 / 4), 5.0f, -30 * cos(3.14159 / 4));
-            cameraLookAt = glm::vec3(1.4f, 0.0f, -1.0f);
+            cameraPosition = glm::vec3(-20.0f, 5.0f, -32.0f);
+            cameraLookAt = glm::vec3(-1.0f, 0.0f, 0.9f);
 
             viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
@@ -1356,12 +1396,12 @@ int main(int argc, char* argv[])
         //Preset for front right
         if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
         {
-            cameraHorizontalAngle = -46.5f;
+            cameraHorizontalAngle = -38.65f;
             cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
-            cameraPosition = glm::vec3(20 * sin(3.14159 / 4), 5.0f, 20 * cos(3.14159 / 4));
-            cameraLookAt = glm::vec3(0.95f, 0.0f, 1.0f);
+            cameraPosition = glm::vec3(20.0f, 5.0f, -32.0f);
+            cameraLookAt = glm::vec3(1.25f, 0.0f, 1.0f);
 
             viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
@@ -1377,12 +1417,12 @@ int main(int argc, char* argv[])
         //Preset for front left
         if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
         {
-            cameraHorizontalAngle = -135.5f;
+            cameraHorizontalAngle = 31.0f;
             cameraVerticalAngle = 0.0f;
             currentOrientation.y = 0;
             currentOrientation.x = 0;
-            cameraPosition = glm::vec3(-20 * sin(3.14159 / 4), 5.0f, 20 * cos(3.14159 / 4));
-            cameraLookAt = glm::vec3(-1.02f, 0.0f, 1.0f);
+            cameraPosition = glm::vec3(20.0f, 5.0f, -32.0f);
+            cameraLookAt = glm::vec3(1.0f, 0.0f, -0.6f);
 
             viewMatrix = glm::lookAt(cameraPosition,  // eye
                 cameraLookAt,  // center
@@ -1397,6 +1437,125 @@ int main(int argc, char* argv[])
 
 
         //Controls for modifying digits--------------------------------------------------------------------
+        //Random Position
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        {
+            if (position == 1) {
+                oneX = rand() % 128 - 64;
+                oneZ = rand() % 128 - 64;
+            }
+            if (position == 2) {
+                twoX = rand() % 128 - 64;
+                twoZ = rand() % 128 - 64;
+            }
+            if (position == 3) {
+                threeX = rand() % 128 - 64;
+                threeZ = rand() % 128 - 64;
+            }
+            if (position == 4) {
+                fourX = rand() % 128 - 64;
+                fourZ = rand() % 128 - 64;
+            }
+            if (position == 5) {
+                fiveX = rand() % 128 - 64;
+                fiveZ = rand() % 128 - 64;
+            }
+        }
+
+        // Shear Controls
+        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) // shear
+        {
+            if (position == 1) {
+                oneShearX += 0.01;
+                oneX -= 0.05;
+            }
+            if (position == 2) {
+                twoShearX += 0.01;
+                twoX -= 0.05;
+            }
+            if (position == 3) {
+                threeShearX += 0.01;
+                threeX -= 0.05;
+            }
+            if (position == 4) {
+                fourShearX += 0.01;
+                fourX -= 0.05;
+            }
+            if (position == 5) {
+                fiveShearX += 0.01;
+                fiveX -= 0.05;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) // shear
+        {
+            if (position == 1) {
+                oneShearX -= 0.01;
+                oneX += 0.05;
+            }
+            if (position == 2) {
+                twoShearX -= 0.01;
+                twoX += 0.05;
+            }
+            if (position == 3) {
+                threeShearX -= 0.01;
+                threeX += 0.05;
+            }
+            if (position == 4) {
+                fourShearX -= 0.01;
+                fourX += 0.05;
+            }
+            if (position == 5) {
+                fiveShearX -= 0.01;
+                fiveX += 0.05;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) // shear
+        {
+            if (position == 1) {
+                oneShearZ += 0.01;
+                oneZ -= 0.05;
+            }
+            if (position == 2) {
+                twoShearZ += 0.01;
+                twoZ -= 0.05;
+            }
+            if (position == 3) {
+                threeShearZ += 0.01;
+                threeZ -= 0.05;
+            }
+            if (position == 4) {
+                fourShearZ += 0.01;
+                fourZ -= 0.05;
+            }
+            if (position == 5) {
+                fiveShearZ += 0.01;
+                fiveZ -= 0.05;
+            }
+        }
+        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) // shear
+        {
+            if (position == 1) {
+                oneShearZ -= 0.01;
+                oneZ += 0.05;
+            }
+            if (position == 2) {
+                twoShearZ -= 0.01;
+                twoZ += 0.05;
+            }
+            if (position == 3) {
+                threeShearZ -= 0.01;
+                threeZ += 0.05;
+            }
+            if (position == 4) {
+                fourShearZ -= 0.01;
+                fourZ += 0.05;
+            }
+            if (position == 5) {
+                fiveShearZ -= 0.01;
+                fiveZ += 0.05;
+            }
+        }
+
         // Scale controls
         if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) // Scale up
         {
@@ -1631,8 +1790,8 @@ const char* getVertexShaderSource()
         "layout (location = 1) in vec3 aColor;"
         ""
         "uniform mat4 worldMatrix;"
-        "uniform mat4 viewMatrix = mat4(1.0);"  // default value for view matrix (identity)
-        "uniform mat4 projectionMatrix = mat4(1.0);"
+        "uniform mat4 viewMatrix;"      // default value for view matrix (identity)
+        "uniform mat4 projectionMatrix;"
         ""
         "out vec3 vertexColor;"
         "void main()"
@@ -1695,24 +1854,32 @@ const char* getTexturedFragmentShaderSource()
         "in vec3 FragPos;"
         ""
         "uniform sampler2D textureSampler;"
-        "uniform vec3 lightPos0 = vec3(0.0f, 30.0f, 0.0f);"
-        
+        "uniform vec3 lightPos0;"
+        "uniform vec3 viewPos;"
+
         ""
         "out vec4 FragColor;"
         "void main()"
         "{"
         //Ambient light
-        "vec3 ambientLight = vec3(0.1f, 0.1f, 0.1f);"
-
+        "float ambientStrength = 0.1;"
+        "vec3 ambientLight = ambientStrength * vec3(1.0f, 1.0f, 1.0f);"
         //Diffuse light
         "vec3 norm = normalize(vertexNormal);"
         "vec3 lightDir = normalize(lightPos0 - FragPos);"
         "float diff = max(dot(norm, lightDir), 0.0);"
         "vec3 diffuseColor = vec3(1.0f, 1.0f, 1.0f);"
         "vec3 diffuse = diff * diffuseColor;"
-
+        //Diffuse light
+        "float specularStrength = 0.5f;"
+        "vec3 viewDir = normalize(viewPos - FragPos);"
+        "vec3 reflectDir = reflect(-lightDir, norm);"
+        "float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);"
+        "vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);"
+        "vec3 specular = specularStrength * spec * specularColor;"
+        ""
         "vec4 textureColor = texture( textureSampler, vertexUV );"
-        "FragColor = textureColor * (vec4(ambientLight, 1.0f) + vec4(diffuse, 1.0f));"
+        "FragColor = textureColor * (vec4(ambientLight, 1.0f) + vec4(diffuse, 1.0f) + vec4(specular, 1.0f));"
         "}";
 }
 
@@ -1855,7 +2022,7 @@ int createTexturedCubeVertexArrayObject()
         GL_FLOAT,
         GL_FALSE,
         sizeof(TexturedColoredVertex),
-        (void*)(2 * sizeof(vec3)+sizeof(vec2))      // normal is offseted by 2 vec3 and a vec2(comes after position and color and UV)
+        (void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
     );
     glEnableVertexAttribArray(3);
 
