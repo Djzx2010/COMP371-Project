@@ -4,6 +4,7 @@
 // Created by Nicolas Bergeron on 20/06/2019.
 //
 
+
 #include <iostream>
 #include <list>
 #include <algorithm>
@@ -209,7 +210,7 @@ int main(int argc, char* argv[])
 
     //LIGHTS
     vec3 lightPos0(0.0f, 30.0f, 0.0f);   
-   glUniform3fv(glGetUniformLocation(texturedShaderProgram, "lightPos0"), 1, value_ptr(lightPos0));
+   
 
 // Set initial view matrix
     mat4 viewMatrix = lookAt(cameraPosition,  // eye
@@ -745,6 +746,14 @@ int main(int argc, char* argv[])
         glActiveTexture(GL_TEXTURE0);
         GLuint textureLocation = glGetUniformLocation(texturedShaderProgram, "textureSampler");
         glUniform1i(textureLocation, 0);                // Set our Texture sampler to user Texture Unit 0
+
+        //Set the light position to uniform variable lightPos0
+        glUniform3fv(glGetUniformLocation(texturedShaderProgram, "lightPos0"), 1, &lightPos0[0]);
+
+        //Set the camera position to uniform variable viewPos
+        glUniform3fv(glGetUniformLocation(texturedShaderProgram, "viewPos"), 1, &cameraPosition[0]);
+
+     
 
         // Frame time calculation
         float dt = glfwGetTime() - lastFrameTime;
@@ -1631,8 +1640,8 @@ const char* getVertexShaderSource()
         "layout (location = 1) in vec3 aColor;"
         ""
         "uniform mat4 worldMatrix;"
-        "uniform mat4 viewMatrix = mat4(1.0);"  // default value for view matrix (identity)
-        "uniform mat4 projectionMatrix = mat4(1.0);"
+        "uniform mat4 viewMatrix;"      // default value for view matrix (identity)
+        "uniform mat4 projectionMatrix;"
         ""
         "out vec3 vertexColor;"
         "void main()"
@@ -1695,24 +1704,32 @@ const char* getTexturedFragmentShaderSource()
         "in vec3 FragPos;"
         ""
         "uniform sampler2D textureSampler;"
-        "uniform vec3 lightPos0 = vec3(0.0f, 30.0f, 0.0f);"
+        "uniform vec3 lightPos0;"
+        "uniform vec3 viewPos;"
         
         ""
         "out vec4 FragColor;"
         "void main()"
         "{"
         //Ambient light
-        "vec3 ambientLight = vec3(0.1f, 0.1f, 0.1f);"
-
+        "float ambientStrength = 0.1;"
+        "vec3 ambientLight = ambientStrength * vec3(1.0f, 1.0f, 1.0f);"
         //Diffuse light
         "vec3 norm = normalize(vertexNormal);"
         "vec3 lightDir = normalize(lightPos0 - FragPos);"
         "float diff = max(dot(norm, lightDir), 0.0);"
         "vec3 diffuseColor = vec3(1.0f, 1.0f, 1.0f);"
         "vec3 diffuse = diff * diffuseColor;"
-
+        //Diffuse light
+        "float specularStrength = 0.5;"
+        "vec3 viewDir = normalize(viewPos - FragPos);"
+        "vec3 reflectDir = reflect(-lightDir, norm);"
+        "float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);"
+        "vec3 specularColor = vec3(1.0f, 1.0f, 1.0f);"
+        "vec3 specular = specularStrength * spec * specularColor;"
+        ""
         "vec4 textureColor = texture( textureSampler, vertexUV );"
-        "FragColor = textureColor * (vec4(ambientLight, 1.0f) + vec4(diffuse, 1.0f));"
+        "FragColor = textureColor * (vec4(ambientLight, 1.0f) + vec4(diffuse, 1.0f) + vec4(specular, 1.0f));"
         "}";
 }
 
@@ -1850,12 +1867,12 @@ int createTexturedCubeVertexArrayObject()
     );
     glEnableVertexAttribArray(2);
 
-    glVertexAttribPointer(3,                            // attribute 3 matches aNormal in Vertex Shader
+    glVertexAttribPointer(3,                            // attribute 2 matches aUV in Vertex Shader
         3,
         GL_FLOAT,
         GL_FALSE,
         sizeof(TexturedColoredVertex),
-        (void*)(2 * sizeof(vec3)+sizeof(vec2))      // normal is offseted by 2 vec3 and a vec2(comes after position and color and UV)
+        (void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 3 vec3 (comes after position and color and UV)
     );
     glEnableVertexAttribArray(3);
 
