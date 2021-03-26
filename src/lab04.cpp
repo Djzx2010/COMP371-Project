@@ -209,6 +209,7 @@ int main(int argc, char* argv[])
         0.01f, 100.0f);   // near and far (near > 0)
 
     //LIGHTS
+
     vec3 lightPos0(0.0f, 30.0f, 0.0f);
 
 
@@ -763,7 +764,6 @@ int main(int argc, char* argv[])
 
         //Set the camera position to uniform variable viewPos
         glUniform3fv(glGetUniformLocation(texturedShaderProgram, "viewPos"), 1, &cameraPosition[0]);
-
 
 
         // Frame time calculation
@@ -1871,7 +1871,9 @@ const char* getTexturedFragmentShaderSource()
         "vec3 diffuseColor = vec3(1.0f, 1.0f, 1.0f);"
         "vec3 diffuse = diff * diffuseColor;"
         //Diffuse light
+
         "float specularStrength = 0.5f;"
+
         "vec3 viewDir = normalize(viewPos - FragPos);"
         "vec3 reflectDir = reflect(-lightDir, norm);"
         "float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);"
