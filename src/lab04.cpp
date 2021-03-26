@@ -1681,7 +1681,7 @@ const char* getTexturedVertexShaderSource()
         "   gl_Position = modelViewProjection * vec4(aPos.x, aPos.y, aPos.z, 1.0);"
         "   vertexUV = aUV;"
         "   FragPos = vec3(worldMatrix * vec4(aPos, 1.0));"
-        "   vertexNormal = mat3(transpose(inverse(worldMatrix))) * vertexNormal;"
+        "   vertexNormal = mat3(transpose(inverse(worldMatrix))) * aNormal;"
         "}";
 }
 
@@ -1850,12 +1850,12 @@ int createTexturedCubeVertexArrayObject()
     );
     glEnableVertexAttribArray(2);
 
-    glVertexAttribPointer(3,                            // attribute 2 matches aUV in Vertex Shader
+    glVertexAttribPointer(3,                            // attribute 3 matches aNormal in Vertex Shader
         3,
         GL_FLOAT,
         GL_FALSE,
         sizeof(TexturedColoredVertex),
-        (void*)(3 * sizeof(vec3))      // uv is offseted by 3 vec3 (comes after position and color and UV)
+        (void*)(2 * sizeof(vec3)+sizeof(vec2))      // normal is offseted by 2 vec3 and a vec2(comes after position and color and UV)
     );
     glEnableVertexAttribArray(3);
 
