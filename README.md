@@ -49,6 +49,18 @@ X : move camera forward
 Q : rotate model left  
 E : rotate model right  
 
+### Sources for the textures ###
+Cardboard : https://www.freepik.es/fotos-premium/cierrese-encima-textura-fondo-marrones-caja-papel-cartulina_3068641.htm
+Stainless : https://www.pinterest.com/pin/559501953689089220/
+Tiles : https://www.freecreatives.com/textures/tile-texture.html
+
+
+### Disclaimers ###
+Code is heavily based on the COMP371 Labs
+The shaders are mostly taken from the OpenGl Tutorials on lighting and shadow mapping found at urls :
+https://learnopengl.com/Advanced-Lighting/Shadows/Shadow-Mapping
+https://learnopengl.com/Lighting/Basic-Lighting
+
 ### What is this repository for? ###
 
 This is the first project for COMP 371, WInter 2021
