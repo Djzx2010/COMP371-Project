@@ -19,8 +19,8 @@ include(BuildGLEW)
 include(BuildGLFW)
 include(BuildGLM)
 
-# lab04
-set(EXEC lab04)
+# COMP371Assignment
+set(EXEC COMP371Assignment)
 
 set(ASSETS assets)
 
@@ -35,7 +35,7 @@ target_include_directories(${EXEC} PRIVATE include)
 target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm)
 
 list(APPEND BIN ${EXEC})
-# end lab04
+# end COMP371Assignment
 
 # install files to install location
 install(TARGETS ${BIN} DESTINATION ${CMAKE_INSTALL_PREFIX})
