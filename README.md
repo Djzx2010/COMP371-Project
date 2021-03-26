@@ -19,6 +19,7 @@ Run
 ## Controls:
 
 Camera:  
+
 Right Mouse Button + move : pan  
 Middle Mouse Button + move : tilt  
 Left Mouse Button + move : zoom in/out  
@@ -48,6 +49,14 @@ Z : move camera backward
 X : move camera forward  
 Q : rotate model left  
 E : rotate model right  
+O : shear bottom of matrix right  
+I : shear bottom of matrix left  
+K : shear bottom of matrix forward  
+M : shear bottom of matrix backward  
+
+Other:  
+
+Esc : close program  
 
 ### Sources for the textures ###
 Cardboard : https://www.freepik.es/fotos-premium/cierrese-encima-textura-fondo-marrones-caja-papel-cartulina_3068641.htm
