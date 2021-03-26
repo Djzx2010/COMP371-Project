@@ -266,6 +266,7 @@ int main(int argc, char* argv[])
     mat4 GroupTMatrix = model; //To modify final model position
     mat4 GroupOriginRotationMatrix = model; //If we want to rotate whole group on itself at final position
     mat4 GroupScaleMatrix = model; //If we want to scale the whole group of 4 digits
+    mat4 GroupShearMatrix = model; //to shear models
     //Combination matrix to avoid unnecessary calculations and simplicity
     mat4 GroupMatrix = model;
 
