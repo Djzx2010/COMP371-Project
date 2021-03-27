@@ -190,10 +190,10 @@ int main(int argc, char* argv[])
     GLuint worldMatrixLocation = glGetUniformLocation(colorShaderProgram, "worldMatrix");
     GLuint viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
     GLuint projectionMatrixLocation = glGetUniformLocation(colorShaderProgram, "projectionMatrix");
-    GLuint colorLocation = glGetUniformLocation(colorShaderProgram, "vertexColor"); 
+    GLuint colorLocation = glGetUniformLocation(colorShaderProgram, "vertexColor");
     GLuint isTexturedLocation = glGetUniformLocation(colorShaderProgram, "isTextured");
 
-    
+
 
     // Camera parameters for view transform
     vec3 cameraPosition(0.6f, 1.0f, 10.0f);
