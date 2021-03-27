@@ -1314,22 +1314,22 @@ int main(int argc, char* argv[])
 		// GVBN movement ------------------------------------------------------
 		if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) // move camera to the left
 		{
-			cameraPosition -= cameraSideVector * dt * cameraSpeed;
+			cameraPosition -= cameraSideVector * dt * cameraSpeed * 3.0f;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) // move camera to the right
 		{
-			cameraPosition += cameraSideVector * dt * cameraSpeed;
+			cameraPosition += cameraSideVector * dt * cameraSpeed * 3.0f;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move camera up
 		{
-			cameraPosition -= cameraLookAt * dt * cameraSpeed;
+			cameraPosition -= cameraLookAt * dt * cameraSpeed * 3.0f;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move camera down
 		{
-			cameraPosition += cameraLookAt * dt * cameraSpeed;
+			cameraPosition += cameraLookAt * dt * cameraSpeed * 3.0f;
 		}
 
 		// Orientation controls--------------------------------------------------
@@ -1474,27 +1474,32 @@ int main(int argc, char* argv[])
 			if (position == 1) {
 				oneX = rand() % 128 - 64;
 				oneZ = rand() % 128 - 64;
+				oneY = 0;
 			}
 			if (position == 2) {
 				twoX = rand() % 128 - 64;
 				twoZ = rand() % 128 - 64;
+				twoY = 0;
 			}
 			if (position == 3) {
 				threeX = rand() % 128 - 64;
 				threeZ = rand() % 128 - 64;
+				threeY = 0;
 			}
 			if (position == 4) {
 				fourX = rand() % 128 - 64;
 				fourZ = rand() % 128 - 64;
+				fourY = 0;
 			}
 			if (position == 5) {
 				fiveX = rand() % 128 - 64;
 				fiveZ = rand() % 128 - 64;
+				fiveY = 0;
 			}
 		}
 
 		// Shear Controls
-		if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) // shear
+		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) // shear
 		{
 			if (position == 1) {
 				oneShearX += 0.01;
@@ -1517,7 +1522,7 @@ int main(int argc, char* argv[])
 				fiveX -= 0.05;
 			}
 		}
-		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) // shear
+		if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) // shear
 		{
 			if (position == 1) {
 				oneShearX -= 0.01;
