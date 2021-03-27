@@ -169,10 +169,15 @@ int main(int argc, char* argv[])
     // Load Textures
     GLuint brickTextureID = loadTexture("assets/textures/brick.jpg");
     GLuint cementTextureID = loadTexture("assets/textures/cement.jpg");
-    GLuint tilesTextureID = loadTexture("assets/textures/tiles.jpg");
+    GLuint tilesTextureID = loadTexture("assets/textures/tiles2.jpg");
     GLuint steelTextureID = loadTexture("assets/textures/steel.jpg");
     GLuint cardboardTextureID = loadTexture("assets/textures/cardboard2.jpg");
     GLuint fabricTextureID = loadTexture("assets/textures/fabric2.jpg");
+    GLuint group1TextureID = loadTexture("assets/textures/group1resize.jpg");
+    GLuint group2TextureID = loadTexture("assets/textures/group2resize.jpg");
+    GLuint group3TextureID = loadTexture("assets/textures/group3resize.jpg");
+    GLuint group4TextureID = loadTexture("assets/textures/group4resize.jpg");
+    GLuint group5TextureID = loadTexture("assets/textures/group5resize.jpg");
 
     // Black background
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -185,7 +190,10 @@ int main(int argc, char* argv[])
     GLuint worldMatrixLocation = glGetUniformLocation(colorShaderProgram, "worldMatrix");
     GLuint viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
     GLuint projectionMatrixLocation = glGetUniformLocation(colorShaderProgram, "projectionMatrix");
-    GLuint colorLocation = glGetUniformLocation(colorShaderProgram, "vertexColor");
+    GLuint colorLocation = glGetUniformLocation(colorShaderProgram, "vertexColor"); 
+    GLuint isTexturedLocation = glGetUniformLocation(colorShaderProgram, "isTextured");
+
+    
 
     // Camera parameters for view transform
     vec3 cameraPosition(0.6f, 1.0f, 10.0f);
@@ -745,8 +753,9 @@ int main(int argc, char* argv[])
     vec2 currentOrientation(0.0f, 0.0f); // current orientation of matrix
     float timeOnTexture = 0;
     int currentTexture = 1;
+    GLuint isTextured = 1;
 
-    // Entering Main Loop
+    // Entering Main Loop---------------------------------------------------------------------------------------------------------------------------------------------------
     while (!glfwWindowShouldClose(window))
     {
         // Each frame, reset color of each pixel to glClearColor
@@ -765,6 +774,9 @@ int main(int argc, char* argv[])
         //Set the camera position to uniform variable viewPos
         glUniform3fv(glGetUniformLocation(texturedShaderProgram, "viewPos"), 1, &cameraPosition[0]);
 
+        //Toggle for texture
+        isTexturedLocation = glGetUniformLocation(texturedShaderProgram, "isTextured");
+        glUniform1i(isTexturedLocation, isTextured);
 
         // Frame time calculation
         float dt = glfwGetTime() - lastFrameTime;
@@ -782,19 +794,19 @@ int main(int argc, char* argv[])
 
         switch (currentTexture) {
         case 1:
-            glBindTexture(GL_TEXTURE_2D, tilesTextureID);
+            glBindTexture(GL_TEXTURE_2D, group1TextureID);
             break;
         case 2:
-            glBindTexture(GL_TEXTURE_2D, cardboardTextureID);
+            glBindTexture(GL_TEXTURE_2D, group2TextureID);
             break;
         case 3:
-            glBindTexture(GL_TEXTURE_2D, fabricTextureID);
+            glBindTexture(GL_TEXTURE_2D, group3TextureID);
             break;
         case 4:
-            glBindTexture(GL_TEXTURE_2D, steelTextureID);
+            glBindTexture(GL_TEXTURE_2D, group4TextureID);
             break;
         case 5:
-            glBindTexture(GL_TEXTURE_2D, cementTextureID);
+            glBindTexture(GL_TEXTURE_2D, group5TextureID);
             break;
         }
 
@@ -802,6 +814,7 @@ int main(int argc, char* argv[])
 
         //TO DO -- Save for last
         //Draw screen
+
         setWorldMatrix(texturedShaderProgram, screenMatrix);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -1227,12 +1240,6 @@ int main(int argc, char* argv[])
         glUseProgram(colorShaderProgram);
         glUniform3fv(colorLocation, 0, value_ptr(vec3(1.0, 0.0, 0.0)));
 
-        //TO DO -- Save for last
-        //Draw screen
-        WorldMatrix = screenMatrix;
-        glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &WorldMatrix[0][0]);
-        glUniform3fv(colorLocation, 1, value_ptr(vec3(1.0, 0.0, 0.0)));
-        glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
 
@@ -1653,7 +1660,7 @@ int main(int argc, char* argv[])
         }
         //Translation control
         //It is relative to the starting position's perspective
-        if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) //T = negative Z axis (or back for default view)
+        if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS) //Z = negative Z axis (or back for default view)
         {
             if (position == 1) {
                 oneZ -= 0.1f;
@@ -1671,7 +1678,7 @@ int main(int argc, char* argv[])
                 fiveZ -= 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) // G - Positive Z axis
+        if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS) // X - Positive Z axis
         {
             if (position == 1) {
                 oneZ += 0.1f;
@@ -1689,7 +1696,7 @@ int main(int argc, char* argv[])
                 fiveZ += 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) //F = negative X axis (or back for default view)
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) //A = negative X axis (or back for default view)
         {
             if (position == 1) {
                 oneX -= 0.1f;
@@ -1707,7 +1714,7 @@ int main(int argc, char* argv[])
                 fiveX -= 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) // G - Positive X axis
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) // D - Positive X axis
         {
             if (position == 1) {
                 oneX += 0.1f;
@@ -1725,7 +1732,7 @@ int main(int argc, char* argv[])
                 fiveX += 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) //O = positive Y axis
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) //W = positive Y axis
         {
             if (position == 1) {
                 oneY += 0.1f;
@@ -1743,7 +1750,7 @@ int main(int argc, char* argv[])
                 fiveY += 0.1f;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // L -Negative Y axis
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // S -Negative Y axis
         {
             if (position == 1) {
                 oneY -= 0.1f;
@@ -1762,6 +1769,28 @@ int main(int argc, char* argv[])
             }
         }
 
+        if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) //Key to toggle Textures on
+        {
+            isTextured = 1;
+        }
+        if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) //Key to toggle Textures off
+        {
+            isTextured = 0;
+        }
+
+        // Render types
+        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+        }
+        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
+        if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS)
+        {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
         mat4 viewMatrix(1.0f);
 
         viewMatrix = lookAt(cameraPosition, cameraPosition + cameraLookAt, cameraUp);
@@ -1856,6 +1885,7 @@ const char* getTexturedFragmentShaderSource()
         "uniform sampler2D textureSampler;"
         "uniform vec3 lightPos0;"
         "uniform vec3 viewPos;"
+        "uniform int isTextured = 1;"
 
         ""
         "out vec4 FragColor;"
@@ -1881,7 +1911,12 @@ const char* getTexturedFragmentShaderSource()
         "vec3 specular = specularStrength * spec * specularColor;"
         ""
         "vec4 textureColor = texture( textureSampler, vertexUV );"
+        "if(isTextured==1){"
         "FragColor = textureColor * (vec4(ambientLight, 1.0f) + vec4(diffuse, 1.0f) + vec4(specular, 1.0f));"
+        "}"
+        "else{"
+        "FragColor = vec4(vertexColor,1.0f) * (vec4(ambientLight, 1.0f) + vec4(diffuse, 1.0f) + vec4(specular, 1.0f));"
+        "}"
         "}";
 }
 
