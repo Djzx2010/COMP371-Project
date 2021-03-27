@@ -38,6 +38,10 @@ const char* getTexturedVertexShaderSource();
 
 const char* getTexturedFragmentShaderSource();
 
+const char* getShadowVertexShaderSource();
+
+const char* getShadowFragmentShaderSource();
+
 int compileAndLinkShaders(const char* vertexShaderSource, const char* fragmentShaderSource);
 
 struct TexturedColoredVertex
@@ -134,6 +138,21 @@ void setOrientationMatrix(int shaderProgram, mat4 orientationMatrix)
 	glUniformMatrix4fv(orientationMatrixLocation, 1, GL_FALSE, &orientationMatrix[0][0]);
 }
 
+template <class T>
+void SetUniform1Value(GLuint shader_id, const char* uniform_name, T uniform_value)
+{
+	glUseProgram(shader_id);
+	glUniform1i(glGetUniformLocation(shader_id, uniform_name), uniform_value);
+	glUseProgram(0);
+}
+
+
+void SetUniformMat4(GLuint shader_id, const char* uniform_name, mat4 uniform_value)
+{
+	glUseProgram(shader_id);
+	glUniformMatrix4fv(glGetUniformLocation(shader_id, uniform_name), 1, GL_FALSE, &uniform_value[0][0]);
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -185,6 +204,7 @@ int main(int argc, char* argv[])
 	// Compile and link shaders here ...
 	int colorShaderProgram = compileAndLinkShaders(getVertexShaderSource(), getFragmentShaderSource());
 	int texturedShaderProgram = compileAndLinkShaders(getTexturedVertexShaderSource(), getTexturedFragmentShaderSource());
+	int shadowShaderProgram = compileAndLinkShaders(getShadowVertexShaderSource(), getShadowFragmentShaderSource());
 
 	// SHADER PROGRAM LOCATIONS
 	GLuint worldMatrixLocation = glGetUniformLocation(colorShaderProgram, "worldMatrix");
@@ -258,7 +278,7 @@ int main(int argc, char* argv[])
 
 	// Initialize Matrices
 	mat4 model = mat4(1.0f); // identity matrix
-	mat4 WorldMatrix; // Matrix used to create objects
+	mat4 WorldMatrix = mat4(1.0f); // Matrix used to create objects
 	mat4 orientationMatrix = mat4(1.0f); // initialize orientation matrix
 
 	//Predefined matrices for model manipulation
@@ -756,8 +776,8 @@ int main(int argc, char* argv[])
 	mat4 right22TMatrix = translate(mat4(1.0f), vec3(0.0f, 3.5f, 0.0f));
 	mat4 right22SMatrix = scale(mat4(1.0f), vec3(1.0f, 2.0f, 1.0f));
 	mat4 right22Matrix = thirdDigitOffsetMatrix * right22TMatrix * right22SMatrix;
-	 // 2 model (group 5)
-	//bottom part of 2
+	// 2 model (group 5)
+   //bottom part of 2
 	mat4 GroupFivebottom22Matrix = fourthDigitOffsetMatrix * bottom22TMatrix * bottom22SMatrix;
 
 	//middle part of 2
@@ -778,6 +798,13 @@ int main(int argc, char* argv[])
 	float timeOnTexture = 0;
 	int currentTexture = 1;
 	GLuint isTextured = 1;
+
+	float lightAngleOuter = 30.0;
+	float lightAngleInner = 20.0;
+	// Set light cutoff angles on scene shader
+	SetUniform1Value(texturedShaderProgram, "light_cutoff_inner", cos(radians(lightAngleInner)));
+	SetUniform1Value(texturedShaderProgram, "light_cutoff_outer", cos(radians(lightAngleOuter)));
+
 
 	// Entering Main Loop---------------------------------------------------------------------------------------------------------------------------------------------------
 	while (!glfwWindowShouldClose(window))
@@ -801,6 +828,28 @@ int main(int argc, char* argv[])
 		//Toggle for texture
 		isTexturedLocation = glGetUniformLocation(texturedShaderProgram, "isTextured");
 		glUniform1i(isTexturedLocation, isTextured);
+
+		vec3 lightFocus(0.0, 0.0, -1.0);      // the point in 3D space the light "looks" at
+		vec3 lightDirection = normalize(lightFocus - lightPos0);
+
+		float lightNearPlane = 1.0f;
+		float lightFarPlane = 180.0f;
+
+		mat4 lightProjectionMatrix = frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNearPlane, lightFarPlane);
+		//perspective(20.0f, (float)DEPTH_MAP_TEXTURE_SIZE / (float)DEPTH_MAP_TEXTURE_SIZE, lightNearPlane, lightFarPlane);
+		mat4 lightViewMatrix = lookAt(lightPos0, lightFocus, vec3(0.0f, 1.0f, 0.0f));
+		mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
+
+		//Set light space matrix on shadow shader and scene shader
+		SetUniformMat4(shadowShaderProgram, "light_view_proj_matrix", lightSpaceMatrix);
+		SetUniformMat4(texturedShaderProgram, "light_view_proj_matrix", lightSpaceMatrix);
+
+		// Set light far and near planes on scene shader
+		SetUniform1Value(texturedShaderProgram, "light_near_plane", lightNearPlane);
+		SetUniform1Value(texturedShaderProgram, "light_far_plane", lightFarPlane);
+
+		//Set model matrix for shadow shader
+		SetUniformMat4(shadowShaderProgram, "model_matrix", WorldMatrix);
 
 		// Frame time calculation
 		float dt = glfwGetTime() - lastFrameTime;
@@ -1885,11 +1934,15 @@ const char* getTexturedVertexShaderSource()
 		"uniform mat4 worldMatrix;"
 		"uniform mat4 viewMatrix = mat4(1.0);"  // default value for view    matrix (identity)
 		"uniform mat4 projectionMatrix = mat4(1.0);"
+		"uniform mat4 light_view_proj_matrix;"
 		""
 		"out vec3 vertexColor;"
 		"out vec2 vertexUV;"
 		"out vec3 vertexNormal;"
 		"out vec3 FragPos;"
+		"out vec3 fragment_normal;"
+		"out vec3 fragment_position;"
+		"out vec4 fragment_position_light_space;"
 		""
 		"void main()"
 		"{"
@@ -1899,6 +1952,9 @@ const char* getTexturedVertexShaderSource()
 		"   vertexUV = aUV;"
 		"   FragPos = vec3(worldMatrix * vec4(aPos, 1.0));"
 		"   vertexNormal = mat3(transpose(inverse(worldMatrix))) * aNormal;"
+		"fragment_normal = mat3(modelViewProjection) * aNormal;"
+		"fragment_position = vec3(modelViewProjection * vec4(aPos, 1.0));"
+		"fragment_position_light_space = light_view_proj_matrix * vec4(fragment_position, 1.0);"
 		"}";
 }
 
@@ -1912,14 +1968,48 @@ const char* getTexturedFragmentShaderSource()
 		"in vec3 FragPos;"
 		""
 		"uniform sampler2D textureSampler;"
+		"uniform sampler2D shadow_map;"
 		"uniform vec3 lightPos0;"
 		"uniform vec3 viewPos;"
 		"uniform int isTextured = 1;"
 
+		"uniform float light_cutoff_outer;"
+		"uniform float light_cutoff_inner;"
+		"uniform float light_near_plane;"
+		"uniform float light_far_plane;"
+
 		""
 		"out vec4 FragColor;"
+		//"float shadow_scalar() {"
+		//// this function returns 1.0 when the surface receives light, and 0.0 when it is in a shadow
+		//// perform perspective divide
+		//"vec3 normalized_device_coordinates = fragment_position_light_space.xyz / fragment_position_light_space.w;"
+		//// transform to [0,1] range
+		//"normalized_device_coordinates = normalized_device_coordinates * 0.5 + 0.5;"
+		//// get closest depth value from light's perspective (using [0,1] range fragment_position_light_space as coords)
+		//"float closest_depth = texture(shadow_map, normalized_device_coordinates.xy).r;"
+		//// get depth of current fragment from light's perspective
+		//"float current_depth = normalized_device_coordinates.z;"
+		//// check whether current frag pos is in shadow
+		//"float bias = 0;  // bias applied in depth map: see shadow_vertex.glsl"
+		//"return ((current_depth - bias) < closest_depth) ? 1.0 : 0.0;"
+		//"}"
+
+		//"float spotlight_scalar() {"
+		//"float theta = dot(normalize(fragment_position - light_position), light_direction);"
+		//"if (theta > light_cutoff_inner) {"
+		//"return 1.0;"
+		//"}"
+		//"else if (theta > light_cutoff_outer) {"
+		//"return (1.0 - cos(PI * (theta - light_cutoff_outer) / (light_cutoff_inner - light_cutoff_outer))) / 2.0;"
+		//"}"
+		//"else {"
+		//"return 0.0;"
+		//"}"
+		//"}"
 		"void main()"
 		"{"
+		//"float scalar = shadow_scalar() * spotlight_scalar();"
 		//Ambient light
 		"float ambientStrength = 0.1;"
 		"vec3 ambientLight = ambientStrength * vec3(1.0f, 1.0f, 1.0f);"
@@ -1946,6 +2036,40 @@ const char* getTexturedFragmentShaderSource()
 		"else{"
 		"FragColor = vec4(vertexColor,1.0f) * (vec4(ambientLight, 1.0f) + vec4(diffuse, 1.0f) + vec4(specular, 1.0f));"
 		"}"
+		"}";
+}
+const char* getShadowVertexShaderSource()
+{
+	return
+		"#version 330 core\n"
+		"layout (location = 0) in vec3 position;"
+		""
+		"uniform mat4 light_view_proj_matrix;"
+		"uniform mat4 model_matrix;"
+		""
+		"void main()"
+		"{"
+		"mat4 scale_bias_matrix = mat4(vec4(0.5, 0.0, 0.0, 0.0),"
+		"vec4(0.0, 0.5, 0.0, 0.0),"
+		"vec4(0.0, 0.0, 0.5, 0.0),"
+		"vec4(0.5, 0.5, 0.5, 1.0));"
+		"gl_Position = light_view_proj_matrix * model_matrix * vec4(position, 1.0);"
+		"}";
+
+}
+
+const char* getShadowFragmentShaderSource()
+{
+	return
+		"#version 330 core\n"
+		"out vec4 FragColor;"
+		""
+		"in vec4 gl_FragCoord;"
+		""
+		"void main()"
+		"{"
+		"gl_FragDepth = gl_FragCoord.z;"
+		"FragColor = vec4(vec3(gl_FragCoord.z), 1.0f);"
 		"}";
 }
 
