@@ -46,13 +46,20 @@ S : move model down
 A : move model left  
 D : move model right  
 Z : move camera backward  
-X : move camera forward  
+X : move camera forward
+
 Q : rotate model left  
 E : rotate model right  
+
 O : shear bottom of matrix right  
 I : shear bottom of matrix left  
 K : shear bottom of matrix forward  
 M : shear bottom of matrix backward  
+
+Scaling : U (up), J (down)
+Toggle textures : Y (on), H (off)
+
+Render mode : P(points),L(lines),T(full)
 
 Other:  
 
