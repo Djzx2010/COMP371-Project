@@ -65,10 +65,10 @@ openiss::OINullFaceTracker::OINullFaceTracker(OIDevice& pDev)
 
 openiss::OINullFaceTracker::OINullFaceTracker()
 {
-	//this->classifier = nullptr;
-	this->oiface = OIFace();
+	this->classifier = nullptr;
+	this->oiface = new OIFace();
 	this->currentFace = 6;
-	//this->frame_count = 0;
+	this->frame_count = 0;
 }
 
 
@@ -82,6 +82,7 @@ openiss::OINullFaceTracker::~OINullFaceTracker()
 	delete multiFacialLandmarksParameters;
 */
 	delete classifier;
+	delete oiface;
 }
 
 #ifdef OPENISS_OPENCV_SUPPORT
@@ -781,14 +782,18 @@ void openiss::OINullFaceTracker::generateFaces()
 	
 	//Array of points for the mouth (frown)
 	openiss::Point2f frownPoints[] = { p60f,p61f,p62f,p63f,p64f,p65f,p66f,p67f,p68f,p69f,p70f,p71f,p72f};
-	/*
+	
 	for (int i = 0; i < 7; i++) {
-		vector<openiss::Point2f> newVector;
-		oiface.facialLandmarks->push_back(newVector);
-		oiface.facialLandmarks->at(i).insert(oiface.facialLandmarks->at(i).begin(), basePoints, basePoints + 59);
+		
+		vector<openiss::Point2f>* newVector = new vector<openiss::Point2f>;
+
+		oiface->facialLandmarks->push_back(*newVector);
+		
+		oiface->facialLandmarks->at(i).insert(oiface->facialLandmarks->at(i).begin(), basePoints, basePoints + 59);
+		
 		if (i == 0) {
 			for (int j = 0; j < 13; j++) {
-				oiface.facialLandmarks->at(i).push_back(smilePoints[j]);
+				oiface->facialLandmarks->at(i).push_back(smilePoints[j]);
 			}
 		}
 		else if (i == 1) {
@@ -796,7 +801,7 @@ void openiss::OINullFaceTracker::generateFaces()
 				openiss::Point2f point;
 				point.x = smilePoints[j].x + (neutralPoints[j].x - smilePoints[j].x) / 3;
 				point.y = smilePoints[j].y + (neutralPoints[j].y - smilePoints[j].y) / 3;
-				oiface.facialLandmarks->at(i).push_back(point);
+				oiface->facialLandmarks->at(i).push_back(point);
 			}
 		}
 		else if (i == 2) {
@@ -804,12 +809,12 @@ void openiss::OINullFaceTracker::generateFaces()
 				openiss::Point2f point;
 				point.x = smilePoints[j].x + (neutralPoints[j].x - smilePoints[j].x)*2 / 3;
 				point.y = smilePoints[j].y + (neutralPoints[j].y - smilePoints[j].y)*2 / 3;
-				oiface.facialLandmarks->at(i).push_back(point);
+				oiface->facialLandmarks->at(i).push_back(point);
 			}
 		}
 		else if (i == 3) {
 			for (int j = 0; j < 13; j++) {
-				oiface.facialLandmarks->at(i).push_back(neutralPoints[j]);
+				oiface->facialLandmarks->at(i).push_back(neutralPoints[j]);
 			}
 		}
 		else if (i == 4) {
@@ -817,7 +822,7 @@ void openiss::OINullFaceTracker::generateFaces()
 				openiss::Point2f point;
 				point.x = neutralPoints[j].x + (frownPoints[j].x - neutralPoints[j].x) / 3;
 				point.y = neutralPoints[j].y + (frownPoints[j].y - neutralPoints[j].y) / 3;
-				oiface.facialLandmarks->at(i).push_back(point);
+				oiface->facialLandmarks->at(i).push_back(point);
 			}
 		}
 		else if (i == 5) {
@@ -825,16 +830,15 @@ void openiss::OINullFaceTracker::generateFaces()
 				openiss::Point2f point;
 				point.x = neutralPoints[j].x + (frownPoints[j].x - neutralPoints[j].x) *2/ 3;
 				point.y = neutralPoints[j].y + (frownPoints[j].y - neutralPoints[j].y) *2/ 3;
-				oiface.facialLandmarks->at(i).push_back(point);
+				oiface->facialLandmarks->at(i).push_back(point);
 			}
 		}
 		else if (i == 6) {
 			for (int j = 0; j < 13; j++) {
-				oiface.facialLandmarks->at(i).push_back(frownPoints[j]);
+				oiface->facialLandmarks->at(i).push_back(frownPoints[j]);
 			}
 		}
 	}
-	*/
 }
 
 vector<openiss::Point2f> openiss::OINullFaceTracker::getNextFace()
@@ -845,7 +849,7 @@ vector<openiss::Point2f> openiss::OINullFaceTracker::getNextFace()
 	else {
 		currentFace += 1;
 	}
-	return oiface.facialLandmarks->at(currentFace);
+	return oiface->facialLandmarks->at(currentFace);
 }
 
 

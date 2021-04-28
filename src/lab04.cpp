@@ -94,7 +94,6 @@ TexturedColoredVertex* genereteVertexArray(vector<openiss::Point2f> face) {
 			faceArray[24 * i + 3 * j + 2].normal = vec3(0.0f, 0.0f, 1.0f);
 		}
 	}
-
 	return faceArray;
 };
 
@@ -319,7 +318,7 @@ int main(int argc, char* argv[])
 	openiss::OINullFaceTracker OINFT = openiss::OINullFaceTracker();
 	
 	OINFT.generateFaces();
-	/*
+	
 	//Getting our 2d faces
 	vector<openiss::Point2f> face0 = OINFT.getNextFace();
 	vector<openiss::Point2f> face1 = OINFT.getNextFace();
@@ -331,7 +330,7 @@ int main(int argc, char* argv[])
 	
 	//Generating pointers to arrays of vertex
 	//IF this bugs check static keyword in method, might cause problem
-	/*
+	
 	TexturedColoredVertex* texturedFace0VertexArray = genereteVertexArray(face0);
 	TexturedColoredVertex* texturedFace1VertexArray = genereteVertexArray(face1);
 	TexturedColoredVertex* texturedFace2VertexArray = genereteVertexArray(face2);
@@ -339,7 +338,7 @@ int main(int argc, char* argv[])
 	TexturedColoredVertex* texturedFace4VertexArray = genereteVertexArray(face4);
 	TexturedColoredVertex* texturedFace5VertexArray = genereteVertexArray(face5);
 	TexturedColoredVertex* texturedFace6VertexArray = genereteVertexArray(face6);
-	*/
+	
 	//Creating vbos or vaos with the arrays
 	//Check the exemple in the openiss repo to check the vertices of vbo instead of creating 7
 	//TO DO ______--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -36,7 +36,7 @@ public:
     OINullFaceTracker& operator=(OINullFaceTracker&);
 
     int currentFace = 6;
-    OIFace oiface;
+    OIFace* oiface;
     int frame_count;
     OIClassifier* classifier;
     vector<bool> active_models;
