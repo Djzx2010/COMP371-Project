@@ -4,7 +4,6 @@
 // Created by Nicolas Bergeron on 20/06/2019.
 //
 
-
 #include <iostream>
 #include <list>
 #include <algorithm>
@@ -22,6 +21,9 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <OIFace.hpp>
+#include <OINullFaceTracker.hpp>
+
 
 using namespace glm;
 using namespace std;
@@ -54,6 +56,44 @@ struct TexturedColoredVertex
 	vec2 uv;
 	vec3 normal;
 
+	TexturedColoredVertex() {
+		this->position = vec3(0.0f, 0.0f, 0.0f);
+		this->color = vec3(0.0f, 0.0f, 0.0f);;
+		this->uv = vec2(0.0f, 0.0f);;
+		this->normal = vec3(0.0f, 0.0f, 0.0f);;
+	}
+};
+
+TexturedColoredVertex* genereteVertexArray(vector<openiss::Point2f> face) {
+	static TexturedColoredVertex faceArray[1728];
+	int circleIncrements = 8;
+	float radius = 0.05f;
+	float angleStep = 360.0f / circleIncrements;
+
+	for (int i = 0; i < 72; i++) {
+
+		float x = face.at(i).x;
+		float y = face.at(i).y;
+
+		for (int j = 0; j < circleIncrements; j++) {
+			//Middle point
+			faceArray[24 * i + 3 * j].position = vec3(x, y, 0.0f);
+			faceArray[24 * i + 3 * j].color = vec3(1.0f, 0.0f, 1.0f);
+			faceArray[24 * i + 3 * j].uv = vec2(0.0f, 0.0f);
+			faceArray[24 * i + 3 * j].normal = vec3(0.0f, 0.0f, 1.0f);
+			//First edge point
+			faceArray[24 * i + 3 * j + 1].position = vec3(x + radius * cos(radians(j * angleStep)), y + radius * sin(radians(j * angleStep)), 0.0f);
+			faceArray[24 * i + 3 * j + 1].color = vec3(1.0f, 0.0f, 1.0f);
+			faceArray[24 * i + 3 * j + 1].uv = vec2(cos(radians(j * angleStep)), sin(radians(j * angleStep)));
+			faceArray[24 * i + 3 * j + 1].normal = vec3(0.0f, 0.0f, 1.0f);
+			//First edge point
+			faceArray[24 * i + 3 * j + 2].position = vec3(x + radius * cos(radians((j + 1) * angleStep)), y + radius * sin(radians((j + 1) * angleStep)), 0.0f);
+			faceArray[24 * i + 3 * j + 2].color = vec3(1.0f, 0.0f, 1.0f);
+			faceArray[24 * i + 3 * j + 2].uv = vec2(cos(radians((j + 1) * angleStep)), sin(radians((j + 1) * angleStep)));
+			faceArray[24 * i + 3 * j + 2].normal = vec3(0.0f, 0.0f, 1.0f);
+		}
+	}
+	return faceArray;
 };
 
 // Textured Cube model
@@ -213,8 +253,6 @@ int main(int argc, char* argv[])
 	GLuint colorLocation = glGetUniformLocation(colorShaderProgram, "vertexColor");
 	GLuint isTexturedLocation = glGetUniformLocation(colorShaderProgram, "isTextured");
 
-
-
 	// Camera parameters for view transform
 	vec3 cameraPosition(0.6f, 1.0f, 10.0f);
 	vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
@@ -246,7 +284,7 @@ int main(int argc, char* argv[])
 		cameraPosition + cameraLookAt,  // center
 		cameraUp); // up
 
-// Set View and Projection matrices on both shaders
+	// Set View and Projection matrices on both shaders
 	setViewMatrix(colorShaderProgram, viewMatrix);
 	setViewMatrix(texturedShaderProgram, viewMatrix);
 
@@ -271,10 +309,216 @@ int main(int argc, char* argv[])
 
 	glBindVertexArray(texturedCubeVAO);
 
+	//Creating OINullFaceTracker
+	openiss::OINullFaceTracker OINFT = openiss::OINullFaceTracker();
 
-	//Setting up our components
-	 //Initializing a vallue for current position (1-5)Setting default to 1
-	int position = 1;
+	OINFT.generateFaces();
+
+	//Getting our 2d faces
+	vector<openiss::Point2f> face0 = OINFT.getNextFace();
+	vector<openiss::Point2f> face1 = OINFT.getNextFace();
+	vector<openiss::Point2f> face2 = OINFT.getNextFace();
+	vector<openiss::Point2f> face3 = OINFT.getNextFace();
+	vector<openiss::Point2f> face4 = OINFT.getNextFace();
+	vector<openiss::Point2f> face5 = OINFT.getNextFace();
+	vector<openiss::Point2f> face6 = OINFT.getNextFace();
+
+	//Generating pointers to arrays of vertex
+	//IF this bugs check static keyword in method, might cause problem
+	TexturedColoredVertex* texturedFace0VertexArray = genereteVertexArray(face0);
+	TexturedColoredVertex* texturedFace1VertexArray = genereteVertexArray(face1);
+	TexturedColoredVertex* texturedFace2VertexArray = genereteVertexArray(face2);
+	TexturedColoredVertex* texturedFace3VertexArray = genereteVertexArray(face3);
+	TexturedColoredVertex* texturedFace4VertexArray = genereteVertexArray(face4);
+	TexturedColoredVertex* texturedFace5VertexArray = genereteVertexArray(face5);
+	TexturedColoredVertex* texturedFace6VertexArray = genereteVertexArray(face6);
+
+	//Creating vbos or vaos with the arrays
+	//cube and cylinder and sphere
+	vec3 vertexArrayCube[] = {
+		vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), //left - red
+		vec3(-0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f),
+		vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f),
+
+		vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f),
+		vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f),
+		vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f),
+
+		vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), // far - blue
+		vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
+		vec3(-0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
+
+		vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
+		vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
+		vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
+
+		vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), // bottom - turquoise
+		vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f),
+		vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f),
+
+		vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f),
+		vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f),
+		vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f),
+
+		vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), // near - green
+		vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
+		vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
+
+		vec3(0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
+		vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
+		vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
+
+		vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), // right - purple
+		vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f),
+		vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f),
+
+		vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f),
+		vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f),
+		vec3(0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f),
+
+		vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), // top - yellow
+		vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f),
+		vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f),
+
+		vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f),
+		vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f),
+		vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f)
+	};
+
+	//Building a cylinder of r=1, h=1 with precision of 60 steps
+	vec3 vertexArrayCylinder[1440];
+	float angle = 0.0f;
+	float x, y, z;
+	vec3 topCenterVertice = vec3(0.0f, 0.5f, 0.0f);
+	vec3 bottomCenterVertice = vec3(0.0f, -0.5f, 0.0f);
+
+	//color vectors
+	for (int i = 1; i < 1440; i += 2) {
+		vertexArrayCylinder[i] = vec3(1.0f, 1.0f, 1.0f); //Color vector
+	}
+
+	for (int i = 0; i < 1440; i += 24) {
+		vertexArrayCylinder[i] = topCenterVertice; //Top center vertice
+
+		x = sin(radians(angle)); //First top edge vertice
+		z = cos(radians(angle));
+		y = 0.5f;
+
+		vertexArrayCylinder[i + 2] = vec3(x, y, z);
+		vertexArrayCylinder[i + 6] = vec3(x, y, z);
+		vertexArrayCylinder[i + 12] = vec3(x, y, z);
+
+		//First bottom
+		y = -0.5f;
+		vertexArrayCylinder[i + 8] = vec3(x, y, z);
+		vertexArrayCylinder[i + 18] = vec3(x, y, z);
+
+
+		//Second top edge vertice
+		angle += 6; //arbitrary
+		x = sin(radians(angle));
+		z = cos(radians(angle));
+		y = 0.5f;
+
+		vertexArrayCylinder[i + 4] = vec3(x, y, z);
+		vertexArrayCylinder[i + 14] = vec3(x, y, z);
+
+		//Second bottom
+		y = -0.5f;
+		vertexArrayCylinder[i + 10] = vec3(x, y, z);
+		vertexArrayCylinder[i + 16] = vec3(x, y, z);
+		vertexArrayCylinder[i + 20] = vec3(x, y, z);
+
+		vertexArrayCylinder[i + 22] = bottomCenterVertice; //Top center vertice
+	}
+
+	//Creating a model of a sphere with 18 lat and 36 lon
+	//18*36 = 648 squares
+	//648 squares * 2 triangles *3points /traingle= 3888
+	//3888*2 for color vector = 7776;
+	//r=1
+
+	//A vertex is a point on a polygon, it contains positions and other data (eg: colors)
+	// Cube model
+	vec3 vertexArraySphere[7776];
+	float latStep = 180 / 18;
+	float lonStep = 360 / 36;
+	int latCount = 0;
+	int lonCount = 0;
+	float latAngle;
+	float lonAngle;
+	float xz;
+
+	//color vectors
+	for (int i = 1; i < 7776; i += 2) {
+		vertexArraySphere[i] = vec3(1.0f, 1.0f, 1.0f); //Color vector
+	}
+
+	//Buillding our squares
+	for (int i = 0; i < 7776; i += 12) {
+
+		latAngle = (90 - (latStep * latCount));
+		lonAngle = (lonStep * lonCount);
+		y = sin(radians(latAngle));
+		xz = cos(radians(latAngle));
+
+		x = xz * cos(radians(lonAngle));
+		z = xz * sin(radians(lonAngle));
+
+		vertexArraySphere[i] = vec3(x, y, z);
+		vertexArraySphere[i + 6] = vec3(x, y, z);
+
+		//Corner on same lat, lon + 1
+		lonAngle = (lonStep * (lonCount + 1));
+		x = xz * cos(radians(lonAngle));
+		z = xz * sin(radians(lonAngle));
+
+		vertexArraySphere[i + 2] = vec3(x, y, z);
+
+		//Corner lat+1, lon + 1 
+		latAngle = (90 - (latStep * (latCount + 1)));
+		y = sin(radians(latAngle));
+		xz = cos(radians(latAngle));
+		x = xz * cos(radians(lonAngle));
+		z = xz * sin(radians(lonAngle));
+
+		vertexArraySphere[i + 4] = vec3(x, y, z);
+		vertexArraySphere[i + 10] = vec3(x, y, z);
+
+		//Corner lat+1, lon+0
+		lonAngle = (lonStep * lonCount);
+		x = xz * cos(radians(lonAngle));
+		z = xz * sin(radians(lonAngle));
+
+		vertexArraySphere[i + 8] = vec3(x, y, z);
+
+		//Updating count 
+		lonCount += 1;
+		//If we made a full circle, we change lat
+		if (lonCount == 36) {
+			lonCount = 0;
+			latCount += 1;
+		}
+
+	}
+	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
+	GLuint vertexBufferObjectSphere;
+	glGenBuffers(1, &vertexBufferObjectSphere);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectSphere);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArraySphere), vertexArraySphere, GL_STATIC_DRAW);
+
+	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
+	GLuint vertexBufferObjectCube;
+	glGenBuffers(1, &vertexBufferObjectCube);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectCube);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArrayCube), vertexArrayCube, GL_STATIC_DRAW);
+
+	// Upload Vertex Buffer to the GPU, keep a reference to it(vertexBufferObject)
+	GLuint vertexBufferObjectCylinder;
+	glGenBuffers(1, &vertexBufferObjectCylinder);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectCylinder);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArrayCylinder), vertexArrayCylinder, GL_STATIC_DRAW);
+
 
 	// Initialize Matrices
 	mat4 model = mat4(1.0f); // identity matrix
@@ -569,113 +813,6 @@ int main(int argc, char* argv[])
 			viewMatrix = lookAt(cameraPosition,  // eye
 				cameraLookAt,  // center
 				cameraUp); // up
-		}
-
-
-		//Preset Camera locations----------------------------------------------------------------------------
-		//Preset for center
-		if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-		{
-			cameraHorizontalAngle = -90.0f;
-			cameraVerticalAngle = 0.0f;
-			currentOrientation.y = 0;
-			currentOrientation.x = 0;
-			//Snapping camera to center
-			cameraPosition = glm::vec3(0.0f, 5.0f, -32.0f);
-			cameraLookAt = glm::vec3(0.0f, 0.0f, 1.0f);
-
-			viewMatrix = glm::lookAt(cameraPosition,  // eye,
-				cameraLookAt,  // center
-				glm::vec3(0.0f, 1.0f, 0.0f));// up
-
-			viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
-			glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-
-			//Setting current position to 1
-			position = 1;
-		}
-		//Preset for behind left
-		if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
-		{
-			cameraHorizontalAngle = 149.0f;
-			cameraVerticalAngle = 0.0f;
-			currentOrientation.y = 0;
-			currentOrientation.x = 0;
-			cameraPosition = glm::vec3(-20.0f, 5.0f, -32.0f);
-			cameraLookAt = glm::vec3(-1.0f, 0.0f, -0.6f);
-
-			viewMatrix = glm::lookAt(cameraPosition,  // eye
-				cameraLookAt,  // center
-				glm::vec3(0.0f, 1.0f, 0.0f));// up
-
-			viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
-			glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-
-			//Setting current position to 2
-			position = 2;
-		}
-
-		//Preset for behind right
-		if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
-		{
-			cameraHorizontalAngle = 222.0f;
-			cameraVerticalAngle = 0.0f;
-			currentOrientation.y = 0;
-			currentOrientation.x = 0;
-			cameraPosition = glm::vec3(-20.0f, 5.0f, -32.0f);
-			cameraLookAt = glm::vec3(-1.0f, 0.0f, 0.9f);
-
-			viewMatrix = glm::lookAt(cameraPosition,  // eye
-				cameraLookAt,  // center
-				glm::vec3(0.0f, 1.0f, 0.0f));// up
-
-			viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
-			glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-
-			//Setting current position to 3
-			position = 3;
-		}
-
-		//Preset for front right
-		if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS)
-		{
-			cameraHorizontalAngle = -38.65f;
-			cameraVerticalAngle = 0.0f;
-			currentOrientation.y = 0;
-			currentOrientation.x = 0;
-			cameraPosition = glm::vec3(20.0f, 5.0f, -32.0f);
-			cameraLookAt = glm::vec3(1.25f, 0.0f, 1.0f);
-
-			viewMatrix = glm::lookAt(cameraPosition,  // eye
-				cameraLookAt,  // center
-				glm::vec3(0.0f, 1.0f, 0.0f));// up
-
-			viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
-			glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-
-			//Setting current position to 4
-			position = 4;
-		}
-
-		//Preset for front left
-		if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
-		{
-			cameraHorizontalAngle = 31.0f;
-			cameraVerticalAngle = 0.0f;
-			currentOrientation.y = 0;
-			currentOrientation.x = 0;
-			cameraPosition = glm::vec3(20.0f, 5.0f, -32.0f);
-			cameraLookAt = glm::vec3(1.0f, 0.0f, -0.6f);
-
-			viewMatrix = glm::lookAt(cameraPosition,  // eye
-				cameraLookAt,  // center
-				glm::vec3(0.0f, 1.0f, 0.0f));// up
-
-			viewMatrixLocation = glGetUniformLocation(colorShaderProgram, "viewMatrix");
-			glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]);
-
-			//Setting current position to 5
-			position = 5;
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) // move camera to the left
