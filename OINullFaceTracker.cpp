@@ -781,8 +781,10 @@ void openiss::OINullFaceTracker::generateFaces()
 	
 	//Array of points for the mouth (frown)
 	openiss::Point2f frownPoints[] = { p60f,p61f,p62f,p63f,p64f,p65f,p66f,p67f,p68f,p69f,p70f,p71f,p72f};
-
+	/*
 	for (int i = 0; i < 7; i++) {
+		vector<openiss::Point2f> newVector;
+		oiface.facialLandmarks->push_back(newVector);
 		oiface.facialLandmarks->at(i).insert(oiface.facialLandmarks->at(i).begin(), basePoints, basePoints + 59);
 		if (i == 0) {
 			for (int j = 0; j < 13; j++) {
@@ -832,6 +834,7 @@ void openiss::OINullFaceTracker::generateFaces()
 			}
 		}
 	}
+	*/
 }
 
 vector<openiss::Point2f> openiss::OINullFaceTracker::getNextFace()
