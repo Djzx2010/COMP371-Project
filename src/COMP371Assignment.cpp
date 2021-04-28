@@ -525,24 +525,6 @@ int main(int argc, char* argv[])
 	mat4 WorldMatrix = mat4(1.0f); // Matrix used to create objects
 	mat4 orientationMatrix = mat4(1.0f); // initialize orientation matrix
 
-	//Predefined matrices for model manipulation
-	mat4 pushToEdgeMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, -64.0f)); // Matrix to bring objects to edge of circle
-	mat4 pullFromEdgeMatrix = translate(mat4(1.0f), vec3(0.0f, 0.0f, 64.0f)); // Matrix to bring back objects from edge of circle
-
-	//These matrices are used to create the offset between digits in a model
-	mat4 firstDigitOffsetMatrix = translate(mat4(1.0f), vec3(-7.5f, 0.0f, 0.0f));
-	mat4 secondDigitOffsetMatrix = translate(mat4(1.0f), vec3(-2.5f, 0.0f, 0.0f));
-	mat4 thirdDigitOffsetMatrix = translate(mat4(1.0f), vec3(2.5f, 0.0f, 0.0f));
-	mat4 fourthDigitOffsetMatrix = translate(mat4(1.0f), vec3(7.5f, 0.0f, 0.0f));
-
-	//Initialising all group matrices and variables
-	mat4 GroupTMatrix = model; //To modify final model position
-	mat4 GroupOriginRotationMatrix = model; //If we want to rotate whole group on itself at final position
-	mat4 GroupScaleMatrix = model; //If we want to scale the whole group of 4 digits
-	mat4 GroupShearMatrix = model;
-	//Combination matrix to avoid unnecessary calculations and simplicity
-	mat4 GroupMatrix = model;
-
 	//Stage matrices
 	// Stage
 	//Main cube
