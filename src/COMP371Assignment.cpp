@@ -678,6 +678,7 @@ int main(int argc, char* argv[])
 		if (timeOnFace > 5){
 			face = OINFT.getNextFace();
 			updateVertexArray(face, texturedFaceVertexArray);
+			timeOnFace = 0;
 		}	
 		
 		
