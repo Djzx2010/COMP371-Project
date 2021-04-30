@@ -389,7 +389,7 @@ int main(int argc, char* argv[])
 	std::cerr << "coordinates : x :" << face0->facialLandmarks->at(0).at(0).x << std::endl;
 	//Generating pointers to arrays of vertex
 
-	updateVertexArray(face1, texturedFaceVertexArray);
+	updateVertexArray(face0, texturedFaceVertexArray);
 	
 
 
@@ -696,7 +696,10 @@ int main(int argc, char* argv[])
 		if (timeOnFace > 30)
 			currentFace = 6;
 		if (timeOnFace > 35)
+		{
 			timeOnFace = 0;
+			currentFace = 0;
+		}
 		switch (currentFace) {
 		case 0: 
 			updateVertexArray(face0, texturedFaceVertexArray);
