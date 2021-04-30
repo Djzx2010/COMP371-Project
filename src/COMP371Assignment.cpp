@@ -22,7 +22,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <OIFace.hpp>
-#include<OINullDFaceTracker.hpp>
+#include <OINullDFaceTracker.hpp>
 
 
 using namespace glm;
@@ -149,7 +149,6 @@ TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f
 TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f))
 };
 
-int createTexturedCubeVertexArrayObject();
 
 void setProjectionMatrix(int shaderProgram, mat4 projectionMatrix)
 {
@@ -240,7 +239,7 @@ int main(int argc, char* argv[])
 	GLuint group5TextureID = loadTexture("assets/textures/group5resize.jpg");
 
 	// Black background
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// Compile and link shaders here ...
 	int colorShaderProgram = compileAndLinkShaders(getVertexShaderSource(), getFragmentShaderSource());
@@ -258,6 +257,7 @@ int main(int argc, char* argv[])
 	vec3 cameraPosition(0.6f, 1.0f, 10.0f);
 	vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
 	vec3 cameraUp(0.0f, 1.0f, 0.0f);
+
 
 	// Other camera parameters
 	float cameraSpeed = 5.0f;
@@ -310,13 +310,13 @@ int main(int argc, char* argv[])
 	GLuint vertexArrayObject;
 	glGenVertexArrays(1, &vertexArrayObject);
 	glBindVertexArray(vertexArrayObject);
-	
+
 	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
 	GLuint vertexBufferObjectCube;
 	glGenBuffers(1, &vertexBufferObjectCube);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectCube);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(texturedCubeVertexArray), texturedCubeVertexArray, GL_STATIC_DRAW);
-	
+
 	glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
 		3,                   // size
 		GL_FLOAT,            // type
@@ -353,14 +353,14 @@ int main(int argc, char* argv[])
 		(void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
 	);
 	glEnableVertexAttribArray(3);
-	
+
 
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Project part 3
-	
+
 	const int numberOfPointsPerFace = 72;
 	const int circlePrecision = 8;
-	
+
 	const static int texturedFaceArraySize = 3 * numberOfPointsPerFace * circlePrecision;
 
 	//Creating OINullDFaceTracker
@@ -368,7 +368,14 @@ int main(int argc, char* argv[])
 
 	//Getting our first face
 	openiss::OIFace* face0 = OINFT.getNextFace();
+	openiss::OIFace* face1 = OINFT.getNextFace();
+	openiss::OIFace* face2 = OINFT.getNextFace();
+	openiss::OIFace* face3 = OINFT.getNextFace();
+	openiss::OIFace* face4 = OINFT.getNextFace();
+	openiss::OIFace* face5 = OINFT.getNextFace();
+	openiss::OIFace* face6 = OINFT.getNextFace();
 	
+
 	//TO DO ----------------------------------------------
 	//Put parameters for array size
 	//num of faces
@@ -382,20 +389,22 @@ int main(int argc, char* argv[])
 	std::cerr << "coordinates : x :" << face0->facialLandmarks->at(0).at(0).x << std::endl;
 	//Generating pointers to arrays of vertex
 
-	updateVertexArray(face0, texturedFaceVertexArray);
+	updateVertexArray(face1, texturedFaceVertexArray);
+	
 
 
 	std::cerr << "First texturedVertex : x :" << texturedFaceVertexArray[0].position.x << " y: " << texturedFaceVertexArray[0].position.y << " z: " << texturedFaceVertexArray[0].position.z
 		<< " color : r: " << texturedFaceVertexArray[0].color.x << " g: " << texturedFaceVertexArray[0].color.y << " b: " << texturedFaceVertexArray[0].position.z << std::endl;
 	std::cerr << "Last texturedVertex : x :" << texturedFaceVertexArray[1727].position.x << " y: " << texturedFaceVertexArray[1727].position.y << " z: " << texturedFaceVertexArray[1727].position.z
 		<< " color : r: " << texturedFaceVertexArray[112].color.x << " g: " << texturedFaceVertexArray[112].color.y << " b: " << texturedFaceVertexArray[112].position.z << std::endl;
-	
+
 	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
 	GLuint vertexBufferObjectFace;
 	glGenBuffers(1, &vertexBufferObjectFace);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectFace);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(texturedFaceVertexArray), texturedFaceVertexArray, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texturedFaceVertexArray), texturedFaceVertexArray, GL_DYNAMIC_DRAW);
 	
+
 	glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
 		3,                   // size
 		GL_FLOAT,            // type
@@ -432,12 +441,12 @@ int main(int argc, char* argv[])
 		(void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
 	);
 	glEnableVertexAttribArray(3);
-	
+
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	
 
 
-	
+
+
 
 	// Initialize Matrices
 	mat4 model = mat4(1.0f); // identity matrix
@@ -481,6 +490,7 @@ int main(int argc, char* argv[])
 	float timeOnTexture = 0;
 	int currentTexture = 1;
 	GLuint isTextured = 1;
+	float timeOnFace = 0;
 
 	float lightAngleOuter = 30.0;
 	float lightAngleInner = 20.0;
@@ -668,9 +678,52 @@ int main(int argc, char* argv[])
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		//Drawing face------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		glBindTexture(GL_TEXTURE_2D, steelTextureID);
-
+		setWorldMatrix(texturedShaderProgram, model);
+		int currentFace = 0;
+		int num = 0;
+		//The face will switch every 5 seconds, reset to the first face after 35 seconds
+		timeOnFace += dt;
+		if (timeOnFace > 5)
+			currentFace = 1;
+		if (timeOnFace > 10)
+			currentFace = 2;
+		if (timeOnFace > 15)
+			currentFace = 3;
+		if (timeOnFace > 20)
+			currentFace = 4;
+		if (timeOnFace > 25)
+			currentFace = 5;
+		if (timeOnFace > 30)
+			currentFace = 6;
+		if (timeOnFace > 35)
+			timeOnFace = 0;
+		switch (currentFace) {
+		case 0: 
+			updateVertexArray(face0, texturedFaceVertexArray);
+			break;
+		case 1:
+			updateVertexArray(face1, texturedFaceVertexArray);
+			break;
+		case 2:
+			updateVertexArray(face2, texturedFaceVertexArray);
+			break;
+		case 3: 
+			updateVertexArray(face3, texturedFaceVertexArray);
+			break;
+		case 4: 
+			updateVertexArray(face4, texturedFaceVertexArray);
+			break;
+		case 5:
+			updateVertexArray(face5, texturedFaceVertexArray);
+			break;
+		case 6: 
+			updateVertexArray(face6, texturedFaceVertexArray);
+			break;
+		}
+	//Bind the new vertex array to the buffer
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectFace);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(texturedFaceVertexArray), texturedFaceVertexArray, GL_DYNAMIC_DRAW);
+		//Enable the attribute
 		glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
 			3,                   // size
 			GL_FLOAT,            // type
@@ -707,9 +760,13 @@ int main(int argc, char* argv[])
 			(void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
 		);
 		glEnableVertexAttribArray(3);
-		setWorldMatrix(texturedShaderProgram, model);
+
 		glDrawArrays(GL_TRIANGLES, 0, texturedFaceArraySize);
 
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(3);
 
 		// Draw colored geometry------------------------------------------------------------------------------------------------------
 		glUseProgram(colorShaderProgram);
