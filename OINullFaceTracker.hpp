@@ -27,16 +27,9 @@ public:
     void resetAdapterParams() override;
     void initializeFace(openiss::OIFace& p_oFace) override;
 
-    //Method to generates the points for our  faces
-    void generateFaces();
-
-    //Our method to return a new face
-    vector<Point2f> getNextFace(); 
 
     OINullFaceTracker& operator=(OINullFaceTracker&);
 
-    int currentFace = 6;
-    OIFace* oiface;
     int frame_count;
     OIClassifier* classifier;
     vector<bool> active_models;
