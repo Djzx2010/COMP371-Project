@@ -367,13 +367,7 @@ int main(int argc, char* argv[])
 	openiss::OINullDFaceTracker OINFT = openiss::OINullDFaceTracker();
 
 	//Getting our first face
-	openiss::OIFace* face0 = OINFT.getNextFace();
-	openiss::OIFace* face1 = OINFT.getNextFace();
-	openiss::OIFace* face2 = OINFT.getNextFace();
-	openiss::OIFace* face3 = OINFT.getNextFace();
-	openiss::OIFace* face4 = OINFT.getNextFace();
-	openiss::OIFace* face5 = OINFT.getNextFace();
-	openiss::OIFace* face6 = OINFT.getNextFace();
+	openiss::OIFace* face = OINFT.getNextFace();
 	
 
 	//TO DO ----------------------------------------------
@@ -385,11 +379,9 @@ int main(int argc, char* argv[])
 	//Creating our vertex array for faces
 	static TexturedColoredVertex texturedFaceVertexArray[texturedFaceArraySize];
 
-	//Checking that 
-	std::cerr << "coordinates : x :" << face0->facialLandmarks->at(0).at(0).x << std::endl;
 	//Generating pointers to arrays of vertex
 
-	updateVertexArray(face0, texturedFaceVertexArray);
+	updateVertexArray(face, texturedFaceVertexArray);
 	
 
 
@@ -683,47 +675,13 @@ int main(int argc, char* argv[])
 		int num = 0;
 		//The face will switch every 5 seconds, reset to the first face after 35 seconds
 		timeOnFace += dt;
-		if (timeOnFace > 5)
-			currentFace = 1;
-		if (timeOnFace > 10)
-			currentFace = 2;
-		if (timeOnFace > 15)
-			currentFace = 3;
-		if (timeOnFace > 20)
-			currentFace = 4;
-		if (timeOnFace > 25)
-			currentFace = 5;
-		if (timeOnFace > 30)
-			currentFace = 6;
-		if (timeOnFace > 35)
-		{
-			timeOnFace = 0;
-			currentFace = 0;
-		}
-		switch (currentFace) {
-		case 0: 
-			updateVertexArray(face0, texturedFaceVertexArray);
-			break;
-		case 1:
-			updateVertexArray(face1, texturedFaceVertexArray);
-			break;
-		case 2:
-			updateVertexArray(face2, texturedFaceVertexArray);
-			break;
-		case 3: 
-			updateVertexArray(face3, texturedFaceVertexArray);
-			break;
-		case 4: 
-			updateVertexArray(face4, texturedFaceVertexArray);
-			break;
-		case 5:
-			updateVertexArray(face5, texturedFaceVertexArray);
-			break;
-		case 6: 
-			updateVertexArray(face6, texturedFaceVertexArray);
-			break;
-		}
-	//Bind the new vertex array to the buffer
+		if (timeOnFace > 5){
+			face = OINFT.getNextFace();
+			updateVertexArray(face, texturedFaceVertexArray);
+		}	
+		
+		
+		//Bind the new vertex array to the buffer
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectFace);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(texturedFaceVertexArray), texturedFaceVertexArray, GL_DYNAMIC_DRAW);
 		//Enable the attribute
