@@ -264,7 +264,7 @@ void openiss::OINullDFaceTracker::generateFaces()
 	p64s.y = 2.4;
 
 	openiss::Point2f p65s;
-	p65s.x = -0.7;
+	p65s.x = 0.7;
 	p65s.y = 3.1;
 
 	openiss::Point2f p66s;
@@ -284,8 +284,8 @@ void openiss::OINullDFaceTracker::generateFaces()
 	p69s.y = 3.1;
 
 	openiss::Point2f p70s;
-	p70s.x = -0.3;
-	p70s.y = 0.5;
+	p70s.x = 0.0f;
+	p70s.y = 3.05f;
 
 	openiss::Point2f p71s;
 	p71s.x = 0;
@@ -421,87 +421,104 @@ void openiss::OINullDFaceTracker::generateFaces()
 
 	for (int i = 0; i < numberOfFaces; i++) {
 
+		//Creating objects to populate our vectors
 		OIFace* newFace = new OIFace();
 
 		vector<openiss::Point2f>* newVector = new vector<openiss::Point2f>;
 
+		//Pushing them in their vectors
 		oiface->push_back(newFace);
 
 		oiface->at(i)->facialLandmarks->push_back(*newVector);
 
+
+		//Adding the commonm hardcoded points
 		oiface->at(i)->facialLandmarks->at(0).insert(oiface->at(i)->facialLandmarks->at(0).begin(), basePoints, basePoints + 59);
 
-		if (i == 0) {
+		//Switch the determine which of the 77 faces we are working on
+		switch (i) {
+		//This is our smiling face
+		case 0:
 			for (int j = 0; j < pointsForMouth; j++) {
 				oiface->at(i)->facialLandmarks->at(0).push_back(smilePoints[j]);
 			}
-		}
-		else if (i == 1) {
+			break;
+		//FIrst face between smile and neutral
+		case 1:
 			for (int j = 0; j < pointsForMouth; j++) {
 				openiss::Point2f point;
 				point.x = smilePoints[j].x + (neutralPoints[j].x - smilePoints[j].x) / 3;
 				point.y = smilePoints[j].y + (neutralPoints[j].y - smilePoints[j].y) / 3;
 				oiface->at(i)->facialLandmarks->at(0).push_back(point);
 			}
-		}
-		else if (i == 2) {
+			break;
+		//Second between smile and neutral
+		case 2:
 			for (int j = 0; j < pointsForMouth; j++) {
 				openiss::Point2f point;
 				point.x = smilePoints[j].x + (neutralPoints[j].x - smilePoints[j].x) * 2 / 3;
 				point.y = smilePoints[j].y + (neutralPoints[j].y - smilePoints[j].y) * 2 / 3;
 				oiface->at(i)->facialLandmarks->at(0).push_back(point);
 			}
-		}
-		else if (i == 3) {
+			break;
+		//Neutral face
+		case 3:
 			for (int j = 0; j < pointsForMouth; j++) {
 				oiface->at(i)->facialLandmarks->at(0).push_back(neutralPoints[j]);
 			}
-		}
-		else if (i == 4) {
+			break;
+		//FIrst face between neutral and frown
+		case 4:
 			for (int j = 0; j < pointsForMouth; j++) {
 				openiss::Point2f point;
 				point.x = neutralPoints[j].x + (frownPoints[j].x - neutralPoints[j].x) / 3;
 				point.y = neutralPoints[j].y + (frownPoints[j].y - neutralPoints[j].y) / 3;
 				oiface->at(i)->facialLandmarks->at(0).push_back(point);
 			}
-		}
-		else if (i == 5) {
+			break;;
+		//Second face between neutral and frown
+		case 5:
 			for (int j = 0; j < pointsForMouth; j++) {
 				openiss::Point2f point;
 				point.x = neutralPoints[j].x + (frownPoints[j].x - neutralPoints[j].x) * 2 / 3;
 				point.y = neutralPoints[j].y + (frownPoints[j].y - neutralPoints[j].y) * 2 / 3;
 				oiface->at(i)->facialLandmarks->at(0).push_back(point);
 			}
-		}
-		else if (i == 6) {
+			break;
+		//Frowning face
+		case 6:
 			for (int j = 0; j < pointsForMouth; j++) {
 				oiface->at(i)->facialLandmarks->at(0).push_back(frownPoints[j]);
 			}
+			break;
 		}
 	}
 }
 
+//Accessor
 int openiss::OINullDFaceTracker::getCurrentFace() const
 {
 	return currentFace;
 }
 
+//Accessor
 vector<openiss::OIFace*>* openiss::OINullDFaceTracker::getOIFace() const
 {
 	return oiface;
 }
 
+//Mutator
 void openiss::OINullDFaceTracker::setCurrentFace(int i)
 {
 	this->currentFace = i;
 }
-
+//Mutator
 void openiss::OINullDFaceTracker::setOIFace(vector<OIFace*>* oif)
 {
 	this->oiface = oif;
 }
 
-
+//Default constructor
 openiss::OINullDFaceTracker::OINullDFaceTracker()
 {
 	//So next face called is 0
@@ -514,6 +531,7 @@ openiss::OINullDFaceTracker::OINullDFaceTracker()
 	generateFaces();
 }
 
+//Copy constructor
 openiss::OINullDFaceTracker::OINullDFaceTracker(const OINullDFaceTracker& copied)
 {
 	this->currentFace = copied.currentFace;
@@ -521,6 +539,7 @@ openiss::OINullDFaceTracker::OINullDFaceTracker(const OINullDFaceTracker& copied
 	this->oiface = copied.getOIFace();
 }
 
+//Destructor
 openiss::OINullDFaceTracker::~OINullDFaceTracker()
 {
 	delete oiface;
@@ -537,7 +556,8 @@ openiss::OINullDFaceTracker& openiss::OINullDFaceTracker::operator=(OINullDFaceT
 //This returns the next face in the vector
 openiss::OIFace* openiss::OINullDFaceTracker::getNextFace()
 {
-	currentFace = (currentFace + 1) % 6;
+	//Increment current face and loop if we go past the size of the vector
+	currentFace = (currentFace + 1) % oiface->size();
 
 	return oiface->at(currentFace);
 }

@@ -16,28 +16,33 @@ openiss::OIFace::OIFace(const cv::Mat& img)
 }
 #endif
 
+//Default constructor
 openiss::OIFace::OIFace()
 {
     this->facialLandmarks = new std::vector<std::vector<openiss::Point2f>>;
 }
 
+//Destructor
 openiss::OIFace::~OIFace()
 {
     delete facialLandmarks;
 }
 
+//Copy constructor
 openiss::OIFace::OIFace(const OIFace& copied)
 {
     this->facialLandmarks = new std::vector<std::vector<openiss::Point2f>>;
     this->facialLandmarks = copied.facialLandmarks;
 }
 
+//Assignment operator overload
 openiss::OIFace& openiss::OIFace::operator=(const OIFace& oif)
 {
     this->facialLandmarks = oif.facialLandmarks;
     return *this;
 }
 
+//Accessor
 std::vector<std::vector<openiss::Point2f>>* openiss::OIFace::getFacialLandmarks()
 {
     std::vector<std::vector<openiss::Point2f>>* FacialLandmarks = new std::vector<std::vector<openiss::Point2f>>;
