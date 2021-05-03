@@ -22,7 +22,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <OIFace.hpp>
-#include <OINullFaceTracker.hpp>
+#include <OINullDFaceTracker.hpp>
+#include "Cylinder.h"
 
 
 using namespace glm;
@@ -64,40 +65,42 @@ struct TexturedColoredVertex
 	}
 };
 
-TexturedColoredVertex* genereteVertexArray(vector<openiss::Point2f> face) {
-	static TexturedColoredVertex faceArray[1728];
+void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFaceVertexArray[]) {
+
 	int circleIncrements = 8;
 	float radius = 0.05f;
 	float angleStep = 360.0f / circleIncrements;
 
 	for (int i = 0; i < 72; i++) {
 
-		float x = face.at(i).x;
-		float y = face.at(i).y;
+		float x = face->facialLandmarks->at(0).at(i).x;
+		float y = face->facialLandmarks->at(0).at(i).y;
 
 		for (int j = 0; j < circleIncrements; j++) {
 			//Middle point
-			faceArray[24 * i + 3 * j].position = vec3(x, y, 0.0f);
-			faceArray[24 * i + 3 * j].color = vec3(1.0f, 0.0f, 1.0f);
-			faceArray[24 * i + 3 * j].uv = vec2(0.0f, 0.0f);
-			faceArray[24 * i + 3 * j].normal = vec3(0.0f, 0.0f, 1.0f);
+			texturedFaceVertexArray[24 * i + 3 * j].position = vec3(x, y, 0.25f);
+			texturedFaceVertexArray[24 * i + 3 * j].color = vec3(1.0f, 0.0f, 0.0f);
+			texturedFaceVertexArray[24 * i + 3 * j].uv = vec2(0.0f, 0.0f);
+			texturedFaceVertexArray[24 * i + 3 * j].normal = vec3(0.0f, 0.0f, 1.0f);
 			//First edge point
-			faceArray[24 * i + 3 * j + 1].position = vec3(x + radius * cos(radians(j * angleStep)), y + radius * sin(radians(j * angleStep)), 0.0f);
-			faceArray[24 * i + 3 * j + 1].color = vec3(1.0f, 0.0f, 1.0f);
-			faceArray[24 * i + 3 * j + 1].uv = vec2(cos(radians(j * angleStep)), sin(radians(j * angleStep)));
-			faceArray[24 * i + 3 * j + 1].normal = vec3(0.0f, 0.0f, 1.0f);
+			texturedFaceVertexArray[24 * i + 3 * j + 1].position = vec3(x + radius * cos(radians(j * angleStep)), y + radius * sin(radians(j * angleStep)), 0.25f);
+			texturedFaceVertexArray[24 * i + 3 * j + 1].color = vec3(1.0f, 0.0f, 0.0f);
+			texturedFaceVertexArray[24 * i + 3 * j + 1].uv = vec2(cos(radians(j * angleStep)), sin(radians(j * angleStep)));
+			texturedFaceVertexArray[24 * i + 3 * j + 1].normal = vec3(0.0f, 0.0f, 1.0f);
 			//First edge point
-			faceArray[24 * i + 3 * j + 2].position = vec3(x + radius * cos(radians((j + 1) * angleStep)), y + radius * sin(radians((j + 1) * angleStep)), 0.0f);
-			faceArray[24 * i + 3 * j + 2].color = vec3(1.0f, 0.0f, 1.0f);
-			faceArray[24 * i + 3 * j + 2].uv = vec2(cos(radians((j + 1) * angleStep)), sin(radians((j + 1) * angleStep)));
-			faceArray[24 * i + 3 * j + 2].normal = vec3(0.0f, 0.0f, 1.0f);
+			texturedFaceVertexArray[24 * i + 3 * j + 2].position = vec3(x + radius * cos(radians((j + 1) * angleStep)), y + radius * sin(radians((j + 1) * angleStep)), 0.25f);
+			texturedFaceVertexArray[24 * i + 3 * j + 2].color = vec3(1.0f, 0.0f, 0.0f);
+			texturedFaceVertexArray[24 * i + 3 * j + 2].uv = vec2(cos(radians((j + 1) * angleStep)), sin(radians((j + 1) * angleStep)));
+			texturedFaceVertexArray[24 * i + 3 * j + 2].normal = vec3(0.0f, 0.0f, 1.0f);
 		}
 	}
-	return faceArray;
+	//Generate cylinders for links
+	
+
 };
 
 // Textured Cube model
-const TexturedColoredVertex texturedCubeVertexArray[] = {
+TexturedColoredVertex texturedCubeVertexArray[] = {
 	// position,                color                      UV                      normal
 TexturedColoredVertex(vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 0.0f), vec3(-1.0f, 0.0f, 0.0f)),      //left - red
 TexturedColoredVertex(vec3(-0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f), vec2(0.0f, 1.0f), vec3(-1.0f, 0.0f, 0.0f)),
@@ -148,7 +151,6 @@ TexturedColoredVertex(vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f
 TexturedColoredVertex(vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), vec2(0.0f, 1.0f), vec3(0.0f, 1.0f, 0.0f))
 };
 
-int createTexturedCubeVertexArrayObject();
 
 void setProjectionMatrix(int shaderProgram, mat4 projectionMatrix)
 {
@@ -239,7 +241,7 @@ int main(int argc, char* argv[])
 	GLuint group5TextureID = loadTexture("assets/textures/group5resize.jpg");
 
 	// Black background
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// Compile and link shaders here ...
 	int colorShaderProgram = compileAndLinkShaders(getVertexShaderSource(), getFragmentShaderSource());
@@ -257,6 +259,7 @@ int main(int argc, char* argv[])
 	vec3 cameraPosition(0.6f, 1.0f, 10.0f);
 	vec3 cameraLookAt(0.0f, 0.0f, -1.0f);
 	vec3 cameraUp(0.0f, 1.0f, 0.0f);
+
 
 	// Other camera parameters
 	float cameraSpeed = 5.0f;
@@ -292,9 +295,6 @@ int main(int argc, char* argv[])
 	setProjectionMatrix(texturedShaderProgram, projectionMatrix);
 
 
-	// Define and upload geometry to the GPU here ...
-	int texturedCubeVAO = createTexturedCubeVertexArrayObject();
-
 	// For frame time
 	float lastFrameTime = glfwGetTime();
 	int lastMouseLeftState = GLFW_RELEASE;
@@ -303,222 +303,140 @@ int main(int argc, char* argv[])
 
 	// Other OpenGL states to set once
 	// Enable Backface culling
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_CULL_FACE);
+	//glEnable(GL_DEPTH_TEST);
 
 
-	glBindVertexArray(texturedCubeVAO);
-
-	//Creating OINullFaceTracker
-	openiss::OINullFaceTracker OINFT = openiss::OINullFaceTracker();
-
-	OINFT.generateFaces();
-
-	//Getting our 2d faces
-	vector<openiss::Point2f> face0 = OINFT.getNextFace();
-	vector<openiss::Point2f> face1 = OINFT.getNextFace();
-	vector<openiss::Point2f> face2 = OINFT.getNextFace();
-	vector<openiss::Point2f> face3 = OINFT.getNextFace();
-	vector<openiss::Point2f> face4 = OINFT.getNextFace();
-	vector<openiss::Point2f> face5 = OINFT.getNextFace();
-	vector<openiss::Point2f> face6 = OINFT.getNextFace();
-
-	//Generating pointers to arrays of vertex
-	//IF this bugs check static keyword in method, might cause problem
-	TexturedColoredVertex* texturedFace0VertexArray = genereteVertexArray(face0);
-	TexturedColoredVertex* texturedFace1VertexArray = genereteVertexArray(face1);
-	TexturedColoredVertex* texturedFace2VertexArray = genereteVertexArray(face2);
-	TexturedColoredVertex* texturedFace3VertexArray = genereteVertexArray(face3);
-	TexturedColoredVertex* texturedFace4VertexArray = genereteVertexArray(face4);
-	TexturedColoredVertex* texturedFace5VertexArray = genereteVertexArray(face5);
-	TexturedColoredVertex* texturedFace6VertexArray = genereteVertexArray(face6);
-
-	//Creating vbos or vaos with the arrays
-	//cube and cylinder and sphere
-	vec3 vertexArrayCube[] = {
-		vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f), //left - red
-		vec3(-0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f),
-		vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f),
-
-		vec3(-0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f),
-		vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 0.0f),
-		vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 0.0f),
-
-		vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f), // far - blue
-		vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
-		vec3(-0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
-
-		vec3(0.5f, 0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
-		vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
-		vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 0.0f, 1.0f),
-
-		vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f), // bottom - turquoise
-		vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f),
-		vec3(0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f),
-
-		vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f),
-		vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 1.0f),
-		vec3(-0.5f,-0.5f,-0.5f), vec3(0.0f, 1.0f, 1.0f),
-
-		vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f), // near - green
-		vec3(-0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
-		vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
-
-		vec3(0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
-		vec3(-0.5f, 0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
-		vec3(0.5f,-0.5f, 0.5f), vec3(0.0f, 1.0f, 0.0f),
-
-		vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f), // right - purple
-		vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f),
-		vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f),
-
-		vec3(0.5f,-0.5f,-0.5f), vec3(1.0f, 0.0f, 1.0f),
-		vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f),
-		vec3(0.5f,-0.5f, 0.5f), vec3(1.0f, 0.0f, 1.0f),
-
-		vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f), // top - yellow
-		vec3(0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f),
-		vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f),
-
-		vec3(0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f),
-		vec3(-0.5f, 0.5f,-0.5f), vec3(1.0f, 1.0f, 0.0f),
-		vec3(-0.5f, 0.5f, 0.5f), vec3(1.0f, 1.0f, 0.0f)
-	};
-
-	//Building a cylinder of r=1, h=1 with precision of 60 steps
-	vec3 vertexArrayCylinder[1440];
-	float angle = 0.0f;
-	float x, y, z;
-	vec3 topCenterVertice = vec3(0.0f, 0.5f, 0.0f);
-	vec3 bottomCenterVertice = vec3(0.0f, -0.5f, 0.0f);
-
-	//color vectors
-	for (int i = 1; i < 1440; i += 2) {
-		vertexArrayCylinder[i] = vec3(1.0f, 1.0f, 1.0f); //Color vector
-	}
-
-	for (int i = 0; i < 1440; i += 24) {
-		vertexArrayCylinder[i] = topCenterVertice; //Top center vertice
-
-		x = sin(radians(angle)); //First top edge vertice
-		z = cos(radians(angle));
-		y = 0.5f;
-
-		vertexArrayCylinder[i + 2] = vec3(x, y, z);
-		vertexArrayCylinder[i + 6] = vec3(x, y, z);
-		vertexArrayCylinder[i + 12] = vec3(x, y, z);
-
-		//First bottom
-		y = -0.5f;
-		vertexArrayCylinder[i + 8] = vec3(x, y, z);
-		vertexArrayCylinder[i + 18] = vec3(x, y, z);
-
-
-		//Second top edge vertice
-		angle += 6; //arbitrary
-		x = sin(radians(angle));
-		z = cos(radians(angle));
-		y = 0.5f;
-
-		vertexArrayCylinder[i + 4] = vec3(x, y, z);
-		vertexArrayCylinder[i + 14] = vec3(x, y, z);
-
-		//Second bottom
-		y = -0.5f;
-		vertexArrayCylinder[i + 10] = vec3(x, y, z);
-		vertexArrayCylinder[i + 16] = vec3(x, y, z);
-		vertexArrayCylinder[i + 20] = vec3(x, y, z);
-
-		vertexArrayCylinder[i + 22] = bottomCenterVertice; //Top center vertice
-	}
-
-	//Creating a model of a sphere with 18 lat and 36 lon
-	//18*36 = 648 squares
-	//648 squares * 2 triangles *3points /traingle= 3888
-	//3888*2 for color vector = 7776;
-	//r=1
-
-	//A vertex is a point on a polygon, it contains positions and other data (eg: colors)
-	// Cube model
-	vec3 vertexArraySphere[7776];
-	float latStep = 180 / 18;
-	float lonStep = 360 / 36;
-	int latCount = 0;
-	int lonCount = 0;
-	float latAngle;
-	float lonAngle;
-	float xz;
-
-	//color vectors
-	for (int i = 1; i < 7776; i += 2) {
-		vertexArraySphere[i] = vec3(1.0f, 1.0f, 1.0f); //Color vector
-	}
-
-	//Buillding our squares
-	for (int i = 0; i < 7776; i += 12) {
-
-		latAngle = (90 - (latStep * latCount));
-		lonAngle = (lonStep * lonCount);
-		y = sin(radians(latAngle));
-		xz = cos(radians(latAngle));
-
-		x = xz * cos(radians(lonAngle));
-		z = xz * sin(radians(lonAngle));
-
-		vertexArraySphere[i] = vec3(x, y, z);
-		vertexArraySphere[i + 6] = vec3(x, y, z);
-
-		//Corner on same lat, lon + 1
-		lonAngle = (lonStep * (lonCount + 1));
-		x = xz * cos(radians(lonAngle));
-		z = xz * sin(radians(lonAngle));
-
-		vertexArraySphere[i + 2] = vec3(x, y, z);
-
-		//Corner lat+1, lon + 1 
-		latAngle = (90 - (latStep * (latCount + 1)));
-		y = sin(radians(latAngle));
-		xz = cos(radians(latAngle));
-		x = xz * cos(radians(lonAngle));
-		z = xz * sin(radians(lonAngle));
-
-		vertexArraySphere[i + 4] = vec3(x, y, z);
-		vertexArraySphere[i + 10] = vec3(x, y, z);
-
-		//Corner lat+1, lon+0
-		lonAngle = (lonStep * lonCount);
-		x = xz * cos(radians(lonAngle));
-		z = xz * sin(radians(lonAngle));
-
-		vertexArraySphere[i + 8] = vec3(x, y, z);
-
-		//Updating count 
-		lonCount += 1;
-		//If we made a full circle, we change lat
-		if (lonCount == 36) {
-			lonCount = 0;
-			latCount += 1;
-		}
-
-	}
-	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
-	GLuint vertexBufferObjectSphere;
-	glGenBuffers(1, &vertexBufferObjectSphere);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectSphere);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArraySphere), vertexArraySphere, GL_STATIC_DRAW);
+	// Define and upload geometry to the GPU here ...
+	// Create a vertex array
+	GLuint vertexArrayObject;
+	glGenVertexArrays(1, &vertexArrayObject);
+	glBindVertexArray(vertexArrayObject);
 
 	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
 	GLuint vertexBufferObjectCube;
 	glGenBuffers(1, &vertexBufferObjectCube);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectCube);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArrayCube), vertexArrayCube, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texturedCubeVertexArray), texturedCubeVertexArray, GL_STATIC_DRAW);
 
-	// Upload Vertex Buffer to the GPU, keep a reference to it(vertexBufferObject)
-	GLuint vertexBufferObjectCylinder;
-	glGenBuffers(1, &vertexBufferObjectCylinder);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectCylinder);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertexArrayCylinder), vertexArrayCylinder, GL_STATIC_DRAW);
+	glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
+		3,                   // size
+		GL_FLOAT,            // type
+		GL_FALSE,            // normalized?
+		sizeof(TexturedColoredVertex), // stride - each vertex contain 2 vec3 (position, color)
+		(void*)0             // array buffer offset
+	);
+	glEnableVertexAttribArray(0);
 
+
+	glVertexAttribPointer(1,                            // attribute 1 matches aColor in Vertex Shader
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(TexturedColoredVertex),
+		(void*)sizeof(vec3)      // color is offseted a vec3 (comes after position)
+	);
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2,                            // attribute 2 matches aUV in Vertex Shader
+		2,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(TexturedColoredVertex),
+		(void*)(2 * sizeof(vec3))      // uv is offseted by 2 vec3 (comes after position and color)
+	);
+	glEnableVertexAttribArray(2);
+
+	glVertexAttribPointer(3,                            // attribute 3 matches aNormal in Vertex Shader
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(TexturedColoredVertex),
+		(void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
+	);
+	glEnableVertexAttribArray(3);
+
+
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Project part 3
+
+	const int numberOfPointsPerFace = 72;
+	const int circlePrecision = 8;
+
+	const static int texturedFaceArraySize = 3 * numberOfPointsPerFace * circlePrecision;
+
+	//Creating OINullDFaceTracker
+	openiss::OINullDFaceTracker OINFT = openiss::OINullDFaceTracker();
+
+	//Getting our first face
+	openiss::OIFace* face = OINFT.getNextFace();
+	
+
+	//TO DO ----------------------------------------------
+	//Put parameters for array size
+	//num of faces
+	//res of spheres
+	//res of cylinders
+
+	//Creating our vertex array for faces
+	static TexturedColoredVertex texturedFaceVertexArray[texturedFaceArraySize];
+
+	//Generating pointers to arrays of vertex
+
+	updateVertexArray(face, texturedFaceVertexArray);
+	
+
+
+	std::cerr << "First texturedVertex : x :" << texturedFaceVertexArray[0].position.x << " y: " << texturedFaceVertexArray[0].position.y << " z: " << texturedFaceVertexArray[0].position.z
+		<< " color : r: " << texturedFaceVertexArray[0].color.x << " g: " << texturedFaceVertexArray[0].color.y << " b: " << texturedFaceVertexArray[0].position.z << std::endl;
+	std::cerr << "Last texturedVertex : x :" << texturedFaceVertexArray[1727].position.x << " y: " << texturedFaceVertexArray[1727].position.y << " z: " << texturedFaceVertexArray[1727].position.z
+		<< " color : r: " << texturedFaceVertexArray[112].color.x << " g: " << texturedFaceVertexArray[112].color.y << " b: " << texturedFaceVertexArray[112].position.z << std::endl;
+
+	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
+	GLuint vertexBufferObjectFace;
+	glGenBuffers(1, &vertexBufferObjectFace);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectFace);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texturedFaceVertexArray), texturedFaceVertexArray, GL_DYNAMIC_DRAW);
+	
+
+	glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
+		3,                   // size
+		GL_FLOAT,            // type
+		GL_FALSE,            // normalized?
+		sizeof(TexturedColoredVertex), // stride - each vertex contain 3 vec3 (position, color, normal) and a vec 2 (uv)
+		(void*)0             // array buffer offset
+	);
+	glEnableVertexAttribArray(0);
+
+
+	glVertexAttribPointer(1,                            // attribute 1 matches aColor in Vertex Shader
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(TexturedColoredVertex),
+		(void*)sizeof(vec3)      // color is offseted a vec3 (comes after position)
+	);
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2,                            // attribute 2 matches aUV in Vertex Shader
+		2,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(TexturedColoredVertex),
+		(void*)(2 * sizeof(vec3))      // uv is offseted by 2 vec3 (comes after position and color)
+	);
+	glEnableVertexAttribArray(2);
+
+	glVertexAttribPointer(3,                            // attribute 3 matches aNormal in Vertex Shader
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		sizeof(TexturedColoredVertex),
+		(void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
+	);
+	glEnableVertexAttribArray(3);
+
+	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Initialize Matrices
 	mat4 model = mat4(1.0f); // identity matrix
@@ -562,6 +480,7 @@ int main(int argc, char* argv[])
 	float timeOnTexture = 0;
 	int currentTexture = 1;
 	GLuint isTextured = 1;
+	float timeOnFace = 0;
 
 	float lightAngleOuter = 30.0;
 	float lightAngleInner = 20.0;
@@ -647,10 +566,48 @@ int main(int argc, char* argv[])
 			break;
 		}
 
+		//Drawing cubes------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectCube);
+		glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
+			3,                   // size
+			GL_FLOAT,            // type
+			GL_FALSE,            // normalized?
+			sizeof(TexturedColoredVertex), // stride - each vertex contain 2 vec3 (position, color)
+			(void*)0             // array buffer offset
+		);
+		glEnableVertexAttribArray(0);
+
+
+		glVertexAttribPointer(1,                            // attribute 1 matches aColor in Vertex Shader
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			sizeof(TexturedColoredVertex),
+			(void*)sizeof(vec3)      // color is offseted a vec3 (comes after position)
+		);
+		glEnableVertexAttribArray(1);
+
+		glVertexAttribPointer(2,                            // attribute 2 matches aUV in Vertex Shader
+			2,
+			GL_FLOAT,
+			GL_FALSE,
+			sizeof(TexturedColoredVertex),
+			(void*)(2 * sizeof(vec3))      // uv is offseted by 2 vec3 (comes after position and color)
+		);
+		glEnableVertexAttribArray(2);
+
+		glVertexAttribPointer(3,                            // attribute 3 matches aNormal in Vertex Shader
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			sizeof(TexturedColoredVertex),
+			(void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
+		);
+		glEnableVertexAttribArray(3);
+
 		//Draw screen
 		setWorldMatrix(texturedShaderProgram, screenMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-
 
 		// Draw ground
 		glBindTexture(GL_TEXTURE_2D, tilesTextureID);
@@ -709,6 +666,71 @@ int main(int argc, char* argv[])
 		setWorldMatrix(texturedShaderProgram, mainRightPillarMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
+		//Drawing face------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		setWorldMatrix(texturedShaderProgram, model);
+		int currentFace = 0;
+		int num = 0;
+		//The face will switch every 5 seconds, reset to the first face after 35 seconds
+		timeOnFace += dt;
+		if (timeOnFace > 5){
+			face = OINFT.getNextFace();
+			updateVertexArray(face, texturedFaceVertexArray);
+			timeOnFace = 0;
+		}	
+		
+		//Bind the new vertex array to the buffer
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectFace);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(texturedFaceVertexArray), texturedFaceVertexArray, GL_DYNAMIC_DRAW);
+		//Enable the attribute
+		glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
+			3,                   // size
+			GL_FLOAT,            // type
+			GL_FALSE,            // normalized?
+			sizeof(TexturedColoredVertex), // stride - each vertex contain 2 vec3 (position, color)
+			(void*)0             // array buffer offset
+		); glBindTexture(GL_TEXTURE_2D, tilesTextureID);
+		glEnableVertexAttribArray(0);
+
+
+		glVertexAttribPointer(1,                            // attribute 1 matches aColor in Vertex Shader
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			sizeof(TexturedColoredVertex),
+			(void*)sizeof(vec3)      // color is offseted a vec3 (comes after position)
+		);
+		glEnableVertexAttribArray(1);
+
+		glVertexAttribPointer(2,                            // attribute 2 matches aUV in Vertex Shader
+			2,
+			GL_FLOAT,
+			GL_FALSE,
+			sizeof(TexturedColoredVertex),
+			(void*)(2 * sizeof(vec3))      // uv is offseted by 2 vec3 (comes after position and color)
+		);
+		glEnableVertexAttribArray(2);
+
+		glVertexAttribPointer(3,                            // attribute 3 matches aNormal in Vertex Shader
+			3,
+			GL_FLOAT,
+			GL_FALSE,
+			sizeof(TexturedColoredVertex),
+			(void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
+		);
+		glEnableVertexAttribArray(3);
+
+		glDrawArrays(GL_TRIANGLES, 0, texturedFaceArraySize);
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		glDisableVertexAttribArray(3);
+
+
+		// Cylinder Test 
+		
+
+
 		// Draw colored geometry------------------------------------------------------------------------------------------------------
 		glUseProgram(colorShaderProgram);
 		glUniform3fv(colorLocation, 0, value_ptr(vec3(1.0, 0.0, 0.0)));
@@ -747,28 +769,6 @@ int main(int argc, char* argv[])
 		vec3 cameraSideVector = glm::cross(cameraLookAt, vec3(0.0f, 1.0f, 0.0f));
 
 		glm::normalize(cameraSideVector);
-
-
-		// GVBN movement ------------------------------------------------------
-		if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) // move camera to the left
-		{
-			cameraPosition -= cameraSideVector * dt * cameraSpeed * 3.0f;
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) // move camera to the right
-		{
-			cameraPosition += cameraSideVector * dt * cameraSpeed * 3.0f;
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move camera up
-		{
-			cameraPosition -= cameraLookAt * dt * cameraSpeed * 3.0f;
-		}
-
-		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move camera down
-		{
-			cameraPosition += cameraLookAt * dt * cameraSpeed * 3.0f;
-		}
 
 		// Orientation controls--------------------------------------------------
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
@@ -1123,55 +1123,3 @@ GLuint loadTexture(const char* filename)
 	return textureId;
 }
 
-int createTexturedCubeVertexArrayObject()
-{
-	// Create a vertex array
-	GLuint vertexArrayObject;
-	glGenVertexArrays(1, &vertexArrayObject);
-	glBindVertexArray(vertexArrayObject);
-
-	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
-	GLuint vertexBufferObject;
-	glGenBuffers(1, &vertexBufferObject);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(texturedCubeVertexArray), texturedCubeVertexArray, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
-		3,                   // size
-		GL_FLOAT,            // type
-		GL_FALSE,            // normalized?
-		sizeof(TexturedColoredVertex), // stride - each vertex contain 2 vec3 (position, color)
-		(void*)0             // array buffer offset
-	);
-	glEnableVertexAttribArray(0);
-
-
-	glVertexAttribPointer(1,                            // attribute 1 matches aColor in Vertex Shader
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		sizeof(TexturedColoredVertex),
-		(void*)sizeof(vec3)      // color is offseted a vec3 (comes after position)
-	);
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(2,                            // attribute 2 matches aUV in Vertex Shader
-		2,
-		GL_FLOAT,
-		GL_FALSE,
-		sizeof(TexturedColoredVertex),
-		(void*)(2 * sizeof(vec3))      // uv is offseted by 2 vec3 (comes after position and color)
-	);
-	glEnableVertexAttribArray(2);
-
-	glVertexAttribPointer(3,                            // attribute 3 matches aNormal in Vertex Shader
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		sizeof(TexturedColoredVertex),
-		(void*)(2 * sizeof(vec3) + sizeof(vec2))      // uv is offseted by 2 vec3 and one vec2 (comes after position and color and UV)
-	);
-	glEnableVertexAttribArray(3);
-
-	return vertexArrayObject;
-}
