@@ -159,8 +159,8 @@ void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFace
 			}
 		}
 	}
-
 	//Generate cylinders for links
+
 };
 
 // Textured Cube model
@@ -877,12 +877,12 @@ int main(int argc, char* argv[])
 			faceX += 0.1;;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move face back
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move face back
 		{
 			faceZ += -0.1;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move face forward
+		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move face forward
 		{
 			faceZ += 0.1;
 		}
