@@ -301,8 +301,8 @@ int main(int argc, char* argv[])
 
 	// Other OpenGL states to set once
 	// Enable Backface culling
-	//glEnable(GL_CULL_FACE);
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
 
 	// Define and upload geometry to the GPU here ...
