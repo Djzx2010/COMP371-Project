@@ -66,31 +66,97 @@ struct TexturedColoredVertex
 
 void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFaceVertexArray[]) {
 
-	int circleIncrements = 8;
+	//Setting up our parameters for circle
 	float radius = 0.05f;
-	float angleStep = 360.0f / circleIncrements;
+	int sphereStackTotal = 10;
+	int sphereSectorTotal = 20;
+	float thetaAngleStep = 360.0f / sphereSectorTotal;
+	float phiAngleStep = 180.0f / sphereStackTotal;
 
-	for (int i = 0; i < 72; i++) {
+	//For evcery face point
+	for (int facePoint = 0; facePoint < 72; facePoint++) {
 
-		float x = face->facialLandmarks->at(0).at(i).x;
-		float y = face->facialLandmarks->at(0).at(i).y;
+		float x = face->facialLandmarks->at(0).at(facePoint).x;
+		float y = face->facialLandmarks->at(0).at(facePoint).y;
 
-		for (int j = 0; j < circleIncrements; j++) {
-			//Middle point
-			texturedFaceVertexArray[24 * i + 3 * j].position = vec3(x, y, 0.0f);
-			texturedFaceVertexArray[24 * i + 3 * j].color = vec3(1.0f, 0.0f, 0.0f);
-			texturedFaceVertexArray[24 * i + 3 * j].uv = vec2(0.0f, 0.0f);
-			texturedFaceVertexArray[24 * i + 3 * j].normal = vec3(0.0f, 0.0f, 1.0f);
-			//First edge point
-			texturedFaceVertexArray[24 * i + 3 * j + 1].position = vec3(x + radius * cos(radians(j * angleStep)), y + radius * sin(radians(j * angleStep)), 0.0f);
-			texturedFaceVertexArray[24 * i + 3 * j + 1].color = vec3(1.0f, 0.0f, 0.0f);
-			texturedFaceVertexArray[24 * i + 3 * j + 1].uv = vec2(cos(radians(j * angleStep)), sin(radians(j * angleStep)));
-			texturedFaceVertexArray[24 * i + 3 * j + 1].normal = vec3(0.0f, 0.0f, 1.0f);
-			//First edge point
-			texturedFaceVertexArray[24 * i + 3 * j + 2].position = vec3(x + radius * cos(radians((j + 1) * angleStep)), y + radius * sin(radians((j + 1) * angleStep)), 0.0f);
-			texturedFaceVertexArray[24 * i + 3 * j + 2].color = vec3(1.0f, 0.0f, 0.0f);
-			texturedFaceVertexArray[24 * i + 3 * j + 2].uv = vec2(cos(radians((j + 1) * angleStep)), sin(radians((j + 1) * angleStep)));
-			texturedFaceVertexArray[24 * i + 3 * j + 2].normal = vec3(0.0f, 0.0f, 1.0f);
+		vec3 offsetVector = vec3(x, y, 0.0f);
+
+		//For every stack 
+		for (int stackCount = 0; stackCount < sphereStackTotal; stackCount++) {
+
+			//Calculating phi anngle
+			float phi = (90.0f - (phiAngleStep * stackCount));
+
+			//For every sector
+			for (int sectorCount = 0; sectorCount < sphereSectorTotal; sectorCount++) {
+
+				float theta = (thetaAngleStep * sectorCount);
+
+				//Calculating 4 corner points of our sector
+				//First point
+				vec3 p1 = vec3(radius * cos(radians(phi)) * cos(radians(theta)), radius * sin(radians(phi)), radius * cos(radians(phi)) * sin(radians(theta)));
+
+				//Second point, increment theta
+				vec3 p2 = vec3(radius * cos(radians(phi)) * cos(radians(theta + thetaAngleStep)), radius * sin(radians(phi)), radius * cos(radians(phi)) * sin(radians(theta + thetaAngleStep)));
+
+				//Third point, increment phi
+				vec3 p3 = vec3(radius * cos(radians(phi + phiAngleStep)) * cos(radians(theta)), radius * sin(radians(phi + phiAngleStep)), radius * cos(radians(phi + phiAngleStep)) * sin(radians(theta)));
+
+				//Fourth point, increment both 
+				vec3 p4 = vec3(radius * cos(radians(phi + phiAngleStep)) * cos(radians(theta + thetaAngleStep)), radius * sin(radians(phi + phiAngleStep)), radius * cos(radians(phi + phiAngleStep)) * sin(radians(theta + thetaAngleStep)));
+
+				//Now we will at thos points to the array in proper order to make two traingles for the sector, 
+				//incrementing the values by the x and y of the face points to match the specific point in the face
+				
+				//First triangle (points 1-3-4)
+
+				//Calculating normal
+				vec3 normal = normalize(cross(p3 - p1, p4 - p1));
+
+				//First point
+				int index = 6 * sectorCount + 6 * sphereSectorTotal * stackCount + 6 * sphereSectorTotal * sphereStackTotal * facePoint;
+				texturedFaceVertexArray[index].position = p1+ offsetVector;
+				texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+				texturedFaceVertexArray[index].uv = vec2(0.0f, 1.0f); //Top left corner
+				texturedFaceVertexArray[index].normal = normal;
+				//Second point
+				index += 1;
+				texturedFaceVertexArray[index].position = p3+ offsetVector;
+				texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+				texturedFaceVertexArray[index].uv = vec2(0.0f, 0.0f); //Bottom left corner
+				texturedFaceVertexArray[index].normal = normal;
+				//Third point
+				index += 1;
+				texturedFaceVertexArray[index].position = p4+ offsetVector;
+				texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+				texturedFaceVertexArray[index].uv = vec2(1.0f, 0.0f); //Bottom right corner
+				texturedFaceVertexArray[index].normal = normal;
+				
+				//Second triangle (1-4-2)
+				
+				//Calculating normal
+				normal = normalize(cross(p4 - p1, p2 - p1));
+
+				//First point
+				index += 1;
+				texturedFaceVertexArray[index].position = p1 + offsetVector;
+				texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+				texturedFaceVertexArray[index].uv = vec2(0.0f, 1.0f); //Top left corner
+				texturedFaceVertexArray[index].normal = normal;
+				//Second point
+				index += 1;
+				texturedFaceVertexArray[index].position = p4 + offsetVector;
+				texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+				texturedFaceVertexArray[index].uv = vec2(1.0f, 0.0f); //Bottom right corner
+				texturedFaceVertexArray[index].normal = normal;
+				//Third point
+				index += 1;
+				texturedFaceVertexArray[index].position = p2 + offsetVector;
+				texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+				texturedFaceVertexArray[index].uv = vec2(1.0f, 1.0f); //Top right corner
+				texturedFaceVertexArray[index].normal = normal;
+				
+			}
 		}
 	}
 
@@ -237,6 +303,7 @@ int main(int argc, char* argv[])
 	GLuint group3TextureID = loadTexture("assets/textures/group3resize.jpg");
 	GLuint group4TextureID = loadTexture("assets/textures/group4resize.jpg");
 	GLuint group5TextureID = loadTexture("assets/textures/group5resize.jpg");
+	GLuint redTextureID = loadTexture("assets/textures/red.jpg");
 
 	// Black background
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -302,7 +369,7 @@ int main(int argc, char* argv[])
 	// Other OpenGL states to set once
 	// Enable Backface culling
 	//glEnable(GL_CULL_FACE);
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 
 
 	// Define and upload geometry to the GPU here ...
@@ -359,9 +426,11 @@ int main(int argc, char* argv[])
 	//Project part 3
 
 	const int numberOfPointsPerFace = 72;
-	const int circlePrecision = 8;
+	const int sphereStackCount = 10;
+	const int sphereSectorCount = 20;
 
-	const static int texturedFaceArraySize = 3 * numberOfPointsPerFace * circlePrecision;
+	//Face array size				Pints per triangle	Points per face  Triangle per sector * number of sector per stack * number of stack
+	const static int texturedFaceArraySize = 3 * numberOfPointsPerFace *  2 * sphereSectorCount * sphereStackCount;
 
 	//Creating OINullDFaceTracker
 	openiss::OINullDFaceTracker OINFT = openiss::OINullDFaceTracker();
@@ -382,13 +451,6 @@ int main(int argc, char* argv[])
 	//Generating pointers to arrays of vertex
 
 	updateVertexArray(face, texturedFaceVertexArray);
-	
-
-
-	std::cerr << "First texturedVertex : x :" << texturedFaceVertexArray[0].position.x << " y: " << texturedFaceVertexArray[0].position.y << " z: " << texturedFaceVertexArray[0].position.z
-		<< " color : r: " << texturedFaceVertexArray[0].color.x << " g: " << texturedFaceVertexArray[0].color.y << " b: " << texturedFaceVertexArray[0].position.z << std::endl;
-	std::cerr << "Last texturedVertex : x :" << texturedFaceVertexArray[1727].position.x << " y: " << texturedFaceVertexArray[1727].position.y << " z: " << texturedFaceVertexArray[1727].position.z
-		<< " color : r: " << texturedFaceVertexArray[112].color.x << " g: " << texturedFaceVertexArray[112].color.y << " b: " << texturedFaceVertexArray[112].position.z << std::endl;
 
 	// Upload Vertex Buffer to the GPU, keep a reference to it (vertexBufferObject)
 	GLuint vertexBufferObjectFace;
@@ -436,14 +498,27 @@ int main(int argc, char* argv[])
 
 	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
 	// Initialize Matrices
 	mat4 model = mat4(1.0f); // identity matrix
 	mat4 WorldMatrix = mat4(1.0f); // Matrix used to create objects
 	mat4 orientationMatrix = mat4(1.0f); // initialize orientation matrix
+
+	//Initializing matrices and variables to interact with the faceObject 
+	//These variables are used to modify the above matrices to change the digits according to user input
+	float Rotation = 0.0f;
+	float Scale = 1;
+	float ShearX = 0;
+	float ShearZ = 0;
+	float faceX = 0;
+	float faceZ = 0;
+	float faceY = 0;
+
+	//These matrices willl modify our face object
+	mat4 rotationMatrix = model;
+	mat4 scaleMatrix = model;
+	mat4 translationMatrix = model;
+	mat4 shearMatrix = model;
+	
 
 	//Stage matrices
 	// Stage
@@ -670,12 +745,28 @@ int main(int argc, char* argv[])
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		//Drawing face------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		setWorldMatrix(texturedShaderProgram, model);
+
+		//Setting our matrix
+		mat4 faceMatrix = translate(mat4(1.0f), vec3(0.0f, 1.0f, -50.0f));
+
+		
+		//Checking if our group needs to be modified
+		rotationMatrix = rotate(mat4(1.0f), radians(Rotation), vec3(0.0f, 1.0f, 0.0f));
+		scaleMatrix = scale(mat4(1.0f), vec3(Scale, Scale, Scale));
+		shearMatrix = { 1.0,0.0,0.0,0.0,
+							ShearX,1.0,ShearZ,0.0,
+							0.0,0.0,1.0,0.0,
+							0.0,0.0,0.0,1.0 };
+		translationMatrix = translate(mat4(1.0f), vec3(faceX, faceY, faceZ));
+		//Making our combined group matrix
+		faceMatrix = faceMatrix * translationMatrix  * shearMatrix * rotationMatrix * scaleMatrix;
+
+		setWorldMatrix(texturedShaderProgram, faceMatrix);
 		int currentFace = 0;
 		int num = 0;
 		//The face will switch every 5 seconds, reset to the first face after 35 seconds
 		timeOnFace += dt;
-		if (timeOnFace > 5){
+		if (timeOnFace > 2){
 			face = OINFT.getNextFace();
 			updateVertexArray(face, texturedFaceVertexArray);
 			timeOnFace = 0;
@@ -692,7 +783,7 @@ int main(int argc, char* argv[])
 			GL_FALSE,            // normalized?
 			sizeof(TexturedColoredVertex), // stride - each vertex contain 2 vec3 (position, color)
 			(void*)0             // array buffer offset
-		); glBindTexture(GL_TEXTURE_2D, tilesTextureID);
+		);
 		glEnableVertexAttribArray(0);
 
 
@@ -723,6 +814,10 @@ int main(int argc, char* argv[])
 		);
 		glEnableVertexAttribArray(3);
 
+		//Binding texture
+		glBindTexture(GL_TEXTURE_2D, redTextureID);
+
+		//Drawing face
 		glDrawArrays(GL_TRIANGLES, 0, texturedFaceArraySize);
 
 		glDisableVertexAttribArray(0);
@@ -770,25 +865,58 @@ int main(int argc, char* argv[])
 		glm::normalize(cameraSideVector);
 
 
-		// GVBN movement ------------------------------------------------------
-		if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) // move camera to the left
+		// GVBN model movement ------------------------------------------------------
+		if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS) // move face to the left
 		{
-			cameraPosition -= cameraSideVector * dt * cameraSpeed * 3.0f;
+			faceX += -0.1;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) // move camera to the right
+		if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) // move face to the right
 		{
-			cameraPosition += cameraSideVector * dt * cameraSpeed * 3.0f;
+			faceX += 0.1;;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move camera up
+		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move face back
 		{
-			cameraPosition -= cameraLookAt * dt * cameraSpeed * 3.0f;
+			faceZ += -0.1;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move camera down
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move face forward
 		{
-			cameraPosition += cameraLookAt * dt * cameraSpeed * 3.0f;
+			faceZ += 0.1;
+		}
+
+		//UJ move model up and down
+		if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS) // move model up
+		{
+			faceY += 0.1;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) // move model down
+		{
+			faceY += -0.1;;
+		}
+
+		//IK scale model up and down and down
+		if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) // scale face up
+		{
+			Scale += +0.1;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS) // scale face down
+		{
+			Scale += -0.1;;
+		}
+
+		//OL rotate face Y axis
+		if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) // rotate counter clockwise
+		{
+			Rotation += 5;
+		}
+
+		if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) // rotate clockwise
+		{
+			Rotation += -5;;
 		}
 
 		// Orientation controls--------------------------------------------------
@@ -818,6 +946,7 @@ int main(int argc, char* argv[])
 				cameraUp); // up
 		}
 
+		//Move camera with WASD
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) // move camera to the left
 		{
 			cameraPosition -= cameraSideVector * dt * cameraSpeed * 3.0f;
@@ -828,17 +957,17 @@ int main(int argc, char* argv[])
 			cameraPosition += cameraSideVector * dt * cameraSpeed * 3.0f;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // move camera up
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) // move camera forward
 		{
 			cameraPosition -= cameraLookAt * dt * cameraSpeed * 3.0f;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) // move camera down
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) // move camera back
 		{
 			cameraPosition += cameraLookAt * dt * cameraSpeed * 3.0f;
 		}
 
-		// Could get rid of
+		// Toggle textures (Could get rid of)
 		if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) //Key to toggle Textures on
 		{
 			isTextured = 1;
