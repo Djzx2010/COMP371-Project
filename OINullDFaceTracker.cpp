@@ -75,7 +75,7 @@ void openiss::OINullDFaceTracker::generateFaces()
 	p17.y = 4.0f;
 	//P18
 	openiss::Point2f p18;
-	p18.x = 2.45f;
+	p18.x = 2.48f;
 	p18.y = 4.0f;
 	//P19
 	openiss::Point2f p19;
@@ -87,8 +87,8 @@ void openiss::OINullDFaceTracker::generateFaces()
 	p20.y = 8.5f;
 	//P21
 	openiss::Point2f p21;
-	p21.x = -2.0f;
-	p21.y = 4.6f;
+	p21.x = -2.4f;
+	p21.y = 6.0f;
 	//P22
 	openiss::Point2f p22;
 	p22.x = -2.0f;
@@ -119,8 +119,8 @@ void openiss::OINullDFaceTracker::generateFaces()
 	p28.y = 6.05f;
 	//P29
 	openiss::Point2f p29;
-	p29.x = 2.0f;
-	p29.y = 4.6f;
+	p29.x = 2.4f;
+	p29.y = 6.0f;
 	//P30
 	openiss::Point2f p30;
 	p30.x = 2.0f;

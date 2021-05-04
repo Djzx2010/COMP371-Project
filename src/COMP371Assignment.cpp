@@ -23,6 +23,7 @@
 #include <stb_image.h>
 #include <OIFace.hpp>
 #include <OINullDFaceTracker.hpp>
+#include <math.h>
 
 
 using namespace glm;
@@ -64,6 +65,189 @@ struct TexturedColoredVertex
 	}
 };
 
+//Creates cylinders and updates the vertex array
+void createLink(openiss::Point2f point1, openiss::Point2f point2, int startIndex, TexturedColoredVertex texturedFaceVertexArray[]) {
+
+	//
+	int numberOfSlices = 20;
+
+	//radius
+	float radius = 0.025;
+
+	//Angle step
+	float angleStep = 360.0f / numberOfSlices;
+
+	//Calculations for transformations
+	//Calculating vector p2-p1
+	vec3 linkVector = vec3(point2.x - point1.x, point2.y - point1.y, 0);
+
+	//Our base cylinder has height of 1, therefore we must scale it by the lenght of linkVector
+	float scale = sqrt(pow(linkVector.x,2) + pow(linkVector.y,2));
+
+	//Our translation = midpoint of point 1 and point 2
+	float xTranslation = (point2.x + point1.x) / 2;
+	float yTranslation = (point2.y + point1.y) / 2;
+
+	//Our rotation is acos of y/scale 
+	float rotation =  -acos(linkVector.y / scale);
+
+	//We need to flip it if x < 0
+	if (linkVector.x < 0) {
+		rotation = -rotation;
+	}
+
+	//Main loop to create slices
+	for (int currentSlice = 0; currentSlice < numberOfSlices; currentSlice++) {
+
+		float angle = radians(angleStep * currentSlice);
+
+		//Getting coordinates for 6 points of slice
+		//Point 1 (top of cylinder)
+		vec3 p1 = vec3(0.0f, 0.5f, 0.0f);
+
+		//Point 2 (top of cylinder, on the edge)
+		vec3 p2 = vec3(radius * sin(angle), 0.5f, radius * cos(angle));
+
+		//Point 3 (top of cylinder, on the edge with anglle incremented)
+		vec3 p3 = vec3(radius * sin(angle + angleStep), 0.5f, radius * cos(angle + angleStep));
+
+		//Point 4 (bottom of cylinder, on the edge)
+		vec3 p4 = vec3(radius * sin(angle), -0.5f, radius * cos(angle));
+
+		//Point 5 (bottom of cylinder, on the edge with anglle incremented)
+		vec3 p5 = vec3(radius * sin(angle + angleStep), -0.5f, radius * cos(angle + angleStep));
+
+		//Point 6 (bottom of cylinder)
+		vec3 p6 = vec3(0.0f, -0.5f, 0.0f);
+
+		//Creating a vector so its easier to loop
+		vector<vec3> pointsVector;
+
+		//Pushing in all our points
+		pointsVector.push_back(p1);
+		pointsVector.push_back(p2);
+		pointsVector.push_back(p3);
+		pointsVector.push_back(p4);
+		pointsVector.push_back(p5);
+		pointsVector.push_back(p6);
+
+		//appllying our transformation
+		for (int i = 0; i < pointsVector.size(); i++) {
+
+			//Scaling
+			pointsVector.at(i) = vec3(pointsVector.at(i).x, pointsVector.at(i).y * scale, pointsVector.at(i).z);
+
+			//Apllying our rotation
+			pointsVector.at(i) = vec3(pointsVector.at(i).x * cos(rotation) - pointsVector.at(i).y * sin(rotation), pointsVector.at(i).x * sin(rotation) + pointsVector.at(i).y * cos(rotation), pointsVector.at(i).z);
+
+			//Translation
+			pointsVector.at(i) = vec3(pointsVector.at(i).x + xTranslation, pointsVector.at(i).y + yTranslation, pointsVector.at(i).z);
+		}
+
+		//Adding our triangles to the array
+
+		//Triangle 1 (1-2-3) index 0-1-1
+		//Calculating normal
+		vec3 normal = normalize(cross(pointsVector.at(1) - pointsVector.at(0), pointsVector.at(2) - pointsVector.at(0)));
+
+		//First point
+		int index = startIndex + 3 * 4 * currentSlice;
+		texturedFaceVertexArray[index].position = pointsVector.at(0);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.5f, 0.5f);
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Second point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(1);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.5f + 0.5 * sin(angle), 0.5f + 0.5 * cos(angle));
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Third point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(2);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.5f + 0.5 * sin(angle + angleStep), 0.5f + 0.5 * cos(angle + angleStep));
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Triangle 2 (2-4-5) index 1-3-4
+		//Calculating normal
+		normal = normalize(cross(pointsVector.at(3) - pointsVector.at(1), pointsVector.at(4) - pointsVector.at(1)));
+
+		//First point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(1);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.0f, 1.0f); //Top left
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Second point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(3);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.0f, 0.0f); //Bottom left
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Third point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(4);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(1.0f, 0.0f); //Bottom right
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Triangle 3 (2-5-3) index 1-4-2
+		//Calculating normal
+		normal = normalize(cross(pointsVector.at(4) - pointsVector.at(1), pointsVector.at(2) - pointsVector.at(1)));
+
+		//First point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(1);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.0f, 1.0f); //Top left
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Second point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(4);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.0f, 1.0f); //Bottom right
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Third point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(2);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(1.0f, 1.0f); //Top right
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Triangle 3 (4-6-5) index 3-5-4
+		//Calculating normal
+		normal = normalize(cross(pointsVector.at(5) - pointsVector.at(3), pointsVector.at(4) - pointsVector.at(3)));
+
+		//First point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(3);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.5f + 0.5 * sin(angle), 0.5f + 0.5 * cos(angle)); //Top left
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Second point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(5);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.5f, 0.5f); //Bottom right
+		texturedFaceVertexArray[index].normal = normal;
+
+		//Third point
+		index += 1;
+		texturedFaceVertexArray[index].position = pointsVector.at(4);
+		texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
+		texturedFaceVertexArray[index].uv = vec2(0.5f + 0.5 * sin(angle + angleStep), 0.5f + 0.5 * cos(angle + angleStep)); //Top right
+		texturedFaceVertexArray[index].normal = normal;
+	}
+}
+
 void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFaceVertexArray[]) {
 
 	//Setting up our parameters for circle
@@ -72,6 +256,9 @@ void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFace
 	int sphereSectorTotal = 20;
 	float thetaAngleStep = 360.0f / sphereSectorTotal;
 	float phiAngleStep = 180.0f / sphereStackTotal;
+
+	//Number of points for circles
+	int firstCylinderIndex = sphereStackTotal * sphereSectorTotal * 72 * 3 * 2;
 
 	//For evcery face point
 	for (int facePoint = 0; facePoint < 72; facePoint++) {
@@ -161,7 +348,98 @@ void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFace
 	}
 
 	//Generate cylinders for links
+	//Number of points per cylinder
+	int numberOfSlices = 20;
+	int indexPerCylinder = numberOfSlices * 4 * 3;
+	int currentIndexOffset = firstCylinderIndex;
+
+	//Edge of the face links
+	for (int i = 0; i < 18; i++) {
+		createLink(face->facialLandmarks->at(0).at(i), face->facialLandmarks->at(0).at(i + 1), currentIndexOffset, texturedFaceVertexArray);
+		currentIndexOffset += indexPerCylinder;
+	}
+
+	//For first eyebrow
+	for (int i = 20; i < 27; i++) {
+		createLink(face->facialLandmarks->at(0).at(i), face->facialLandmarks->at(0).at(i + 1), currentIndexOffset, texturedFaceVertexArray);
+		currentIndexOffset += indexPerCylinder;
+	}
+	createLink(face->facialLandmarks->at(0).at(27), face->facialLandmarks->at(0).at(20), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+
+	//For second eyebrow
+	for (int i = 28; i < 35; i++) {
+		createLink(face->facialLandmarks->at(0).at(i), face->facialLandmarks->at(0).at(i + 1), currentIndexOffset, texturedFaceVertexArray);
+		currentIndexOffset += indexPerCylinder;
+	}
+	createLink(face->facialLandmarks->at(0).at(35), face->facialLandmarks->at(0).at(28), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+
+	//First eye
+	createLink(face->facialLandmarks->at(0).at(37), face->facialLandmarks->at(0).at(38), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(38), face->facialLandmarks->at(0).at(41), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(41), face->facialLandmarks->at(0).at(40), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(40), face->facialLandmarks->at(0).at(37), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+
+	//Second eye
+	createLink(face->facialLandmarks->at(0).at(45), face->facialLandmarks->at(0).at(46), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(46), face->facialLandmarks->at(0).at(49), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(49), face->facialLandmarks->at(0).at(48), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(48), face->facialLandmarks->at(0).at(45), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+
+	//Nose
+	for (int i = 52; i < 54; i++) {
+		createLink(face->facialLandmarks->at(0).at(i), face->facialLandmarks->at(0).at(i + 1), currentIndexOffset, texturedFaceVertexArray);
+		currentIndexOffset += indexPerCylinder;
+	}
+	createLink(face->facialLandmarks->at(0).at(52), face->facialLandmarks->at(0).at(55), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	for (int i = 55; i < 58; i++) {
+		createLink(face->facialLandmarks->at(0).at(i), face->facialLandmarks->at(0).at(i + 1), currentIndexOffset, texturedFaceVertexArray);
+		currentIndexOffset += indexPerCylinder;
+	}
+	
+	//Mouth
+	createLink(face->facialLandmarks->at(0).at(59), face->facialLandmarks->at(0).at(61), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(61), face->facialLandmarks->at(0).at(67), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(67), face->facialLandmarks->at(0).at(69), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(69), face->facialLandmarks->at(0).at(68), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(68), face->facialLandmarks->at(0).at(64), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(64), face->facialLandmarks->at(0).at(60), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	//Second row
+	createLink(face->facialLandmarks->at(0).at(59), face->facialLandmarks->at(0).at(62), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(62), face->facialLandmarks->at(0).at(70), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(70), face->facialLandmarks->at(0).at(65), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(65), face->facialLandmarks->at(0).at(60), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	//Third row
+	createLink(face->facialLandmarks->at(0).at(59), face->facialLandmarks->at(0).at(63), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(63), face->facialLandmarks->at(0).at(71), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(71), face->facialLandmarks->at(0).at(66), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
+	createLink(face->facialLandmarks->at(0).at(66), face->facialLandmarks->at(0).at(60), currentIndexOffset, texturedFaceVertexArray);
+	currentIndexOffset += indexPerCylinder;
 };
+
 
 // Textured Cube model
 TexturedColoredVertex texturedCubeVertexArray[] = {
@@ -369,7 +647,6 @@ int main(int argc, char* argv[])
 	// Other OpenGL states to set once
 	// Enable Backface culling
 	//glEnable(GL_CULL_FACE);
-	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
 
@@ -429,9 +706,13 @@ int main(int argc, char* argv[])
 	const int numberOfPointsPerFace = 72;
 	const int sphereStackCount = 10;
 	const int sphereSectorCount = 20;
+	const int numberOfLinks = 62;
+	const int numberOfSlicesCylinder = 20;
 
 	//Face array size				Pints per triangle	Points per face  Triangle per sector * number of sector per stack * number of stack
-	const static int texturedFaceArraySize = 3 * numberOfPointsPerFace *  2 * sphereSectorCount * sphereStackCount;
+	const static int texturedFaceArraySize = 3 * numberOfPointsPerFace *  2 * sphereSectorCount * sphereStackCount 
+		//Size of cylinders           Number of triangle per slice * points per triangle
+		+ numberOfLinks*numberOfSlicesCylinder*4*3;
 
 	//Creating OINullDFaceTracker
 	openiss::OINullDFaceTracker OINFT = openiss::OINullDFaceTracker();
