@@ -88,7 +88,7 @@ void createLink(openiss::Point2f point1, openiss::Point2f point2, int startIndex
 	float xTranslation = (point2.x + point1.x) / 2;
 	float yTranslation = (point2.y + point1.y) / 2;
 
-	//Our rotation is acos of y/scale 
+	//Our rotation is acos of y/scale
 	float rotation =  -acos(linkVector.y / scale);
 
 	//We need to flip it if x < 0
@@ -268,7 +268,7 @@ void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFace
 
 		vec3 offsetVector = vec3(x, y, 0.0f);
 
-		//For every stack 
+		//For every stack
 		for (int stackCount = 0; stackCount < sphereStackTotal; stackCount++) {
 
 			//Calculating phi anngle
@@ -289,12 +289,12 @@ void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFace
 				//Third point, increment phi
 				vec3 p3 = vec3(radius * cos(radians(phi + phiAngleStep)) * cos(radians(theta)), radius * sin(radians(phi + phiAngleStep)), radius * cos(radians(phi + phiAngleStep)) * sin(radians(theta)));
 
-				//Fourth point, increment both 
+				//Fourth point, increment both
 				vec3 p4 = vec3(radius * cos(radians(phi + phiAngleStep)) * cos(radians(theta + thetaAngleStep)), radius * sin(radians(phi + phiAngleStep)), radius * cos(radians(phi + phiAngleStep)) * sin(radians(theta + thetaAngleStep)));
 
-				//Now we will at thos points to the array in proper order to make two traingles for the sector, 
+				//Now we will at thos points to the array in proper order to make two traingles for the sector,
 				//incrementing the values by the x and y of the face points to match the specific point in the face
-				
+
 				//First triangle (points 1-3-4)
 
 				//Calculating normal
@@ -318,9 +318,9 @@ void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFace
 				texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
 				texturedFaceVertexArray[index].uv = vec2(1.0f, 0.0f); //Bottom right corner
 				texturedFaceVertexArray[index].normal = normal;
-				
+
 				//Second triangle (1-4-2)
-				
+
 				//Calculating normal
 				normal = normalize(cross(p4 - p1, p2 - p1));
 
@@ -342,11 +342,10 @@ void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFace
 				texturedFaceVertexArray[index].color = vec3(1.0f, 0.0f, 0.0f);
 				texturedFaceVertexArray[index].uv = vec2(1.0f, 1.0f); //Top right corner
 				texturedFaceVertexArray[index].normal = normal;
-				
+
 			}
 		}
 	}
-
 	//Generate cylinders for links
 	//Number of points per cylinder
 	int numberOfSlices = 20;
@@ -406,7 +405,7 @@ void updateVertexArray(openiss::OIFace* face, TexturedColoredVertex texturedFace
 		createLink(face->facialLandmarks->at(0).at(i), face->facialLandmarks->at(0).at(i + 1), currentIndexOffset, texturedFaceVertexArray);
 		currentIndexOffset += indexPerCylinder;
 	}
-	
+
 	//Mouth
 	createLink(face->facialLandmarks->at(0).at(59), face->facialLandmarks->at(0).at(61), currentIndexOffset, texturedFaceVertexArray);
 	currentIndexOffset += indexPerCylinder;
@@ -710,7 +709,7 @@ int main(int argc, char* argv[])
 	const int numberOfSlicesCylinder = 20;
 
 	//Face array size				Pints per triangle	Points per face  Triangle per sector * number of sector per stack * number of stack
-	const static int texturedFaceArraySize = 3 * numberOfPointsPerFace *  2 * sphereSectorCount * sphereStackCount 
+	const static int texturedFaceArraySize = 3 * numberOfPointsPerFace *  2 * sphereSectorCount * sphereStackCount
 		//Size of cylinders           Number of triangle per slice * points per triangle
 		+ numberOfLinks*numberOfSlicesCylinder*4*3;
 
@@ -719,7 +718,7 @@ int main(int argc, char* argv[])
 
 	//Getting our first face
 	openiss::OIFace* face = OINFT.getNextFace();
-	
+
 
 	//TO DO ----------------------------------------------
 	//Put parameters for array size
@@ -739,7 +738,7 @@ int main(int argc, char* argv[])
 	glGenBuffers(1, &vertexBufferObjectFace);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectFace);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(texturedFaceVertexArray), texturedFaceVertexArray, GL_DYNAMIC_DRAW);
-	
+
 
 	glVertexAttribPointer(0,                   // attribute 0 matches aPos in Vertex Shader
 		3,                   // size
@@ -785,7 +784,7 @@ int main(int argc, char* argv[])
 	mat4 WorldMatrix = mat4(1.0f); // Matrix used to create objects
 	mat4 orientationMatrix = mat4(1.0f); // initialize orientation matrix
 
-	//Initializing matrices and variables to interact with the faceObject 
+	//Initializing matrices and variables to interact with the faceObject
 	//These variables are used to modify the above matrices to change the digits according to user input
 	float Rotation = 0.0f;
 	float Scale = 1;
@@ -800,7 +799,7 @@ int main(int argc, char* argv[])
 	mat4 scaleMatrix = model;
 	mat4 translationMatrix = model;
 	mat4 shearMatrix = model;
-	
+
 
 	//Stage matrices
 	// Stage
@@ -1000,7 +999,7 @@ int main(int argc, char* argv[])
 		setWorldMatrix(texturedShaderProgram, rightStageMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//Drawing the pillars 
+		//Drawing the pillars
 		glBindTexture(GL_TEXTURE_2D, cementTextureID);
 		//Bottom left
 		setWorldMatrix(texturedShaderProgram, bottomLeftPillarMatrix);
@@ -1010,7 +1009,7 @@ int main(int argc, char* argv[])
 		setWorldMatrix(texturedShaderProgram, topLeftPillarMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
-		//Main left 
+		//Main left
 		setWorldMatrix(texturedShaderProgram, mainLeftPillarMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -1031,7 +1030,7 @@ int main(int argc, char* argv[])
 		//Setting our matrix
 		mat4 faceMatrix = translate(mat4(1.0f), vec3(0.0f, 1.0f, -50.0f));
 
-		
+
 		//Checking if our group needs to be modified
 		rotationMatrix = rotate(mat4(1.0f), radians(Rotation), vec3(0.0f, 1.0f, 0.0f));
 		scaleMatrix = scale(mat4(1.0f), vec3(Scale, Scale, Scale));
@@ -1052,9 +1051,9 @@ int main(int argc, char* argv[])
 			face = OINFT.getNextFace();
 			updateVertexArray(face, texturedFaceVertexArray);
 			timeOnFace = 0;
-		}	
-		
-		
+		}
+
+
 		//Bind the new vertex array to the buffer
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObjectFace);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(texturedFaceVertexArray), texturedFaceVertexArray, GL_DYNAMIC_DRAW);
@@ -1158,12 +1157,12 @@ int main(int argc, char* argv[])
 			faceX += 0.1;;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move face back
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move face back
 		{
 			faceZ += -0.1;
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) // move face forward
+		if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) // move face forward
 		{
 			faceZ += 0.1;
 		}
@@ -1554,4 +1553,3 @@ GLuint loadTexture(const char* filename)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	return textureId;
 }
-
