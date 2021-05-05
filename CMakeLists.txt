@@ -28,11 +28,26 @@ file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
 file(GLOB SRC src/*.cpp)
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/dependency/include")
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/dependency/openiss_include")
+
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/dependency/openiss_core")
+
+link_directories("${CMAKE_CURRENT_SOURCE_DIR}/dependency/lib")
+
 add_executable(${EXEC} ${SRC})
+
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT COMP371Assignment)
 
 target_include_directories(${EXEC} PRIVATE include)
 
 target_link_libraries(${EXEC} OpenGL::GL glew_s glfw glm)
+
+target_link_libraries(${EXEC} openiss-static.lib)
+
+
+
 
 list(APPEND BIN ${EXEC})
 # end COMP371Assignment
@@ -40,3 +55,4 @@ list(APPEND BIN ${EXEC})
 # install files to install location
 install(TARGETS ${BIN} DESTINATION ${CMAKE_INSTALL_PREFIX})
 install(DIRECTORY ${ASSETS} DESTINATION ${CMAKE_INSTALL_PREFIX})
+
