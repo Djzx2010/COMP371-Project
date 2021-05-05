@@ -1,3 +1,4 @@
+
 #ifndef OPENISS_OISTRUCTURE
 #define OPENISS_OISTRUCTURE
 
@@ -111,3 +112,4 @@ private:
 } // end of namespace
 
 #endif //OPENISS_OISTRUCTURE
+
