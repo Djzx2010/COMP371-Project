@@ -19,57 +19,37 @@ Run
 ## Controls:
 
 Camera:  
+Mouse: Controls the camera
 
-Right Mouse Button + move : pan  
-Middle Mouse Button + move : tilt  
-Left Mouse Button + move : zoom in/out  
-  
-Arrow keys : orient camera  
-  
-G : move forward  
-B : move backward  
-V : move left  
-N : move right  
-  
-Home Button : Return camera to starting position and orientation  
-  
-Models:  
-  
-1 : select model 1  
-2 : select model 2  
-3 : select model 3  
-4 : select model 4  
-5 : select model 5  
-  
-W : move model up  
-S : move model down  
-A : move model left  
-D : move model right  
-Z : move camera backward  
-X : move camera forward
+W : move forward  
+S : move backward  
+A : move left  
+D : move right    
 
-Q : rotate model left  
-E : rotate model right  
-
-O : shear bottom of matrix right  
-I : shear bottom of matrix left  
-K : shear bottom of matrix forward  
-M : shear bottom of matrix backward  
-
-Scaling : U (up), J (down)
 Toggle textures : Y (on), H (off)
+  
+## Face Controls  
+G : move Face forward  
+B : move Face backward  
+V : move Face left  
+N : move Face right  
+  
+U: move Face up
+J: move Face down
 
-Render mode : P(points),L(lines),T(full)
+I: scale up Face 
+K: scale down Face
+
+O: rotate Face right
+L: rotate Face left
 
 Other:  
-
 Esc : close program  
 
 ### Sources for the textures ###
 Cardboard : https://www.freepik.es/fotos-premium/cierrese-encima-textura-fondo-marrones-caja-papel-cartulina_3068641.htm
 Stainless : https://www.pinterest.com/pin/559501953689089220/
 Tiles : https://www.freecreatives.com/textures/tile-texture.html
-RED : https://www.ledr.com/colours/red.htm
 
 
 ### Disclaimers ###
