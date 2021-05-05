@@ -15,7 +15,14 @@ Set source to the project's directory (the folder that contains CMakeLists.txt)
 Set build directory to the same path, but add /build to create a build folder  
 Configure and Generate the project  
 Run  
-  
+
+###Known Errors
+It is possible that after performing the above steps, the project will fail to build. If this occurs, add the files in openiss_core and openiss_include to the original odl branch of openiss, build that project, then add the new lib file (openiss-static.lib) to depency/lib/Debug.
+Configure and Generate the project again before building.
+
+## Documentation
+The report can be found in the docs folder.
+
 ## Controls:
 
 Camera:  
